@@ -1,3 +1,11 @@
+/**
+ * Programa para cópia de conteúdo de um arquivo em outro.
+ *
+ * @author  Mateus Tavares <mateus460@gmail.com>
+ * @date    10/20/2016
+ * @return  (int) Error 1 / Success 0
+ */
+
 #include <unistd.h>
 #include <sys/types.h>
 #include <fcntl.h>
