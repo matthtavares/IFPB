@@ -49,7 +49,7 @@ int main (){
 	}
 
 	/* Abre o arquivo, printa erro caso não seja possivel */
-	if( ( fd1 = open(filename2,O_CREAT | O_WRONLY,S_IRUSR) ) < 0 ){
+	if( ( fd1 = open(filename2,O_CREAT | O_EXCL | O_WRONLY,S_IRUSR) ) < 0 ){
 		write(0, "O arquivo já existe!\n\n", 22);
 		return 1;
 	}
