@@ -1,4 +1,4 @@
-#include "projeto.h"
+#include "agenda.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -25,22 +25,22 @@ int main()
 
     //iniciando dados do segundo elemento
     strcpy(valor.nome,"Ronily primeiro");
-    valor.telefone = 123;
+    valor.telefone = 123456;
     strcpy(valor.email,"teste@teste.com");
     valor.dt_nascimento.dia = 1;
     valor.dt_nascimento.mes = 2;
     valor.dt_nascimento.ano = 2015;
 
     //inserindo 2º elemento na primeira posicao
-    inserir(&lst,1,valor);
+    //if( !inserir(&lst,1,valor) ){ printf("Telefone ja cadastrado!\n"); }
 
     // apartir daqui caso queira ver funcionando alguns teste , eh so tirar o comentario - by Ronily
 
     //elemento(lst,1,&retorno);
     //printf("elemento.nome = %s\n", retorno->nome);
 
-    if(busca(lst,"Ronily primeiro")) printf("busca deu certo\n");
-    else printf("deu errado\n");
+    //if(busca(lst,"Ronily primeiro")) printf("busca deu certo\n");
+    //else printf("deu errado\n");
 
     /*
     strcpy(valor.nome,"Editado");
@@ -52,17 +52,19 @@ int main()
     atualizar(&lst,1,valor);
     */
 
-    printf("\n");
+    printf("\n\n");
+
+    //menu();
+
+    printf("\n\n");
 
     imprime(lst);
-
-    system("pause");
 
     //printf("%d",busca(lst,"ROnily GOmes"));
 
     //limpar(&lst);
 
-    //if(vazia(lst)) printf("vazia\n");
+    //printf("%d vazia\n", vazia(lst));
 
     //printf("tamanho = %d\n", tamanho(lst));
 
@@ -72,7 +74,9 @@ int main()
     //remover(&lst,2,telefone);
     //printf("%d\n", *telefone);
 
-    printf("tamanho = %d\n", tamanho(lst));
+    //printf("tamanho = %d\n", tamanho(lst));
+
+    system("pause");
 
     return 0;
 }
