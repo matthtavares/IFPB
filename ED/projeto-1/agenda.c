@@ -303,7 +303,6 @@ int remover(lista *lst, int posicao, int *telefone){
  * @param   (lista)  Lista onde será inserido o valor
  * @param   (int)    Posição do registro na lista
  * @param   (no)     Dados do contato
- * @return  (int)    0 = Erro / count = Quantidade de registros encontrados
  */
 int limpar(lista *lst){
 
