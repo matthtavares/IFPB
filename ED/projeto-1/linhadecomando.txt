@@ -1,1 +1,0 @@
-C:\Program Files (x86)\CodeBlocks\MinGW\bin>gcc.exe "E:\IFPB\ED\projeto-1\main.c" "E:\IFPB\ED\projeto-1\agenda.c" "E:\IFPB\ED\projeto-1\agenda.h" -o "E:\IFPB\ED\projeto-1\projeto.exe"
