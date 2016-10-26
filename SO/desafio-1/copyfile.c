@@ -100,9 +100,9 @@ void cpystr(char *txt, char *txt2){
 int cmpstr(char txt[], char txt2[]){
 	int i;
 	for(i = 0; txt[i] != '\0' && txt2[i] != '\0'; ++i ){
-		if( txt2[i] == txt[i] ) return 1;
+		if( txt2[i] != txt[i] ) return 0;
 	}
-	return 0;
+	return 1;
 }
 
 /* Limpar tela */
