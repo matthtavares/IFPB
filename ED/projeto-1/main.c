@@ -1,3 +1,13 @@
+/**
+ * Programa criado como primeiro projeto para
+ * a disciplina de Estrutura de Dados do IFPB.
+ *
+ * https://github.com/matthtavares/IFPB/tree/master/ED/projeto-1
+ *
+ * @author  Ronily Gomes  <ronilyweb@gmail.com>
+ * @author  Mateus Tavares  <mateus460@gmail.com>
+ */
+
 #include "agenda.h"
 #include <stdio.h>
 #include <string.h>
