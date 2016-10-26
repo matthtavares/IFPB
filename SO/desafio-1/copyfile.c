@@ -1,6 +1,8 @@
 /**
  * Programa para cópia de conteúdo de um arquivo em outro.
  *
+ * https://github.com/matthtavares/IFPB/tree/master/SO/desafio-1
+ *
  * @author  Mateus Tavares <mateus460@gmail.com>
  * @date    10/20/2016
  */
