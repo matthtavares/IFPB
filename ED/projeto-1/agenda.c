@@ -238,10 +238,6 @@ int atualizar( lista *lst, int posicao, no valor){
 	if( !validaNome(valor.nome) || !validaEmail(valor.email) || !validaData(valor.dt_nascimento) )
 		return 0;
 
-	if( !verificaTelefone(*lst,valor.telefone) ){
-		return 0;
-	}
-
 	while(aux != NULL && count < posicao)
 	{
 		aux = aux->prox;
@@ -303,6 +299,7 @@ int remover(lista *lst, int posicao, int *telefone){
  * @param   (lista)  Lista onde será inserido o valor
  * @param   (int)    Posição do registro na lista
  * @param   (no)     Dados do contato
+ * @return  (int)    0 = Erro / 1 = Sucesso
  */
 int limpar(lista *lst){
 
@@ -311,6 +308,8 @@ int limpar(lista *lst){
 		(*lst) = (*lst)->prox;
 	}
 	free(*lst);
+
+	return 1;
 }
 
 /**
@@ -339,10 +338,16 @@ void imprime (lista lst){
  */
 int validaNome(char nome[]){
 	int i;
+	int letras = 0;
 	for(i = 0; nome[i] != '\0'; i++){
-		if(!isalpha(nome[i])) return 0;
+		if(isalpha(nome[i])) 
+			letras++;
 	}
-	return 1;
+
+	if(letras)
+		return 1;
+	else
+		return 0;
 }
 
 /**
@@ -362,7 +367,6 @@ int validaEmail(char email[]){
 // perguntar na aula
 /*
 	int validaTelefone(int telefone){
-
 	}
 */
 
@@ -374,7 +378,7 @@ int validaEmail(char email[]){
  */
 int validaData(data d){
 	if(d.ano > 2016) return 0;
-	if(d.ano < 1850) return 0;
+	if(d.ano < 1500) return 0;
 	return 1;
 }
 
