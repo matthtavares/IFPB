@@ -8,10 +8,9 @@
  */
 
 #include <unistd.h>
-#include <sys/types.h>
 #include <fcntl.h>
 
-#define BUFSIZE 1024
+#define BUFSIZE 100
 
 int lenstr(char *txt);
 void cpystr(char *txt, char *txt2);
@@ -58,7 +57,7 @@ int main (){
 	}
 
 	/* Abre o arquivo, printa erro caso não seja possivel */
-	while( ( fd1 = open(filename2,O_CREAT | O_EXCL | O_WRONLY,S_IRUSR) ) < 0 ){
+	while( ( fd1 = open(filename2,O_CREAT | O_EXCL | O_WRONLY) ) < 0 ){
 		write(0, "O arquivo já existe!\n\n", 22);
 
 		write(0, "Nome do arquivo final: ", 23);
@@ -68,7 +67,7 @@ int main (){
 	}
 
 	/* Copia o arquivo */
-	ssize_t cpy;
+	int cpy;
 	while( cpy = read(fd,buffer,BUFSIZE) ){
 		write(fd1,buffer,cpy);
 	}
