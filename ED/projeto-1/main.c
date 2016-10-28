@@ -18,7 +18,7 @@ int main()
 {
     lista lst,retorno;
     no valor;
-    int posicao,ctrl = 1,acao,i,j;
+    int posicao,ctrl = 1,acao,i, erro = 0;
     int *telefone;
     char nome[20], phone[50];
 
@@ -43,14 +43,18 @@ int main()
                 printf("Telefone: ");
                 scanf("%s", phone);
 
+                erro = 0;
                 for(i = 0; phone[i] != '\0'; ++i){
                     if(!isdigit(phone[i])){
-                        for(j = i; phone[j] != '\0'; ++j){
-                            phone[j] = phone[j+1];
-                        }
+                        erro++;
+                        break;
                     }
                 }
-                valor.telefone = atoi(phone);
+
+                if( erro > 0 ){
+                    printf("\nTelefone invalido!\n\n");
+                    break;
+                }else valor.telefone = atoi(phone);
 
                 printf("Email [seunome@email.com]: ");
                 scanf("%s",valor.email);
@@ -72,14 +76,18 @@ int main()
                 printf("Telefone: ");
                 scanf("%s",valor.telefone);
 
+                erro = 0;
                 for(i = 0; phone[i] != '\0'; ++i){
                     if(!isdigit(phone[i])){
-                        for(j = i; phone[j] != '\0'; ++j){
-                            phone[j] = phone[j+1];
-                        }
+                        erro++;
+                        break;
                     }
                 }
-                valor.telefone = atoi(phone);
+
+                if( erro > 0 ){
+                    printf("\nTelefone invalido!\n\n");
+                    break;
+                }else valor.telefone = atoi(phone);
 
                 printf("Email: (seunome@email.com)");
                 scanf("%s",valor.email);
