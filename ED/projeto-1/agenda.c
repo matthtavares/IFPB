@@ -145,10 +145,10 @@ int listar(lista lst, int posicao){
 	}
 
 	if(aux != NULL){
-		printf("Nome: %s\n", aux->nome);
+		/*printf("Nome: %s\n", aux->nome);
 		printf("Email: %s\n", aux->email);
 		printf("Telefone: %d\n", aux->telefone);
-		printf("Data de Nascimento: %d/%d/%d\n", aux->dt_nascimento.dia, aux->dt_nascimento.mes, aux->dt_nascimento.ano);
+		printf("Data de Nascimento: %d/%d/%d\n", aux->dt_nascimento.dia, aux->dt_nascimento.mes, aux->dt_nascimento.ano);*/
 		return 1;
 	}
 	return 0;

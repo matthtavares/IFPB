@@ -12,7 +12,6 @@
 
 #define BUFSIZE 100
 
-int lenstr(char *txt);
 void cpystr(char *txt, char *txt2);
 int cmpstr(char *txt, char *txt2);
 void clearLog();
@@ -57,7 +56,7 @@ int main (){
 	}
 
 	/* Abre o arquivo, printa erro caso não seja possivel */
-	while( ( fd1 = open(filename2,O_CREAT | O_EXCL | O_WRONLY) ) < 0 ){
+	while( ( fd1 = open(filename2,O_CREAT | O_EXCL | O_WRONLY,0640) ) < 0 ){
 		write(1, "O arquivo já existe!\n\n", 22);
 
 		write(1, "Nome do arquivo final: ", 23);
@@ -79,13 +78,6 @@ int main (){
 	write(1, "\nArquivo copiado com sucesso!\n\n", 31);
 
 	return 0;
-}
-
-/* Tamanho da string */
-int lenstr(char *txt){
-	int i;
-	for( i = 0; txt[i] != '\0'; ++i );
-	return i;
 }
 
 /* Copia string */
