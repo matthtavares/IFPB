@@ -30,13 +30,15 @@ int main (){
 	cpystr(buffer, filename);
 
 	/* Abre o arquivo, printa erro caso não exista */
-	while( ( fd = open(filename, O_RDONLY) ) < 0 ) {
+	fd = open(filename, O_RDONLY);
+	while( fd < 0 ) {
 		write(1, "Impossivel abrir o arquivo!\n\n", 29);
 
 		write(1, "Nome do arquivo para copia: ", 28);
 		read(1, buffer, BUFSIZE); // Ler entrada do usuario
 		/* Copia e ajusta valor do buffer para vetor 'filename' */
 		cpystr(buffer, filename);
+		fd = open(filename, O_RDONLY);
 	}
 
 	write(1, "Nome do arquivo final: ", 23);
@@ -56,13 +58,15 @@ int main (){
 	}
 
 	/* Abre o arquivo, printa erro caso não seja possivel */
-	while( ( fd1 = open(filename2,O_CREAT | O_EXCL | O_WRONLY,0640) ) < 0 ){
+	fd1 = open(filename2, O_CREAT | O_EXCL | O_WRONLY, 0640);
+	while( fd1 < 0 ){
 		write(1, "O arquivo já existe!\n\n", 22);
 
 		write(1, "Nome do arquivo final: ", 23);
 		read(1, buffer, BUFSIZE); // Ler entrada do usuario
 		/* Copia e ajusta valor do buffer para vetor 'filename2' */
 		cpystr(buffer, filename2);
+		fd1 = open(filename2, O_CREAT | O_EXCL | O_WRONLY, 0640);
 	}
 
 	/* Copia o arquivo */
