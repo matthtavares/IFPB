@@ -24,44 +24,44 @@ int main (){
 
 	clearLog(); // Limpa tela
 
-	write(0, "Nome do arquivo para copia: ", 28);
-	read(0, buffer, BUFSIZE); // Ler entrada do usuario
+	write(1, "Nome do arquivo para copia: ", 28);
+	read(1, buffer, BUFSIZE); // Ler entrada do usuario
 
 	/* Copia e ajusta valor do buffer para vetor 'filename' */
 	cpystr(buffer, filename);
 
 	/* Abre o arquivo, printa erro caso não exista */
 	while( ( fd = open(filename, O_RDONLY) ) < 0 ) {
-		write(0, "Impossivel abrir o arquivo!\n\n", 29);
+		write(1, "Impossivel abrir o arquivo!\n\n", 29);
 
-		write(0, "Nome do arquivo para copia: ", 28);
-		read(0, buffer, BUFSIZE); // Ler entrada do usuario
+		write(1, "Nome do arquivo para copia: ", 28);
+		read(1, buffer, BUFSIZE); // Ler entrada do usuario
 		/* Copia e ajusta valor do buffer para vetor 'filename' */
 		cpystr(buffer, filename);
 	}
 
-	write(0, "Nome do arquivo final: ", 23);
-	read(0, buffer, BUFSIZE); // Ler entrada do usuario
+	write(1, "Nome do arquivo final: ", 23);
+	read(1, buffer, BUFSIZE); // Ler entrada do usuario
 
 	/* Copia e ajusta valor do buffer para vetor 'filename2' */
 	cpystr(buffer, filename2);
 
 	/* Verifica se os dois arquivos são diferentes */
 	while( cmpstr(filename, filename2) == 1 ){
-		write(0, "Voce nao pode utilizar o mesmo arquivo como origem e destino!\n\n", 63);
+		write(1, "Voce nao pode utilizar o mesmo arquivo como origem e destino!\n\n", 63);
 
-		write(0, "Nome do arquivo final: ", 23);
-		read(0, buffer, BUFSIZE); // Ler entrada do usuario
+		write(1, "Nome do arquivo final: ", 23);
+		read(1, buffer, BUFSIZE); // Ler entrada do usuario
 		/* Copia e ajusta valor do buffer para vetor 'filename2' */
 		cpystr(buffer, filename2);
 	}
 
 	/* Abre o arquivo, printa erro caso não seja possivel */
 	while( ( fd1 = open(filename2,O_CREAT | O_EXCL | O_WRONLY) ) < 0 ){
-		write(0, "O arquivo já existe!\n\n", 22);
+		write(1, "O arquivo já existe!\n\n", 22);
 
-		write(0, "Nome do arquivo final: ", 23);
-		read(0, buffer, BUFSIZE); // Ler entrada do usuario
+		write(1, "Nome do arquivo final: ", 23);
+		read(1, buffer, BUFSIZE); // Ler entrada do usuario
 		/* Copia e ajusta valor do buffer para vetor 'filename2' */
 		cpystr(buffer, filename2);
 	}
@@ -76,7 +76,7 @@ int main (){
 	close(fd);
 	close(fd1);
 
-	write(0, "\nArquivo copiado com sucesso!\n\n", 31);
+	write(1, "\nArquivo copiado com sucesso!\n\n", 31);
 
 	return 0;
 }
