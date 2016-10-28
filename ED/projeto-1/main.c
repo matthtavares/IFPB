@@ -16,10 +16,9 @@
 
 int main()
 {
-    lista lst,retorno;
+    lista lst, retorno;
     no valor;
-    int posicao,ctrl = 1,acao,i, erro = 0;
-    int *telefone;
+    int posicao, ctrl = 1, acao, i, erro = 0, telefone;
     char nome[20], phone[50];
 
     //criando a lista
@@ -30,16 +29,16 @@ int main()
         menu();
 
         printf("- Informe sua acao: ");
-        scanf("%d%*c",&acao);
+        scanf("%d%*c", &acao);
 
         switch(acao)
         {
             case 1: 
                 printf("\n## INFORMACOES DO CONTATO: \n\n");
                 printf("Posicao: ");
-                scanf("%d%*c",&posicao);
+                scanf("%d%*c", &posicao);
                 printf("Nome: ");
-                scanf("%[^\n]s",valor.nome);
+                scanf("%[^\n]s", valor.nome);
                 printf("Telefone: ");
                 scanf("%s", phone);
 
@@ -57,11 +56,11 @@ int main()
                 }else valor.telefone = atoi(phone);
 
                 printf("Email [seunome@email.com]: ");
-                scanf("%s",valor.email);
+                scanf("%s", valor.email);
                 printf("Data Nasc. [dd/mm/aaaa]: ");
-                scanf("%d/%d/%d%*c",&valor.dt_nascimento.dia,&valor.dt_nascimento.mes,&valor.dt_nascimento.ano);
+                scanf("%d/%d/%d%*c", &valor.dt_nascimento.dia, &valor.dt_nascimento.mes, &valor.dt_nascimento.ano);
 
-                if(inserir(&lst,posicao,valor))
+                if(inserir(&lst, posicao, valor))
                     printf("\n>> Contato inserido com sucesso! <<\n\n");
                 else 
                     printf("\n>> Ops, nao foi possivel inserir o contato! <<\n\n");
@@ -70,11 +69,11 @@ int main()
             case 2:
                 printf("\n## INFORMACOES DO CONTATO: \n\n");
                 printf("Posicao: ");
-                scanf("%d%*c",&posicao);
+                scanf("%d%*c", &posicao);
                 printf("Nome: ");
-                scanf("%[^\n]s",valor.nome);
+                scanf("%[^\n]s", valor.nome);
                 printf("Telefone: ");
-                scanf("%s",valor.telefone);
+                scanf("%s", phone);
 
                 erro = 0;
                 for(i = 0; phone[i] != '\0'; ++i){
@@ -89,12 +88,12 @@ int main()
                     break;
                 }else valor.telefone = atoi(phone);
 
-                printf("Email: (seunome@email.com)");
-                scanf("%s",valor.email);
+                printf("Email [seunome@email.com]: ");
+                scanf("%s", valor.email);
                 printf("Data Nasc. [dd/mm/aaaa]: ");
-                scanf("%d/%d/%d%*c",&valor.dt_nascimento.dia,&valor.dt_nascimento.mes,&valor.dt_nascimento.ano);
+                scanf("%d/%d/%d%*c", &valor.dt_nascimento.dia, &valor.dt_nascimento.mes, &valor.dt_nascimento.ano);
 
-                if(atualizar(&lst,posicao,valor))
+                if(atualizar(&lst, posicao, valor))
                     printf("\n>> Contato atualizado com sucesso! <<\n\n");
                 else 
                     printf("\n>> Ops, nao foi possivel atualizar o contato! <<\n\n");
@@ -103,12 +102,14 @@ int main()
             case 3: 
                 printf("\n## CONTATO QUE SERA EXCLUIDO: \n\n");
                 printf("Posicao: ");
-                scanf("%d%*c",&posicao);
+                scanf("%d%*c", &posicao);
 
-                if(remover(&lst,posicao,telefone))
-                    printf("\n>> Contato removido com sucesso! <<\n\n");
-                else 
+                if(remover(&lst, posicao, &telefone)){
+                    printf("\n>> Contato removido com sucesso! <<\n");
+                    printf("\n>> Seu telefone era: %d <<\n\n", telefone);
+                }else{
                     printf("\n>> Ops, nao foi possivel remover o contato! <<\n\n");
+                }
                 break;
 
             case 4: 
@@ -127,16 +128,6 @@ int main()
                     printf("\n>> Ops, nao foi possivel achar o contato! <<\n\n");
                 }
                 break;
-
-                /*printf("Nome: ");
-                scanf("%[^\n]s",nome);
-                getchar();
-
-                if(busca(lst,nome))
-                    printf("\n>> Contato existe! <<\n\n");
-                else 
-                    printf("\n>> Ops, nao foi possivel achar o contato! <<\n\n");
-                break;*/
 
             case 5:
                 printf("\n## TODOS OS CONTATOS: \n\n");
