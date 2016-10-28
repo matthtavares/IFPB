@@ -145,7 +145,6 @@ int listar(lista lst, int posicao){
 	}
 
 	if(aux != NULL){
-		// implemetar interface -> Mateus
 		printf("Nome: %s\n", aux->nome);
 		printf("Email: %s\n", aux->email);
 		printf("Telefone: %d\n", aux->telefone);
@@ -175,6 +174,8 @@ int inserir(lista *lst, int posicao, no valor)
 	if( !verificaTelefone(*lst,valor.telefone) ){
 		return 0;
 	}
+
+	//filtraTelefone(&valor.telefone);
 
 	if(vazia(*lst))
 	{
@@ -305,11 +306,12 @@ int remover(lista *lst, int posicao, int *telefone){
  */
 int limpar(lista *lst){
 
+	lista aux;
 	while(*lst != NULL){
-		free(*lst);
+		aux = *lst;
 		(*lst) = (*lst)->prox;
+		free(aux);
 	}
-	free(*lst);
 
 	return 1;
 }
@@ -359,18 +361,12 @@ int validaNome(char nome[]){
  * @return  (int)     0 = Erro / 1 = Sucesso
  */
 int validaEmail(char email[]){
-		int i;
+	int i;
 	for(i = 0; email[i] != '\0'; i++){
 		if(email[i] == '@') return 1;
 	}
 	return 0;
 }
-
-// perguntar na aula
-/*
-	int validaTelefone(int telefone){
-	}
-*/
 
 /**
  * Valida a data que foi inserida.

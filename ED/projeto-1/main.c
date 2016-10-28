@@ -12,14 +12,15 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 int main()
 {
     lista lst,retorno;
     no valor;
-    int posicao,ctrl = 1,acao;
+    int posicao,ctrl = 1,acao,i,j;
     int *telefone;
-    char nome[20];
+    char nome[20], phone[50];
 
     //criando a lista
     criar(&lst);
@@ -40,7 +41,17 @@ int main()
                 printf("Nome: ");
                 scanf("%[^\n]s",valor.nome);
                 printf("Telefone: ");
-                scanf("%*c%d",&valor.telefone);
+                scanf("%s", phone);
+
+                for(i = 0; phone[i] != '\0'; ++i){
+                    if(!isdigit(phone[i])){
+                        for(j = i; phone[j] != '\0'; ++j){
+                            phone[j] = phone[j+1];
+                        }
+                    }
+                }
+                valor.telefone = atoi(phone);
+
                 printf("Email [seunome@email.com]: ");
                 scanf("%s",valor.email);
                 printf("Data Nasc. [dd/mm/aaaa]: ");
@@ -59,7 +70,17 @@ int main()
                 printf("Nome: ");
                 scanf("%[^\n]s",valor.nome);
                 printf("Telefone: ");
-                scanf("%*c%d",&valor.telefone);
+                scanf("%s",valor.telefone);
+
+                for(i = 0; phone[i] != '\0'; ++i){
+                    if(!isdigit(phone[i])){
+                        for(j = i; phone[j] != '\0'; ++j){
+                            phone[j] = phone[j+1];
+                        }
+                    }
+                }
+                valor.telefone = atoi(phone);
+
                 printf("Email: (seunome@email.com)");
                 scanf("%s",valor.email);
                 printf("Data Nasc. [dd/mm/aaaa]: ");
@@ -84,7 +105,12 @@ int main()
 
             case 4: 
                 printf("\n## CONTATO QUE SERA PESQUISADO: \n\n");
-                printf("Nome: ");
+                printf("Digite a posicao do contato: ");
+                scanf("%d", &posicao);
+                listar(lst, posicao);
+                break;
+
+                /*printf("Nome: ");
                 scanf("%[^\n]s",nome);
                 getchar();
 
@@ -92,7 +118,7 @@ int main()
                     printf("\n>> Contato existe! <<\n\n");
                 else 
                     printf("\n>> Ops, nao foi possivel achar o contato! <<\n\n");
-                break;
+                break;*/
 
             case 5:
                 printf("\n## TODOS OS CONTATOS: \n\n");
