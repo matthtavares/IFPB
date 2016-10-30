@@ -117,7 +117,9 @@ int main()
                 printf("Digite a posicao do contato: ");
                 scanf("%d", &posicao);
                 
-                listar(lst, posicao);
+                if( listar(lst, posicao) == 0 ){
+                	printf("\n>> Ops, nao foi encontrado nenhum contato! <<\n\n");
+                }
                 break;
 
             case 5:
