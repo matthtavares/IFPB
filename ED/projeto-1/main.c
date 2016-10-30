@@ -117,16 +117,7 @@ int main()
                 printf("Digite a posicao do contato: ");
                 scanf("%d", &posicao);
                 
-                if( listar(lst, posicao) ){
-                    elemento(lst, posicao, &retorno);
-                    printf("\n\n");
-                    printf("Nome: %s\n", &retorno->nome);
-                    printf("Telefone: %d\n", &retorno->telefone);
-                    printf("Email: %s\n", &retorno->email);
-                    printf("Data de Nascimento: %d/%d/%d\n\n", &retorno->dt_nascimento.dia, &retorno->dt_nascimento.mes, &retorno->dt_nascimento.ano);
-                }else{
-                    printf("\n>> Ops, nao foi possivel achar o contato! <<\n\n");
-                }
+                listar(lst, posicao);
                 break;
 
             case 5:

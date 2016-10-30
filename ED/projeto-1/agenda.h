@@ -49,18 +49,3 @@ int limpar(lista *lst);
 
 // Exibe todos os elementos da lista
 void imprime (lista lst);
-
-// valida o nome
-int validaNome(char *nome);
-
-// valida o email
-int validaEmail(char *email);
-
-// valida o telefone
-int validaTelefone(int telefone);
-
-// valida a data
-int validaData(data d);
-
-// verifica se ja existe o telefone
-int verificaTelefone(lista lst, int tel);
