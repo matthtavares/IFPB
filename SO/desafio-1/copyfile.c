@@ -24,7 +24,7 @@ int main (){
 	clearLog(); // Limpa tela
 
 	write(1, "Nome do arquivo para copia: ", 28);
-	read(1, buffer, BUFSIZE); // Ler entrada do usuario
+	read(0, buffer, BUFSIZE); // Ler entrada do usuario
 
 	/* Copia e ajusta valor do buffer para vetor 'filename' */
 	cpystr(buffer, filename);
@@ -35,14 +35,14 @@ int main (){
 		write(1, "Impossivel abrir o arquivo!\n\n", 29);
 
 		write(1, "Nome do arquivo para copia: ", 28);
-		read(1, buffer, BUFSIZE); // Ler entrada do usuario
+		read(0, buffer, BUFSIZE); // Ler entrada do usuario
 		/* Copia e ajusta valor do buffer para vetor 'filename' */
 		cpystr(buffer, filename);
 		fd = open(filename, O_RDONLY);
 	}
 
 	write(1, "Nome do arquivo final: ", 23);
-	read(1, buffer, BUFSIZE); // Ler entrada do usuario
+	read(0, buffer, BUFSIZE); // Ler entrada do usuario
 
 	/* Copia e ajusta valor do buffer para vetor 'filename2' */
 	cpystr(buffer, filename2);
@@ -52,7 +52,7 @@ int main (){
 		write(1, "Voce nao pode utilizar o mesmo arquivo como origem e destino!\n\n", 63);
 
 		write(1, "Nome do arquivo final: ", 23);
-		read(1, buffer, BUFSIZE); // Ler entrada do usuario
+		read(0, buffer, BUFSIZE); // Ler entrada do usuario
 		/* Copia e ajusta valor do buffer para vetor 'filename2' */
 		cpystr(buffer, filename2);
 	}
@@ -63,7 +63,7 @@ int main (){
 		write(1, "O arquivo já existe!\n\n", 22);
 
 		write(1, "Nome do arquivo final: ", 23);
-		read(1, buffer, BUFSIZE); // Ler entrada do usuario
+		read(0, buffer, BUFSIZE); // Ler entrada do usuario
 		/* Copia e ajusta valor do buffer para vetor 'filename2' */
 		cpystr(buffer, filename2);
 		fd1 = open(filename2, O_CREAT | O_EXCL | O_WRONLY, 0640);
