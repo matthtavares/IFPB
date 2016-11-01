@@ -1,0 +1,37 @@
+<!---
+	Questão 2 do Simulado de Linguagem de Script.
+	@author  Mateus Tavares  <mateus460@gmail.com>
+-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Questão 2 - HTML select</title>
+		<meta charset="UTF-8">
+	</head>
+	<body onload="loadCidades()">
+		<select name="estado" onchange="loadCidades()" id="selectEstado">
+			<option value="Paraíba" selected="selected">Paraíba</option>
+			<option value="Pernambuco">Pernambuco</option>
+		</select>
+		<select name="cidade" id="selectCidade">
+			<option>Selecione o Estado</option>
+		</select>
+		<script type="text/javascript">
+			var cidades = new Array();
+			cidades['Paraíba'] = 'João Pessoa,Cabedelo,Campina Grande';
+			cidades['Pernambuco'] = 'Recife,Olinda,Caruaru';
+
+			function loadCidades(){
+				let estado = document.getElementById('selectEstado').value;
+				let municipios = cidades[ estado ].split(',');
+
+				let template = '';
+				for(cid of municipios){
+					template += `<option value="${cid}">${cid}</option>`;
+				}
+
+				document.getElementById('selectCidade').innerHTML = template;
+			}
+		</script>
+	</body>
+</html>

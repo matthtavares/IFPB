@@ -1,0 +1,86 @@
+<!---
+	Questão 3 do Simulado de Linguagem de Script.
+	@author  Mateus Tavares  <mateus460@gmail.com>
+-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Questão 3 - Conversor de Números</title>
+		<meta charset="UTF-8">
+	</head>
+	<body>
+		<style type="text/css">
+			* {
+			    margin: 0;
+			    padding: 0;
+			}
+			#conversor {
+			    width: 500px;
+			    background: #ccc;
+			    padding: 20px;
+			    margin: 50px auto;
+			}
+			#conversor h1 {
+			    font-family: Arial, sans-serif;
+			    text-transform: uppercase;
+			    text-align: center;
+			}
+			#conversor textarea {
+			    width: 80%;
+			    height: 150px;
+			    margin: 20px auto;
+			    display: block;
+			}
+			#conversor .botoes {
+			    margin: 0 auto;
+			    width: 100%;
+			    text-align: center;
+			}
+			#conversor .botoes button {
+			    padding: 5px 10px;
+			}
+		</style>
+
+		<div id="conversor">
+			<h1>Conversor de Números</h1>
+
+			<textarea name="entrada" rows="5"></textarea>
+
+			<div class="botoes">
+				<button onclick="converter('hexTOasc')" type="button">Hex -> Ascii</button>
+				<button onclick="converter('ascTOhex')" type="button">Ascii -> Hex</button>
+				<button onclick="converter('binTOasc')" type="button">Bin -> Ascii</button>
+				<button onclick="converter('ascTObin')" type="button">Ascii -> Bin</button>
+			</div>
+
+			<textarea name="saida" rows="5"></textarea>
+		</div>
+
+		<script type="text/javascript">
+			function converter( tipo ){
+				// Obtem dados de entrada
+				let entrada = document.getElementsByName('entrada')[0].value;
+
+				// Converte com base na opcao
+				/*switch( tipo ){
+					case 'hexTOasc':
+
+						break;
+					case 'ascTOhex':
+
+						break;
+					case 'binTOasc':
+
+						break;
+					case 'ascTObin':
+
+						break;
+					default: alert('Operação inválida!');
+				}*/
+
+				// Exibe dados na saida
+				document.getElementsByName('saida')[0].value = entrada;
+			}
+		</script>
+	</body>
+</html>

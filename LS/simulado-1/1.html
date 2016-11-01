@@ -1,0 +1,68 @@
+<!---
+	Questão 1 do Simulado de Linguagem de Script.
+	@author  Mateus Tavares  <mateus460@gmail.com>
+-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Questão 1 - Artistas</title>
+		<meta charset="UTF-8">
+	</head>
+	<body>
+		<style type="text/css">
+			* {
+			    margin: 0;
+			    padding: 0;
+			}
+			#artista {
+			    width: 870px;
+			    margin: 30px auto;
+			}
+			#artista h1 {
+			    background: rgba(0, 0, 0, 0.5);
+			    border-radius: 3px;
+			    font-family: Verdana, sans-serif;
+			    font-size: 25px;
+			    text-align: center;
+			    padding: 5px 0;
+			    color: #fff;
+			}
+			#artista #artistaRelacionados .item {
+			    width: 21.5%;
+			    background: rgba(0, 0, 0, 0.2);
+			    padding: 5px 10px;
+			    margin: 5px;
+			    float: left;
+			    text-align: center;
+			    border-radius: 3px;
+			}
+			#artista #artistaRelacionados .item h2 {
+			    font-size: 16px;
+			    font-family: Verdana, sans-serif;
+			    margin-bottom: 5px;
+			}
+			#artista #artistaRelacionados .item img {
+			    width: 100%;
+			}
+		</style>
+		<div id="artista">
+			<h1>Artistas relacionados com <span id="artistaNome"></span></h1>
+			<div id="artistaRelacionados"></div>
+		</div>
+		<script type="text/javascript">
+			// JSON obtido de http://api.vagalume.com.br/search.php?art=sivuca&extra=relart&extra=relart
+			var albums = {"type":"song_notfound","art":{"id":"3ade68b5gf958eda3","name":"Sivuca","url":"https:\/\/www.vagalume.com.br\/sivuca\/","related":[{"id":"3ade68b6g00b7fda3","name":"Eluveitie","url":"https:\/\/www.vagalume.com.br\/eluveitie\/","pic_small":"https:\/\/s2.vagalume.com\/eluveitie\/images\/profile.jpg","pic_medium":"https:\/\/s2.vagalume.com\/eluveitie\/images\/eluveitie.jpg"},{"id":"3ade68b6g3259eda3","name":"Jackson do Pandeiro","url":"https:\/\/www.vagalume.com.br\/jackson-do-pandeiro\/","pic_small":"https:\/\/s2.vagalume.com\/jackson-do-pandeiro\/images\/profile.jpg","pic_medium":"https:\/\/s2.vagalume.com\/jackson-do-pandeiro\/images\/jackson-do-pandeiro.jpg"},{"id":"3ade68b5ge048eda3","name":"Dominguinhos","url":"https:\/\/www.vagalume.com.br\/dominguinhos\/","pic_small":"https:\/\/s2.vagalume.com\/dominguinhos\/images\/profile.jpg","pic_medium":"https:\/\/s2.vagalume.com\/dominguinhos\/images\/dominguinhos.jpg"},{"id":"3ade68b5ga348eda3","name":"Fl\u00e1vio Jos\u00e9","url":"https:\/\/www.vagalume.com.br\/flavio-jose\/","pic_small":"https:\/\/s2.vagalume.com\/flavio-jose\/images\/profile.jpg","pic_medium":"https:\/\/s2.vagalume.com\/flavio-jose\/images\/flavio-jose.jpg"},{"id":"3ade68b5g5c48eda3","name":"Luiz Gonzaga","url":"https:\/\/www.vagalume.com.br\/luiz-gonzaga\/","pic_small":"https:\/\/s2.vagalume.com\/luiz-gonzaga\/images\/profile.jpg","pic_medium":"https:\/\/s2.vagalume.com\/luiz-gonzaga\/images\/luiz-gonzaga.jpg"},{"id":"3ade68b5g0248eda3","name":"Elba Ramalho","url":"https:\/\/www.vagalume.com.br\/elba-ramalho\/","pic_small":"https:\/\/s2.vagalume.com\/elba-ramalho\/images\/profile.jpg","pic_medium":"https:\/\/s2.vagalume.com\/elba-ramalho\/images\/elba-ramalho.jpg"},{"id":"3ade68b5g0c07eda3","name":"Gonzaguinha","url":"https:\/\/www.vagalume.com.br\/gonzaguinha\/","pic_small":"https:\/\/s2.vagalume.com\/gonzaguinha\/images\/profile.jpg","pic_medium":"https:\/\/s2.vagalume.com\/gonzaguinha\/images\/gonzaguinha.jpg"},{"id":"3ade68b5g8e38eda3","name":"Clara Nunes","url":"https:\/\/www.vagalume.com.br\/clara-nunes\/","pic_small":"https:\/\/s2.vagalume.com\/clara-nunes\/images\/profile.jpg","pic_medium":"https:\/\/s2.vagalume.com\/clara-nunes\/images\/clara-nunes.jpg"},{"id":"3ade68b5gf7e7eda3","name":"Gilberto Gil","url":"https:\/\/www.vagalume.com.br\/gilberto-gil\/","pic_small":"https:\/\/s2.vagalume.com\/gilberto-gil\/images\/profile.jpg","pic_medium":"https:\/\/s2.vagalume.com\/gilberto-gil\/images\/gilberto-gil.jpg"},{"id":"3ade68b5g1c58eda3","name":"Ti\u00e3o Carreiro e Pardinho","url":"https:\/\/www.vagalume.com.br\/tiao-carreiro-e-pardinho\/","pic_small":"https:\/\/s2.vagalume.com\/tiao-carreiro-e-pardinho\/images\/profile.jpg","pic_medium":"https:\/\/s2.vagalume.com\/tiao-carreiro-e-pardinho\/images\/tiao-carreiro-e-pardinho.jpg"}]}};
+
+			// Nome do artista
+			document.getElementById('artistaNome').innerHTML = albums.art.name;
+
+			// Relacionados
+			var relacionados = albums.art.related;
+			var template = '';
+			for(let i = 0; i < relacionados.length; ++i){
+				template += `<div class="item"><h2>${relacionados[i].name}</h2><img src="${relacionados[i].pic_medium}" alt="${relacionados[i].name}"></div>`;
+			}
+			document.getElementById('artistaRelacionados').innerHTML = template;
+		</script>
+	</body>
+</html>

@@ -1,0 +1,54 @@
+<!---
+	Questão 2 do Simulado de Linguagem de Script.
+	@author  Mateus Tavares  <mateus460@gmail.com>
+-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Questão 2 - Tabela ASCII</title>
+		<meta charset="UTF-8">
+	</head>
+	<body>
+		<style type="text/css">
+			* {
+			    margin: 0;
+			    padding: 0;
+			}
+			table {
+			    width: 600px;
+			    margin: 50px auto;
+			}
+			table tbody tr td {
+			    border: 1px solid #000;
+			    padding: 5px 10px;
+			    text-align: center;
+			}
+			table tbody tr td .sym {
+				font-size: 35px;
+				font-weight: bold;
+				display: block;
+				width: 100%;
+			}
+		</style>
+		<table>
+			<tbody></tbody>
+		</table>
+		<script type="text/javascript">
+			var template = '';
+			var count = 1;
+			for(let i = 34; i <= 255; ++i){
+				if( i != 173 ){
+					if( count == 1 ){
+						template += '<tr>';
+					}
+					template += `<td><span class="sym">${String.fromCharCode(i)}</span>&amp#${i}\;</td>`;
+					if( count++ == 6 ){
+						template += '</tr>';
+						count = 1;
+					}
+				}
+			}
+			document.querySelector('table tbody').innerHTML = template;
+		</script>
+	</body>
+</html>
