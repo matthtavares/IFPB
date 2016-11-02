@@ -1,0 +1,142 @@
+<!---
+	Questão 5 do Simulado de Linguagem de Script.
+	@author  Mateus Tavares  <mateus460@gmail.com>
+-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Questão 5 - Tabela com CEP</title>
+		<meta charset="UTF-8">
+	</head>
+	<body>
+		<style type="text/css">
+			* {
+			    margin: 0;
+			    padding: 0;
+			}
+h1 {
+    text-align: center;
+    font-size: 30px;
+    font-family: Arial, sans-serif;
+    padding: 10px 0;
+}
+
+table {
+    width: 300px;
+    margin: 50px auto;
+    background: #eee;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+}
+
+table tr td {
+	width: 25%;
+}
+
+input {
+    width: 248px;
+    display: block;
+    font-size: 15px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 5px;
+}
+
+button {
+    display: block;
+    width: 100%;
+    height: 35px;
+    padding: 5px 0;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button.igual {
+	font-size: 20px;
+	height: 109px;
+}
+		</style>
+
+		<table>
+			<thead>
+				<tr>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td colspan="4"><h1>CALCULADORA</h1></td>
+				</tr>
+				<tr>
+					<td colspan="4"><input type="text" id="output" value="" disabled=""></td>
+				</tr>
+				<tr>
+					<td><button type="button" onclick="operador('+')">+</button></td>
+					<td><button type="button" onclick="operador('-')">-</button></td>
+					<td><button type="button" onclick="operador('x')">x</button></td>
+					<td><button type="button" onclick="operador('/')">/</button></td>
+				</tr>
+				<tr>
+					<td><button type="button" onclick="valor(7)">7</button></td>
+					<td><button type="button" onclick="valor(8)">8</button></td>
+					<td><button type="button" onclick="valor(9)">9</button></td>
+					<td><button type="button" onclick="limpar()">C</button></td>
+				</tr>
+				<tr>
+					<td><button type="button" onclick="valor(4)">4</button></td>
+					<td><button type="button" onclick="valor(5)">5</button></td>
+					<td><button type="button" onclick="valor(6)">6</button></td>
+					<td rowspan="3"><button type="button" onclick="igual()" class="igual">=</button></td>
+				</tr>
+				<tr>
+					<td><button type="button" onclick="valor(1)">1</button></td>
+					<td><button type="button" onclick="valor(2)">2</button></td>
+					<td><button type="button" onclick="valor(3)">3</button></td>
+				</tr>
+				<tr>
+					<td colspan="3"><button type="button" onclick="valor(0)">0</button></td>
+				</tr>
+			</tbody>
+		</table>
+
+		<script type="text/javascript">
+			var total = '';
+			var igualP = 0;
+			document.getElementById('output').value = '';
+
+			function limpar(){
+				total = '';
+				document.getElementById('output').value = total;
+			}
+
+			function valor( valor ){
+				if( igualP == 1 ){ limpar(); igualP = 0; }
+				total += valor;
+				document.getElementById('output').value = total;
+			}
+
+			function operador( op ){
+				if( igualP == 1 ){ limpar(); igualP = 0; }
+				if( total != '' ){
+					if( op == 'x' ){
+						op = '*';
+					}
+					total += ` ${op} `;
+					document.getElementById('output').value = total;
+				}
+			}
+
+			function igual(){
+				if( total != '' ){
+					igualP = 1;
+					let resultado = eval( total );
+					document.getElementById('output').value = `${total} = ${resultado}`;
+				}
+			}
+		</script>
+	</body>
+</html>
