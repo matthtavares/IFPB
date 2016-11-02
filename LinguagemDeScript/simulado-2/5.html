@@ -110,7 +110,7 @@
 
 			function valor( valor ){
 				if( igualP == 1 ){ limpar(); igualP = 0; }
-				total += `${valor} `;
+				total += valor;
 				document.getElementById('output').value = total;
 			}
 
@@ -120,7 +120,7 @@
 					if( op == 'x' ){
 						op = '*';
 					}
-					total += `${op} `;
+					total += ` ${op} `;
 					document.getElementById('output').value = total;
 				}
 			}
@@ -134,7 +134,7 @@
 						resultado = 'Error';
 					}
 					igualP = 1;
-					document.getElementById('output').value = `${total}= ${resultado}`;
+					document.getElementById('output').value = `${total} = ${resultado}`;
 				}
 			}
 		</script>
