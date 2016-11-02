@@ -14,48 +14,43 @@
 			    margin: 0;
 			    padding: 0;
 			}
-h1 {
-    text-align: center;
-    font-size: 30px;
-    font-family: Arial, sans-serif;
-    padding: 10px 0;
-}
-
-table {
-    width: 300px;
-    margin: 50px auto;
-    background: #eee;
-    padding: 10px 20px;
-    border-radius: 5px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-}
-
-table tr td {
-	width: 25%;
-}
-
-input {
-    width: 248px;
-    display: block;
-    font-size: 15px;
-    padding: 5px;
-    border: 1px solid #ccc;
-    margin-bottom: 5px;
-}
-
-button {
-    display: block;
-    width: 100%;
-    height: 35px;
-    padding: 5px 0;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-button.igual {
-	font-size: 20px;
-	height: 109px;
-}
+			h1 {
+			    text-align: center;
+			    font-size: 30px;
+			    font-family: Arial, sans-serif;
+			    padding: 10px 0;
+			}
+			table {
+			    width: 300px;
+			    margin: 50px auto;
+			    background: #eee;
+			    padding: 10px 20px;
+			    border-radius: 5px;
+			    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+			}
+			table tr td {
+				width: 25%;
+			}
+			input {
+			    width: 248px;
+			    display: block;
+			    font-size: 15px;
+			    padding: 5px;
+			    border: 1px solid #ccc;
+			    margin-bottom: 5px;
+			}
+			button {
+			    display: block;
+			    width: 100%;
+			    height: 35px;
+			    padding: 5px 0;
+			    font-weight: bold;
+			    cursor: pointer;
+			}
+			button.igual {
+				font-size: 20px;
+				height: 109px;
+			}
 		</style>
 
 		<table>
@@ -115,7 +110,7 @@ button.igual {
 
 			function valor( valor ){
 				if( igualP == 1 ){ limpar(); igualP = 0; }
-				total += valor;
+				total += `${valor} `;
 				document.getElementById('output').value = total;
 			}
 
@@ -125,16 +120,21 @@ button.igual {
 					if( op == 'x' ){
 						op = '*';
 					}
-					total += ` ${op} `;
+					total += `${op} `;
 					document.getElementById('output').value = total;
 				}
 			}
 
 			function igual(){
 				if( total != '' ){
+					let resultado;
+					try {
+						resultado = eval( total );
+					}catch(e){
+						resultado = 'Error';
+					}
 					igualP = 1;
-					let resultado = eval( total );
-					document.getElementById('output').value = `${total} = ${resultado}`;
+					document.getElementById('output').value = `${total}= ${resultado}`;
 				}
 			}
 		</script>
