@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Questão 1 - Tabela de Cores</title>
+  </head>
+  <body>
+    <style>
+      table#colors {
+          width: 900px;
+          margin: 0 auto;
+      }
+      table#colors tr td {
+          width: auto;
+          height: 50px;
+          text-align: center;
+          font-weight: bold;
+          color: #FFF;
+      }
+    </style>
+    <table id="colors"></table>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/color-js/1.0.1/color.min.js"></script>
+    <script>
+      const Color = net.brehaut.Color;
+      const tableElement = document.querySelector('#colors');
+
+      var template = '<tr>';
+      var count = 1;
+
+      for(let hue = 1; hue <= 360; hue++){
+        let hslValue = `hsl(${hue}, 50%, 50%)`;
+        let rgbValue = Color(hslValue).toRGB().toCSSHex();
+        template += `<td style="background-color: ${rgbValue}">${rgbValue}</td>`;
+        if( count++ == 10 ){
+          template += `</tr><tr>`;
+          count = 1;
+        }
+      }
+
+      tableElement.innerHTML = template;
+
+      // <td style="width;heigth;background-color:#hex">#hex<td>
+    </script>
+  </body>
+</html>
