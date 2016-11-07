@@ -11,77 +11,73 @@
  * @author  Ronily Gomes  <ronilyweb@gmail.com>
  */
 
-#include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
-#include <netdb.h>
 #include <sys/socket.h>
-#include "config.h" // Arquivo para configurações
+#include <netinet/in.h>
+#include <string.h>
 
-#define MSGS 10
+#include "config.h"
 
 int main(){
+  int clientSocket, portNum, nBytes;
+  char buffer[BUFSIZE];
+  struct sockaddr_in serverAddr;
+  socklen_t addr_size;
 
-	struct sockaddr_in myaddr; // Our address
-	struct sockaddr_in remaddr; // Remote address
-	int fd, i;
-	int slen = sizeof(remaddr); // Destination length
-	char buf[BUFSIZE]; // Message buffer
-	int recvlen; // n bytes in ACK message
+  /*Create UDP socket*/
+  clientSocket = socket(PF_INET, SOCK_DGRAM, 0);
 
-	/* CREATE A UDP SOCKET */
-	// int socket(int domain, int type, int protocol);
-	fd = socket(AF_INET, SOCK_DGRAM, 0);
-	if( fd == -1 ){
-		printf("ERRO AO CRIAR SOCKET!\n");
-		return 1;
-	}
+  /*Configure settings in address struct*/
+  serverAddr.sin_family = AF_INET;
+  serverAddr.sin_port = htons(SERVICE_PORT);
+  serverAddr.sin_addr.s_addr = inet_addr(SERVICE_HOST);
+  memset(serverAddr.sin_zero, '\0', sizeof serverAddr.sin_zero);  
 
-	/* bind it to all local addresses and pick any port number */
+  /*Initialize size variable to be used later on*/
+  addr_size = sizeof serverAddr;
 
-	memset((char *)&myaddr, 0, sizeof(myaddr));
-	myaddr.sin_family = AF_INET;
-	myaddr.sin_addr.s_addr = inet_addr(SERVICE_HOST);
-	myaddr.sin_port = htons(0);
+  presentation();
 
-	if (bind(fd, (struct sockaddr *)&myaddr, sizeof(myaddr)) < 0) {
-		perror("bind failed");
-		return 0;
-	}       
+  /* Estabelecendo conexão */
+  printf("## TESTING CONNECTION...\n\n");
+  int count = 1;
+  int sendTo;
+  while( count <= 3 ){
+    strcpy(buffer, "HSK");
+    nBytes = strlen(buffer) + 1;
+    
+    printf("Connecting... ");
 
-	/* now define remaddr, the address to whom we want to send messages */
-	/* For convenience, the host address is expressed as a numeric IP address */
-	/* that we will convert to a binary format via inet_aton */
+    // Envia requisição
+    sendTo = sendto(clientSocket, buffer, nBytes, 0, (struct sockaddr *)&serverAddr, addr_size);
+    nBytes = recvfrom(clientSocket,buffer,BUFSIZE,0,NULL, NULL);
 
-	memset((char *) &remaddr, 0, sizeof(remaddr));
-	remaddr.sin_family = AF_INET;
-	remaddr.sin_port = htons(SERVICE_PORT);
-	if (inet_aton(SERVICE_HOST, &remaddr.sin_addr)==0) {
-		fprintf(stderr, "inet_aton() failed\n");
-		exit(1);
-	}
+    if( sendTo > 0 && nBytes > 0 && strcmp(buffer, "ACK") == 0 ){
+      printf("OK.\n");
+      count++;
+    }else{
+      printf("Error.\n");
+      return 1;
+    }
+  }
 
-	/* SEND MESSAGES */
-	for ( i = 0; i < MSGS; i++) {
-		printf("Sending packet %d to %s port %d\n", i, SERVICE_HOST, SERVICE_PORT);
-		sprintf(buf, "Pacote %d", i); // mensagem que será enviada
+  printf("\n## STARTING TANSMISSION:\n\n");
 
-		if ( sendto(fd, buf, strlen(buf), 0, (struct sockaddr *)&remaddr, slen) == -1 ) {
-			perror("sendto");
-			exit(1);
-		}
+  while(1){
+    printf("Type a sentence to send to server:\n");
+    fgets(buffer,BUFSIZE,stdin);
+    printf("You typed: %s",buffer);
 
-		/* RECEIVING A ACK MESSAGE FROM THE SERVER */
-		recvlen = recvfrom(fd, buf, BUFSIZE, 0, (struct sockaddr *)&remaddr, &slen);
+    nBytes = strlen(buffer) + 1;
+    
+    /*Send message to server*/
+    sendto(clientSocket,buffer,nBytes,0,(struct sockaddr *)&serverAddr,addr_size);
 
-        if (recvlen >= 0) {
-            buf[recvlen] = 0; // expect a printable string - terminate it
-            printf("received message: \"%s\"\n", buf);
-        }
-	}
+    /*Receive message from server*/
+    nBytes = recvfrom(clientSocket,buffer,BUFSIZE,0,NULL, NULL);
 
-	close(fd); // Encerra socket
+    printf("Received from server: %s\n",buffer);
+  }
 
-	return 0;
-
+  return 0;
 }

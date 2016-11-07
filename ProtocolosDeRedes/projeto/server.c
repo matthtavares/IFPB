@@ -11,60 +11,84 @@
  * @author  Ronily Gomes  <ronilyweb@gmail.com>
  */
 
-#include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
-#include <netdb.h>
 #include <sys/socket.h>
-#include <arpa/inet.h>
-#include "config.h" // Arquivo para configurações
+#include <netinet/in.h>
+#include <string.h>
+#include <stdlib.h>
 
-int main(int argc, char **argv){
+#include "config.h"
 
-	struct sockaddr_in myaddr;	/* our address */
-	struct sockaddr_in remaddr;	/* remote address */
-	socklen_t addrlen = sizeof(remaddr);		/* length of addresses */
-	int recvlen;			/* # bytes received */
-	int fd;				/* our socket */
-	int msgcnt = 0;			/* count # of messages we received */
-	unsigned char buf[BUFSIZE];	/* receive buffer */
+int main(){
+  int udpSocket, nBytes;
+  char buffer[BUFSIZE];
+  struct sockaddr_in serverAddr, clientAddr;
+  struct sockaddr_storage serverStorage;
+  socklen_t addr_size, client_addr_size;
+  int i;
 
+  /*Create UDP socket*/
+  udpSocket = socket(PF_INET, SOCK_DGRAM, 0);
 
-	/* create a UDP socket */
+  /*Configure settings in address struct*/
+  serverAddr.sin_family = AF_INET;
+  serverAddr.sin_port = htons(SERVICE_PORT);
+  serverAddr.sin_addr.s_addr = inet_addr(SERVICE_HOST);
+  memset(serverAddr.sin_zero, '\0', sizeof serverAddr.sin_zero);  
 
-	if ((fd = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
-		perror("cannot create socket\n");
-		return 0;
-	}
+  /*Bind socket with address struct*/
+  bind(udpSocket, (struct sockaddr *) &serverAddr, sizeof(serverAddr));
 
-	/* bind the socket to any valid IP address and a specific port */
+  /*Initialize size variable to be used later on*/
+  addr_size = sizeof serverStorage;
 
-	memset((char *)&myaddr, 0, sizeof(myaddr));
-	myaddr.sin_family = AF_INET;
-	// myaddr.sin_addr.s_addr = htonl(INADDR_ANY);
-	myaddr.sin_addr.s_addr = inet_addr("127.0.0.1");
-	myaddr.sin_port = htons(SERVICE_PORT);
+  presentation();
 
-	if (bind(fd, (struct sockaddr *)&myaddr, sizeof(myaddr)) < 0) {
-		perror("bind failed");
-		return 0;
-	}
+  // Para contar requisicoes de conexao
+  printf("## AWAITING CONNECTION...\n\n");
+  int requisicoes = 1;
+  while( requisicoes <= 3 ){
+    // Recebe envios do cliente
+    recvfrom(udpSocket,buffer,BUFSIZE,0,(struct sockaddr *)&serverStorage, &addr_size);
 
-	/* now loop, receiving data and printing what we received */
-	for (;;) {
-		printf("waiting on port %d\n", SERVICE_PORT);
-		recvlen = recvfrom(fd, buf, BUFSIZE, 0, (struct sockaddr *)&remaddr, &addrlen);
-		if (recvlen > 0) {
-			buf[recvlen] = 0;
-			printf("received message: \"%s\" (%d bytes)\n", buf, recvlen);
-		}
-		else
-			printf("uh oh - something went wrong!\n");
-		sprintf(buf, "ack %d", msgcnt++);
-		printf("sending response \"%s\"\n", buf);
-		if (sendto(fd, buf, strlen(buf), 0, (struct sockaddr *)&remaddr, addrlen) < 0)
-			perror("sendto");
-	}
-	/* never exits */
+    // Verifica buffer de recebimento
+    if( strcmp(buffer, "HSK") == 0 ){
+      strcpy(buffer, "ACK");
+      
+      nBytes = strlen(buffer) + 1;
 
+      sendto(udpSocket,buffer,nBytes,0,(struct sockaddr *)&serverStorage,addr_size);
+      requisicoes++;
+    }
+  }
+
+  // Verifica total de requisicoes
+  if( requisicoes > 3 ){
+    printf("Connection established!\nReady to begin transmission.");
+  }else{
+    return 1;
+  }
+
+  printf("\n\n## STARTING TANSMISSION:\n\n");
+
+  while(1){
+    /* Try to receive any incoming UDP datagram. Address and port of 
+      requesting client will be stored on serverStorage variable */
+    nBytes = recvfrom(udpSocket,buffer,BUFSIZE,0,(struct sockaddr *)&serverStorage, &addr_size);
+
+    /* Printa mensagem */
+    printf("Message received: %s", buffer);
+
+    /*Convert message received to uppercase*/
+    for(i=0;i<nBytes-1;i++)
+      buffer[i] = toupper(buffer[i]);
+
+    /* Printa mensagem */
+    printf("Message sent: %s\n", buffer);
+
+    /*Send uppercase message back to client, using serverStorage as the address*/
+    sendto(udpSocket,buffer,nBytes,0,(struct sockaddr *)&serverStorage,addr_size);
+  }
+
+  return 0;
 }

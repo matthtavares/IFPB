@@ -12,4 +12,21 @@
 
 #define SERVICE_HOST "127.0.0.1"
 #define SERVICE_PORT 21234
-#define BUFSIZE 2048
+#define BUFSIZE 100
+
+typedef struct {
+	short int flag;
+	short int segment;
+	unsigned char checksum[20];
+	char data[100];
+} Datagram;
+
+void presentation(){
+	system("clear");
+	printf("\t\t\t----- DATAGRAM TCP -----\n\n");
+	printf("\t\t\tWelcome to DATAGRAM UDP!\n\n");
+	printf("      This is a program to simulate a TCP / IP transfer using a UDP socket.\n");
+	printf("       All data is processed and sent using a client-server connection and\n");
+	printf("    has everything needed for a great performance and correct transfer data.");
+	printf("\n\n");
+}
