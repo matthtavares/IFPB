@@ -16,6 +16,7 @@
 #include <netinet/in.h>
 #include <string.h>
 #include <stdlib.h>
+#include <fcntl.h>
 
 #include "config.h"
 
@@ -71,23 +72,66 @@ int main(){
 
   printf("\n\n## STARTING TANSMISSION:\n\n");
 
+  char arquivo[BUFSIZE];
+  strcpy(arquivo, "");
+  char fsize[BUFSIZE];
+  char* filecontent = NULL;
+
+  char path[16 + BUFSIZE];
+  strcpy(path, "");
+  strcat(path, "/arquivos/files/");
+
+  int cpy, fd1;
+
   while(1){
+    // Recebe nome do arquivo
+    if( strcmp(arquivo, "") == 0 ){
+      recvfrom(udpSocket,arquivo,BUFSIZE,0,(struct sockaddr *)&serverStorage, &addr_size);
+      printf("Recebendo o arquivo: %s\n", arquivo);
+
+      recvfrom(udpSocket,fsize,BUFSIZE,0,(struct sockaddr *)&serverStorage, &addr_size);
+      filecontent = (char*) malloc(sizeof(char) * atoi(fsize));
+      printf("Tamanho: %s bytes\n", fsize);
+
+      strcat(path, arquivo);
+      fd1 = open(path, O_CREAT | O_EXCL | O_WRONLY, 0755);
+    }
+
+    // Recebendo partes do arquivo
+    if( strcmp(arquivo, "") != 0 ){
+      strcpy(filecontent, "");
+      // Recebendo parte do arquivo
+      while( recvfrom(udpSocket,buffer,BUFSIZE,0,(struct sockaddr *)&serverStorage, &addr_size) ){
+        if( strcmp(buffer, "END") == 0 ) break;
+        else strcat(filecontent, buffer);
+      }
+      write(fd1, filecontent, atoi(fsize));
+      close(fd1);
+      free(filecontent);
+
+      strcpy(arquivo, "");
+      strcpy(path, "");
+      strcat(path, "/arquivos/files/");
+    }
+  
+
+
     /* Try to receive any incoming UDP datagram. Address and port of 
       requesting client will be stored on serverStorage variable */
-    nBytes = recvfrom(udpSocket,buffer,BUFSIZE,0,(struct sockaddr *)&serverStorage, &addr_size);
+    // nBytes = recvfrom(udpSocket,buffer,BUFSIZE,0,(struct sockaddr *)&serverStorage, &addr_size);
 
-    /* Printa mensagem */
-    printf("Message received: %s", buffer);
+    // /* Printa mensagem */
+    // printf("Message received: %s", buffer);
 
-    /*Convert message received to uppercase*/
-    for(i=0;i<nBytes-1;i++)
-      buffer[i] = toupper(buffer[i]);
+    // /*Convert message received to uppercase*/
+    // for(i=0;i<nBytes-1;i++)
+    //   buffer[i] = toupper(buffer[i]);
 
-    /* Printa mensagem */
-    printf("Message sent: %s\n", buffer);
+    // /* Printa mensagem */
+    // printf("Message sent: %s\n", buffer);
 
-    /*Send uppercase message back to client, using serverStorage as the address*/
-    sendto(udpSocket,buffer,nBytes,0,(struct sockaddr *)&serverStorage,addr_size);
+    // /*Send uppercase message back to client, using serverStorage as the address*/
+    // sendto(udpSocket,buffer,nBytes,0,(struct sockaddr *)&serverStorage,addr_size);
   }
 
   return 0;

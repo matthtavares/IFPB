@@ -10,8 +10,8 @@
  * @author  Ronily Gomes  <ronilyweb@gmail.com>
  */
 
-#define SERVICE_HOST "127.0.0.1"
-#define SERVICE_PORT 21234
+#define SERVICE_HOST "172.28.128.4"
+#define SERVICE_PORT 60000
 #define BUFSIZE 100
 
 typedef struct {
@@ -24,7 +24,7 @@ typedef struct {
 void presentation(){
 	system("clear");
 	printf("\t\t\t----- DATAGRAM TCP -----\n\n");
-	printf("\t\t\tWelcome to DATAGRAM UDP!\n\n");
+	printf("\t\t\tWelcome to DATAGRAM TCP!\n\n");
 	printf("      This is a program to simulate a TCP / IP transfer using a UDP socket.\n");
 	printf("       All data is processed and sent using a client-server connection and\n");
 	printf("    has everything needed for a great performance and correct transfer data.");
