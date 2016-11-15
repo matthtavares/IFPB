@@ -12,12 +12,14 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <string.h>
 #include <fcntl.h>
 
-#include "config.h"
+#include "extras/config.h"
+#include "extras/md5.h"
 
 int main(){
   int clientSocket, portNum, nBytes;
@@ -41,6 +43,7 @@ int main(){
 
   /* Estabelecendo conexão */
   printf("## TESTING CONNECTION...\n\n");
+
   int count = 1;
   int sendTo;
   while( count <= 3 ){
@@ -70,47 +73,61 @@ int main(){
 
   printf("\n## STARTING TANSMISSION:\n\n");
 
-  char arquivo[BUFSIZE];
-  strcpy(arquivo, "");
-  int cpy, fd;
-  int fsize;
-  char filesize[BUFSIZE];
+  Arquivo file;
+  strcpy(file.filename, "");
+
+  Datagram segmento;
+
+  char path[26 + BUFSIZE];
+  strcpy(path, "/arquivos/udp/clientfiles/");
+
+  int cpy, pacote, fd;
 
   while(1){
     // Nome do arquivo pra enviar
-    if( strcmp(arquivo, "") == 0 ){
+    if( strcmp(file.filename, "") == 0 ){
       printf("Digite o nome do arquivo: ");
-      gets(arquivo);
+      gets(file.filename);
 
-      // Envia nome do arquivo pra criar no servidor
-      nBytes = strlen(arquivo) + 1;
-      sendto(clientSocket,arquivo,nBytes,0,(struct sockaddr *)&serverAddr,addr_size);
+      strcat(path, file.filename);
 
-      fd = open(arquivo, O_RDONLY);
+      // Abre o arquivo
+      fd = open(path, O_RDONLY);
 
       // Determina tamanho do arquivo
-      fsize = lseek(fd, 0, SEEK_END);
+      file.filesize = lseek(fd, 0, SEEK_END) + 1;
       lseek(fd, 0, SEEK_SET);
-      sprintf(filesize, "%d", fsize);
 
-      // Envia o tamanho do arquivo
-      nBytes = sizeof(filesize) + 1;
-      sendto(clientSocket,filesize,nBytes,0,(struct sockaddr *)&serverAddr,addr_size);
+      // Envia os dados do arquivo
+      sendto(clientSocket,(struct Arquivo*)&file,sizeof(file),0,(struct sockaddr *)&serverAddr,addr_size);
     }
 
     // Enviando partes do arquivo
-    if( strcmp(arquivo, "") != 0 ){
+    if( strcmp(file.filename, "") != 0 ){
+      // Enviando partes do arquivo
+      segmento.code = 1;
+      strcpy(segmento.checksum, "202cb962ac59075b964b07152d234b70");
       // Enquanto ler do arquivo...
-      while( cpy = read(fd,buffer,BUFSIZE) ){
+      while( (cpy = read(fd,segmento.data,BUFSIZE-1)) > 0 ){
+        segmento.data[cpy] = '\0';
+        segmento.size = strlen(segmento.data);
         // Enviar para o servidor
-        sendto(clientSocket,buffer,cpy,0,(struct sockaddr *)&serverAddr,addr_size);
+        sendto(clientSocket,(struct Datagram*)&segmento,sizeof(segmento),0,(struct sockaddr *)&serverAddr,addr_size);
+        // Incrementa contador
+        segmento.code++;
+        // Limpa buffer
+        strcpy(segmento.data, "");
       }
+      // Encerrando leitura do arquivo
       close(fd);
-      strcpy(arquivo, "");
 
-      strcpy(buffer, "END");
-      nBytes = strlen(buffer) + 1;
-      sendto(clientSocket,buffer,nBytes,0,(struct sockaddr *)&serverAddr,addr_size);
+      // Datagrama encerrando envio
+      strcpy(segmento.data, "END");
+      sendto(clientSocket,(struct Datagram*)&segmento,sizeof(segmento),0,(struct sockaddr *)&serverAddr,addr_size);
+
+      // Limpando nome do arquivo
+      strcpy(file.filename, "");
+      strcpy(path, "/arquivos/udp/clientfiles/");
     }
 
 

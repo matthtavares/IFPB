@@ -10,16 +10,13 @@
  * @author  Ronily Gomes  <ronilyweb@gmail.com>
  */
 
-#define SERVICE_HOST "172.28.128.4"
-#define SERVICE_PORT 60000
-#define BUFSIZE 100
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdint.h>
 
-typedef struct {
-	short int flag;
-	short int segment;
-	unsigned char checksum[20];
-	char data[100];
-} Datagram;
+#include "md5.h"
+#include "config.h"
 
 void presentation(){
 	system("clear");
@@ -29,4 +26,11 @@ void presentation(){
 	printf("       All data is processed and sent using a client-server connection and\n");
 	printf("    has everything needed for a great performance and correct transfer data.");
 	printf("\n\n");
+}
+
+int checkmd5(char data[], char md5original[]){
+	char newmd5[33];
+	md5(data, newmd5);
+	if( strcmp(md5original, newmd5) == 0 ) return 0;
+	return 1;
 }

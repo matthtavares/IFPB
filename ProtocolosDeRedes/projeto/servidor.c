@@ -12,13 +12,14 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <string.h>
-#include <stdlib.h>
 #include <fcntl.h>
 
-#include "config.h"
+#include "extras/config.h"
+#include "extras/md5.h"
 
 int main(){
   int udpSocket, nBytes;
@@ -47,6 +48,7 @@ int main(){
 
   // Para contar requisicoes de conexao
   printf("## AWAITING CONNECTION...\n\n");
+
   int requisicoes = 1;
   while( requisicoes <= 3 ){
     // Recebe envios do cliente
@@ -72,46 +74,44 @@ int main(){
 
   printf("\n\n## STARTING TANSMISSION:\n\n");
 
-  char arquivo[BUFSIZE];
-  strcpy(arquivo, "");
-  char fsize[BUFSIZE];
-  char* filecontent = NULL;
+  Arquivo *file = malloc(sizeof(Arquivo));
+  strcpy(file->filename, "");
 
-  char path[16 + BUFSIZE];
-  strcpy(path, "");
-  strcat(path, "/arquivos/files/");
+  Datagram *segmento = malloc(sizeof(Datagram));
+
+  char path[26 + BUFSIZE];
+  strcpy(path, "/arquivos/udp/serverfiles/");
 
   int cpy, fd1;
 
   while(1){
-    // Recebe nome do arquivo
-    if( strcmp(arquivo, "") == 0 ){
-      recvfrom(udpSocket,arquivo,BUFSIZE,0,(struct sockaddr *)&serverStorage, &addr_size);
-      printf("Recebendo o arquivo: %s\n", arquivo);
+    // Verifica se existe arquivo sendo recebido
+    if( strcmp(file->filename, "") == 0 ){
 
-      recvfrom(udpSocket,fsize,BUFSIZE,0,(struct sockaddr *)&serverStorage, &addr_size);
-      filecontent = (char*) malloc(sizeof(char) * atoi(fsize));
-      printf("Tamanho: %s bytes\n", fsize);
+      // Recebe os dados da struct
+      recvfrom(udpSocket,file,sizeof(*file),0,(struct sockaddr *)&serverStorage, &addr_size);
 
-      strcat(path, arquivo);
-      fd1 = open(path, O_CREAT | O_EXCL | O_WRONLY, 0755);
+      printf("Recebendo o arquivo: %s\n", file->filename);
+      printf("Tamanho: %d bytes\n\n", file->filesize);
+
+      strcat(path, file->filename);
+      fd1 = open(path, O_CREAT | O_EXCL | O_WRONLY, 0640);
     }
 
     // Recebendo partes do arquivo
-    if( strcmp(arquivo, "") != 0 ){
-      strcpy(filecontent, "");
+    if( strcmp(file->filename, "") != 0 ){
       // Recebendo parte do arquivo
-      while( recvfrom(udpSocket,buffer,BUFSIZE,0,(struct sockaddr *)&serverStorage, &addr_size) ){
-        if( strcmp(buffer, "END") == 0 ) break;
-        else strcat(filecontent, buffer);
+      while( recvfrom(udpSocket,segmento,sizeof(*segmento),0,(struct sockaddr *)&serverStorage, &addr_size) ){
+        if( strcmp(segmento->data, "END") == 0 ) break;
+        else{
+          // write(fd1, segmento->data, strlen(segmento->data)); // FUNCIONA!
+          write(fd1, segmento->data, segmento->size);
+        }
       }
-      write(fd1, filecontent, atoi(fsize));
       close(fd1);
-      free(filecontent);
 
-      strcpy(arquivo, "");
-      strcpy(path, "");
-      strcat(path, "/arquivos/files/");
+      strcpy(file->filename, "");
+      strcpy(path, "/arquivos/udp/serverfiles/");
     }
   
 

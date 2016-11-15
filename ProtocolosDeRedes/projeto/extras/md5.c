@@ -142,5 +142,5 @@ void md5(char *initial_msg, char *encoded) {
         strcat(encoded, param);
     }
 
-    encoded[33] = '\0';
+    encoded[strlen(encoded)] = '\0';
 }
