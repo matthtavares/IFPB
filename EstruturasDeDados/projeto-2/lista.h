@@ -9,8 +9,8 @@
  * @author  Ronily Gomes
  */
 typedef struct {
-    char *usuario;
-    char *documento;
+    char usuario[50];
+    char documento[50];
     int paginas;
     int prioridade;
 } impressao;
@@ -34,7 +34,11 @@ int inserir(lista *lst, impressao dados);
 int remover(lista *lst, impressao *dados);
 void listar(lista lst);
 int limpar(lista *lst);
-int povoar(lista *lst);
+void povoar(lista *lst);
 
+/**
+ * Casos de Teste.
+ */
+void listarReverso(lista lst);
 void imprimeInicio(lista lst);
 void imprimeFim(lista lst);
