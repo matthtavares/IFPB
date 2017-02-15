@@ -6,8 +6,8 @@ Este projeto tem por objetivo a implementação de uma lista de impressão com p
 
 ## Autores
 
-Mateus Antônio Tavares Cosme - 20161370024
-Ronily Gomes Morais - 201613700
+* Mateus Antônio Tavares Cosme - 20161370024
+* Ronily Gomes Morais - 201613700
 
 ## Documentação
 
