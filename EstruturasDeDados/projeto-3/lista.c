@@ -12,7 +12,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <malloc.h>
-#include "fila.h"
+#include "lista.h"
 
 /**
  * Inicializa a lista.
@@ -185,6 +185,11 @@ int povoar(lista *lst){
  */
 int validarPrioridade(int priori){
     return ( priori >= 1 && priori <= 3);
+}
+
+
+lista find(lista lst){
+    return lst;
 }
 
 

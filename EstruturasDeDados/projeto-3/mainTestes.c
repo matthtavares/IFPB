@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "fila.h"
+#include "lista.h"
 
 int main(){
     lista listaimpressao;
@@ -16,15 +16,15 @@ int main(){
 
     printf("\n\n");
 
-    for(i = 0; i < 20; i++){
-        sprintf(buffer, "Folha de Ponto %d", i+1);
-        novo.documento = buffer;
-        novo.usuario = "Mateus";
-        novo.paginas = 2 * (i + 1);
-        novo.prioridade = 1; //(i % 3) + 1;
+    // for(i = 0; i < 20; i++){
+    //     sprintf(buffer, "Folha de Ponto %d", i+1);
+    //     strcpy(novo.documento, buffer);
+    //     strcpy(novo.usuario, "Mateus");
+    //     novo.paginas = 2 * (i + 1);
+    //     novo.prioridade = 1; //(i % 3) + 1;
 
-        inserir(&listaimpressao, novo);
-    }
+    //     inserir(&listaimpressao, novo);
+    // }
 
     // for(i = 20; i < 25; i++){
     //     sprintf(novo.documento, "Folha de Ponto %d", i+1);

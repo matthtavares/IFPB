@@ -9,8 +9,8 @@
  * @author  Ronily Gomes
  */
 typedef struct {
-    char* usuario;
-    char* documento;
+    char *usuario;
+    char *documento;
     int paginas;
     int prioridade;
 } impressao;
