@@ -181,7 +181,6 @@ int limpar(lista *lst){
  * Insere automaticamente 10 elementos.
  *
  * @param   lista  lista a ser processada.
- * @return  int   1 = SUCCESS, 0 = ERROR
  */
 void povoar(lista *lst){
     int i;
