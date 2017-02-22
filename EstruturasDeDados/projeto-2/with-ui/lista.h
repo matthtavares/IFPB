@@ -34,7 +34,8 @@ int inserir(lista *lst, impressao dados);
 int remover(lista *lst, impressao *dados);
 void listar(lista lst);
 int limpar(lista *lst);
-int povoar(lista *lst);
+void povoar(lista *lst);
+int atualizar(lista *lst, int code);
 
 void imprimeInicio(lista lst);
 void imprimeFim(lista lst);

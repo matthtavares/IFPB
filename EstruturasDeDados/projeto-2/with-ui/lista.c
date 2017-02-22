@@ -57,34 +57,55 @@ int inserir(lista *lst, impressao dados){
         return 0;
 
     novo->dados = dados;
-	novo->ant = NULL;
-	novo->prox = NULL;
 
     /// Inserir na lista vazia
     if( vazia(*lst) ){
+        novo->ant = NULL;
+        novo->prox = NULL;
         lst->inicio = lst->fim = novo;
-    } else {
-        /// Inserir na lista com elementos
-        ant = NULL;
-        aux = lst->inicio;
 
-        if( dados.prioridade == 1 ){
-        	lst->fim->prox = novo;
-        	novo->ant = lst->fim;
-        	lst->fim = novo;
-        } else if( dados.prioridade == aux->dados.prioridade ) {
-        	// while( aux != NULL && (dados.prioridade < aux->dados.prioridade || dados.prioridade == aux->dados.prioridade) ){
-        	while( aux != NULL && (dados.prioridade == aux->dados.prioridade) ){
-        		ant = aux;
-        		aux = aux->prox;
-        	}
-        	novo->ant = ant;
-        	novo->prox = ant->prox;
-        	ant->prox = novo;
-	    }
+        /// Incrementa tamanho da lista.
+        (lst->tam)++;
+
+        return 1;
     }
 
-	/// Incrementa tamanho da lista.
+    if( dados.prioridade > lst->inicio->dados.prioridade ){
+        lst->inicio->ant = novo;
+        novo->prox = lst->inicio;
+        lst->inicio = novo;
+
+        /// Incrementa tamanho da lista.
+        (lst->tam)++;
+
+        return 1;
+    }
+
+    aux = lst->inicio;
+    while(aux->prox != NULL)
+    {
+        if(dados.prioridade > aux->prox->dados.prioridade)
+        {
+            aux->prox->ant = novo;
+            novo->ant = aux;
+            novo->prox = aux->prox;
+            aux->prox = novo;
+
+            /// Incrementa tamanho da lista.
+            (lst->tam)++;
+
+            return 1;
+        }
+        aux = aux->prox;
+    }
+
+    novo->ant = aux;
+    novo->prox = NULL;
+    aux->prox = novo;
+
+    lst->fim = novo;
+
+    /// Incrementa tamanho da lista.
     (lst->tam)++;
 
     return 1;
@@ -98,18 +119,18 @@ int inserir(lista *lst, impressao dados){
  * @return  int   1 = SUCCESS, 0 = FALSE
  */
 int remover(lista *lst, impressao *dados){
-	if( vazia(*lst) )
-		return 0;
+    if( vazia(*lst) )
+        return 0;
 
-	no *aux = lst->inicio;
-	*dados = aux->dados;
-	lst->inicio = aux->prox;
+    no *aux = lst->inicio;
+    *dados = aux->dados;
+    lst->inicio = aux->prox;
 
-	(lst->tam)--;
+    (lst->tam)--;
 
-	free(aux);
+    free(aux);
 
-	return 1;
+    return 1;
 }
 
 /**
@@ -137,43 +158,41 @@ void listar(lista lst){
  * @return  int   1 = SUCCESS, 0 = ERROR
  */
 int limpar(lista *lst){
-	if( vazia(*lst) )
-		return 0;
+    if( vazia(*lst) )
+        return 0;
 
-	no *aux;
-	impressao dados;
+    no *aux;
+    impressao dados;
 
-	while( aux != NULL ){
-		aux = lst->inicio->prox;
-		remover(lst, &dados);
-		lst->inicio = aux;
-	}
+    while( aux != NULL ){
+        aux = lst->inicio->prox;
+        remover(lst, &dados);
+        lst->inicio = aux;
+    }
 
-	lst->inicio = NULL;
-	lst->fim = NULL;
-	lst->tam = 0;
+    lst->inicio = NULL;
+    lst->fim = NULL;
+    lst->tam = 0;
 
-	return 1;
+    return 1;
 }
 
 /**
  * Insere automaticamente 10 elementos.
  *
  * @param   lista  lista a ser processada.
- * @return  int   1 = SUCCESS, 0 = ERROR
  */
-int povoar(lista *lst){
+void povoar(lista *lst){
     int i;
-	impressao novo;
+    impressao novo;
     for(i = 0; i < 10; i++){
-        sprintf(novo.documento, "Folha de Ponto %d", i+1);
+        sprintf(novo.documento, "Insert Automatico %d", i+1);
         sprintf(novo.usuario, "Usuario %d", (i % 3) + 1);
         novo.paginas = 2 * (i + 1);
         novo.prioridade = (i % 3) + 1;
 
         inserir(lst, novo);
     }
-    return 1;
 }
 
 /**
@@ -187,9 +206,37 @@ int validarPrioridade(int priori){
     return ( priori >= 1 && priori <= 3);
 }
 
+/**
+ * Atualizar prioridade de um elemento.
+ *
+ * @param   lista  lista a ser processada.
+ * @param   int    Codigo do elemento na lista.
+ * @return  int    1 = SUCCESS, 0 = ERROR
+ */
+int atualizar(lista *lst, int code){
+    if( vazia(*lst) )
+        return 0;
 
-lista find(lista lst){
-    return lst;
+    int i = 0;
+    no *aux = lst->inicio;
+    impressao dados;
+
+    while( aux != NULL || i < code ){
+        aux = aux->prox;
+        i++;
+    }
+
+    dados = aux->dados;
+
+    aux->prox->ant = aux->ant;
+    aux->ant->prox = aux->prox;
+
+    free(aux);
+    (lst->tam)--;
+
+    inserir(lst, dados);
+
+    return 1;
 }
 
 
