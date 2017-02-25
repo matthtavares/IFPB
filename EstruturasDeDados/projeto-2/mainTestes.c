@@ -71,7 +71,17 @@ int main(){
     // printf("Tamanho = %d\n", tamanho(listaimpressao));
     // printf("Fila Vazia = %d\n", filaVazia(listaimpressao));
 
-    //povoar(&listaimpressao);
+    povoar(&listaimpressao);
+    listar(listaimpressao);
+
+    printf("\n\n");
+
+    printf("Tamanho = %d\n", tamanho(listaimpressao));
+    printf("Fila Vazia = %d\n", vazia(listaimpressao));
+
+    printf("\n\n");
+
+    atualizar(&listaimpressao, 10, 3);
     listar(listaimpressao);
 
     printf("\n\n");

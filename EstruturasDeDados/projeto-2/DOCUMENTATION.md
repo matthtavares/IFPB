@@ -110,3 +110,29 @@ Utilizada para inserir automaticamente 10 elementos na lista.
 ```
 void povoar(lista *lst);
 ```
+
+### Atualizar
+
+Atualiza prioridade de um elemento da lista.
+
+**Parâmetros:**
+* *lista *lst*: Recebe a lista por referência.
+* *int code*: Código do elemento na lista.
+
+**Retorno:**
+* Retorna um inteiro com **1** para *sucesso* e **0** para *erro*.
+
+```
+int atualizar(lista *lst, int code)
+```
+
+### PrintNext
+
+Imprime o próximo elemento da lista.
+
+**Parâmetros:**
+* *lista *lst*: Recebe a lista por referência.
+
+```
+void PrintNext(lista *lst)
+```
