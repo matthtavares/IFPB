@@ -118,12 +118,13 @@ Atualiza prioridade de um elemento da lista.
 **Parâmetros:**
 * *lista *lst*: Recebe a lista por referência.
 * *int code*: Código do elemento na lista.
+* *int prioridade*: Nova prioridade do elemento na lista.
 
 **Retorno:**
 * Retorna um inteiro com **1** para *sucesso* e **0** para *erro*.
 
 ```
-int atualizar(lista *lst, int code)
+int atualizar(lista *lst, int code, int prioridade);
 ```
 
 ### PrintNext
@@ -134,5 +135,5 @@ Imprime o próximo elemento da lista.
 * *lista *lst*: Recebe a lista por referência.
 
 ```
-void PrintNext(lista *lst)
+void PrintNext(lista *lst);
 ```
