@@ -1,15 +1,11 @@
-[Tutorial](https://www.cs.rutgers.edu/~pxk/417/notes/sockets/udp.html)
-
 ## Para compilar
 
 Versão cliente:
 ```
-$ gcc cliente.c extras/md5.c extras/config.c -o cliente
-$ ./cliente
+$ javac Client.java && java Client
 ```
 
 Versão servidor:
 ```
-$ gcc servidor.c extras/md5.c extras/config.c -o servidor
-$ ./servidor
+$ javac Server.java && java Server
 ```
