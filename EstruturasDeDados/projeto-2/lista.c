@@ -200,6 +200,7 @@ void povoar(lista *lst){
  *
  * @param   lista  lista a ser processada.
  * @param   int    Codigo do elemento na lista.
+ * @param   int    Nova prioridade.
  * @return  int    1 = SUCCESS, 0 = ERROR
  */
 int atualizar(lista *lst, int code, int prioridade){
@@ -210,7 +211,7 @@ int atualizar(lista *lst, int code, int prioridade){
     no *aux = lst->inicio;
     impressao dados;
 
-    while( aux != NULL && i < code ){
+    while( i <= code ){
         aux = aux->prox;
         i++;
     }
@@ -221,9 +222,9 @@ int atualizar(lista *lst, int code, int prioridade){
     aux->prox->ant = aux->ant;
     aux->ant->prox = aux->prox;
 
-    //free(aux);
     inserir(lst, dados);
-    //(lst->tam)--;
+    free(aux);
+    (lst->tam)--;
 
     return 1;
 }

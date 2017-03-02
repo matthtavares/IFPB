@@ -8,5 +8,5 @@ Este projeto tem como objetivo a utilização dos conhecimentos adquiridos em sa
 
 A aplicação irá se utilizar dos dados fornecidos por duas API's:
 
-	* Open Movie Database API - [website](http://www.omdbapi.com/)
-	* Torrent API - [website](https://torrentapi.org/apidocs_v2.txt)
+* Open Movie Database API - [website](http://www.omdbapi.com/)
+* Torrent API - [website](https://torrentapi.org/apidocs_v2.txt)
