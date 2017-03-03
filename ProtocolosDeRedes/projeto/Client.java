@@ -42,6 +42,15 @@ public class Client
 
             echo("Digite o nome do arquivo: ");
             s = (String)cin.readLine();
+
+            // Check if file exists
+            while( !(new File(s).isFile()) ){
+              echo("File does not exists");
+              echo("Digite o nome do arquivo: ");
+              s = (String)cin.readLine();
+            }
+
+            // Send filename
             b = s.getBytes();
             dp = new DatagramPacket(b , b.length , host , port);
             sock.send(dp);
