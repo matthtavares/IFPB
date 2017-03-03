@@ -1,5 +1,5 @@
 /**
-    Java ECHO server with UDP sockets example
+  *  Java ECHO server with UDP sockets example
 */
 
 import java.io.*;
@@ -42,8 +42,20 @@ public class Server
                 rccount++;
             }
 
+            // Get file name
+            sock.receive(incoming);
+            data = incoming.getData();
+            s = new String(data, 0, incoming.getLength());
+
             // Creating a binary file
-            FileOutputStream out = new FileOutputStream("the-file-name.txt");
+            s = "byserver-" + s;
+            FileOutputStream file = new FileOutputStream(s);
+            // FileWriter fileWriter = new FileWriter(new File(s));
+
+            sock.receive(incoming);
+            data = incoming.getData();
+            s = new String(data, 0, incoming.getLength());
+            int escritas = Integer.parseInt(s);
 
             /** IF WANT TO CONECTION CLOSES
                 AFTER SEND ALL DATA
@@ -57,26 +69,31 @@ public class Server
             // //communication loop
             // while(maxr > 0)
             */
-            while(true)
+            while(escritas > 0)
             {
 
                 sock.receive(incoming);
+                data = null;
                 data = incoming.getData();
-                s = new String(data, 0, incoming.getLength());
+                file.write(data);
 
-                //echo the details of incoming data - client ip : client port - client message
-                echo(incoming.getAddress().getHostAddress() + " : " + incoming.getPort() + " - " + s);
+                // fileWriter.write(s);
 
-                s = "OK : " + s;
-                DatagramPacket dp = new DatagramPacket(s.getBytes() , s.getBytes().length , incoming.getAddress() , incoming.getPort());
-                sock.send(dp);
+                // //echo the details of incoming data - client ip : client port - client message
+                // echo(incoming.getAddress().getHostAddress() + " : " + incoming.getPort() + " - " + s);
 
+                // s = "OK : " + s;
+                // DatagramPacket dp = new DatagramPacket(s.getBytes() , s.getBytes().length , incoming.getAddress() , incoming.getPort());
+                // sock.send(dp);
 
-                // Write the received message in a file
-                out.write(data);
-
+                escritas--;
                 //maxr--;
             }
+
+            file.close();
+
+            // fileWriter.flush();
+            // fileWriter.close();
         }
 
         catch(IOException e)
@@ -90,4 +107,5 @@ public class Server
     {
         System.out.println(msg);
     }
+
 }

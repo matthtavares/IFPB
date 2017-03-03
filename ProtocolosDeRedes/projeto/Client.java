@@ -1,6 +1,6 @@
 /**
-    Java ECHO client with UDP sockets example
-    Silver Moon (m00n.silv3r@gmail.com)
+   * Java ECHO client with UDP sockets example
+   * Silver Moon (m00n.silv3r@gmail.com)
 */
 
 import java.io.*;
@@ -13,6 +13,9 @@ public class Client
         DatagramSocket sock = null;
         int port = 7777;
         String s;
+        byte[] b;
+        byte[] fbuffer = new byte[1024];
+        DatagramPacket dp;
 
         BufferedReader cin = new BufferedReader(new InputStreamReader(System.in));
 
@@ -20,7 +23,7 @@ public class Client
         {
             sock = new DatagramSocket();
 
-            InetAddress host = InetAddress.getByName("10.0.4.86");
+            InetAddress host = InetAddress.getByName("172.28.128.4");
 
             // Starting conection
             int rccount = 0;
@@ -29,42 +32,64 @@ public class Client
               echo("Sending ACK...");
               // Write ACK
               s = (String)"ACK";
-              byte[] b = s.getBytes();
+              b = s.getBytes();
               // Send ACK
-              DatagramPacket  dp = new DatagramPacket(b , b.length , host , port);
+              dp = new DatagramPacket(b , b.length , host , port);
               sock.send(dp);
 
               rccount++;
             }
 
-            // echo("Quantas mensagens quer enviar?\n");
-            // s = (String)cin.readLine();
-            // byte[] b = s.getBytes();
-            // DatagramPacket  dp = new DatagramPacket(b , b.length , host , port);
-            // sock.send(dp);
+            echo("Digite o nome do arquivo: ");
+            s = (String)cin.readLine();
+            b = s.getBytes();
+            dp = new DatagramPacket(b , b.length , host , port);
+            sock.send(dp);
 
-            while(true)
-            {
-                //take input and send the packet
-                echo("Enter message to send : ");
-                s = (String)cin.readLine();
-                byte[] b = s.getBytes();
+            // Create a file object
+            FileInputStream file = new FileInputStream(s);
 
-                DatagramPacket dp = new DatagramPacket(b , b.length , host , port);
+            // Get file size
+            int leituras = (int)(file.getChannel().size() + 1024 - 1) / 1024;
+
+            // Send file size
+            dp = new DatagramPacket(Integer.toString(leituras).getBytes(), Integer.toString(leituras).getBytes().length , host , port);
+            sock.send(dp);
+
+            int len = 0;
+            while( ((len = file.read(fbuffer)) != -1) ){
+                dp = new DatagramPacket(fbuffer, len, host, port);
                 sock.send(dp);
-
-                //now receive reply
-                //buffer to receive incoming data
-                byte[] buffer = new byte[65536];
-                DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
-                sock.receive(reply);
-
-                byte[] data = reply.getData();
-                s = new String(data, 0, reply.getLength());
-
-                //echo the details of incoming data - client ip : client port - client message
-                echo(reply.getAddress().getHostAddress() + " : " + reply.getPort() + " - " + s);
+                fbuffer = null;
+                fbuffer = new byte[1024];
             }
+
+            // while(leituras > 0)
+            // {
+            //     // //take input and send the packet
+            //     // echo("Enter message to send : ");
+            //     // s = (String)cin.readLine();
+            //     // b = s.getBytes();
+
+            //     // dp = new DatagramPacket(b , b.length , host , port);
+            //     // sock.send(dp);
+
+            //     // //now receive reply
+            //     // //buffer to receive incoming data
+            //     // byte[] buffer = new byte[65536];
+            //     // DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
+            //     // sock.receive(reply);
+
+            //     // byte[] data = reply.getData();
+            //     // s = new String(data, 0, reply.getLength());
+
+            //     // //echo the details of incoming data - client ip : client port - client message
+            //     // echo(reply.getAddress().getHostAddress() + " : " + reply.getPort() + " - " + s);
+
+            //     leituras--;
+            // }
+
+            file.close();
         }
 
         catch(IOException e)
