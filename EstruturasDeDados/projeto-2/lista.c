@@ -203,31 +203,69 @@ void povoar(lista *lst){
  * @param   int    Nova prioridade.
  * @return  int    1 = SUCCESS, 0 = ERROR
  */
-int atualizar(lista *lst, int code, int prioridade){
-    if( vazia(*lst) )
+int atualizar(lista *lst, int pos, int prioridade){
+    if( vazia(*lst) || pos < 1)
         return 0;
 
     int i = 1;
-    no *aux = lst->inicio;
-    impressao dados;
+    no *aux, *alterado = lst->inicio;
 
-    while( i <= code ){
-        aux = aux->prox;
+    while( alterado != NULL && i < pos ){
+        alterado = alterado->prox;
         i++;
     }
 
-    dados = aux->dados;
-    dados.prioridade = prioridade;
+    if(alterado == NULL)
+        return 0;
 
-    aux->prox->ant = aux->ant;
-    aux->ant->prox = aux->prox;
+    if(i == 1) // erro na primeira posicao
+    {
+        lst->inicio = alterado->prox;
+        alterado->prox->ant = NULL;
+    }
+    else
+    {
+        if(i < lst->tam) // erro na ultima posicao
+            alterado->prox->ant = alterado->ant;
+        alterado->ant->prox = alterado->prox;
+    }
+        
+    alterado->dados.prioridade = prioridade;
 
-    inserir(lst, dados);
-    free(aux);
-    (lst->tam)--;
+    if( alterado->dados.prioridade > lst->inicio->dados.prioridade ){
+        alterado->ant = NULL;
+        lst->inicio->ant = alterado;
+        alterado->prox = lst->inicio;
+        lst->inicio = alterado;
+
+        return 1;
+    }
+    
+    aux = lst->inicio;
+    while(aux->prox != NULL)
+    {
+
+        if(alterado->dados.prioridade > aux->prox->dados.prioridade)
+        {
+            aux->prox->ant = alterado;
+            alterado->ant = aux;
+            alterado->prox = aux->prox;
+            aux->prox = alterado;
+
+            return 1;
+        }
+        aux = aux->prox;
+    }
+
+    alterado->ant = aux;
+    alterado->prox = NULL;
+    aux->prox = alterado;
+
+    lst->fim = alterado;
 
     return 1;
 }
+
 
 /**
  * Imprime o próximo elemento da lista.
