@@ -597,6 +597,12 @@ LRESULT CALLBACK WindowChildProcedure(HWND hwnd, UINT message, WPARAM wParam, LP
             GetDlgItemText(hwnd, ID_EDIT_NUM, buf, 25);
             code = atoi(buf);
 
+            /// Verifica se é o primeiro elemento
+            if( code == 1 ){
+               MessageBox(hwnd, "Este item não pode ser modificado!", "Erro!", MB_ICONEXCLAMATION | MB_OK);
+               return FALSE;
+            }               
+
             /// Verifica se o valor é diferente do tamanho
             if( code < 1 || code > tamanho(lst) ){
                MessageBox(hwnd, "O item não existe!", "Erro!", MB_ICONEXCLAMATION | MB_OK);

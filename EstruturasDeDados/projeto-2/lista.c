@@ -204,7 +204,7 @@ void povoar(lista *lst){
  * @return  int    1 = SUCCESS, 0 = ERROR
  */
 int atualizar(lista *lst, int pos, int prioridade){
-    if( vazia(*lst) || pos < 1)
+    if( vazia(*lst) || pos <= 1)
         return 0;
 
     int i = 1;
