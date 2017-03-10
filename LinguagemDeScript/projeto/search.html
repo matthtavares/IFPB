@@ -69,10 +69,23 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://use.fontawesome.com/88126ae5a7.js"></script>
     <script src="assets/js/gsdk-radio.js"></script>
+    <script src="assets/js/yts.js"></script>
     <script src="assets/js/main.js"></script>
 
     <script type="text/javascript">
       searchOMDb();
+
+      // yts.listMovies({
+      //   genre: "Horror"
+      // }, function( val ){
+      //   console.log( val );
+      // });
+
+      yts.movieDetails({
+        movie_id: 6368
+      }, function( val ){
+        console.log( val );
+      });
     </script>
   </body>
 </html>

@@ -60,7 +60,7 @@ function showSearchResults( json ){
 			// Replace image if not avaible
 			if( value.Poster == 'N/A' )
 				value.Poster = 'https://placeholdit.imgix.net/~text?txtsize=18&txt=Poster+n%C3%A3o+dispon%C3%ADvel&w=250&h=360&txttrack=0';
-			
+
 	        if( i == 1 ){
 	          temp += '<div class="row">';
 	        }
