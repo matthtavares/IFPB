@@ -19,8 +19,12 @@ int main(){
 
   printf("\n\n");
 
-  arv novo = busca(arvore, 10);
-  printf("Busca valor = %d\n", novo->dado);
+  int valor = 11;
+  arv novo = busca(arvore, valor);
+  if( novo != NULL )
+    printf("Busca valor = %d\n", novo->dado);
+  else
+    printf("Não existe o valor %d na arvore!", valor);
 
   printf("\n\n");
 

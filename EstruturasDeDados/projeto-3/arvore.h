@@ -40,9 +40,10 @@ int inserir(arv *arvore, int dado){
   return 0;
 }
 
+/**
+ * Busca no estilo pre-ordem.
+ */
 arv busca(arv arvore, int dado){
-  arv achou;
-
   if( vazia(arvore) )
     return NULL;
 
@@ -50,13 +51,11 @@ arv busca(arv arvore, int dado){
     return arvore;
   }
 
-  if( arvore->esq != NULL )
-    achou = busca(arvore->esq, dado);
+  if( dado < arvore->dado )
+    return busca(arvore->esq, dado);
 
-  if( achou == NULL && arvore->dir != NULL )
-    achou = busca(arvore->dir, dado);
-
-  return achou;
+  if( dado > arvore->dado )
+    return busca(arvore->dir, dado);
 }
 
 void preOrdem(arv arvore){
@@ -98,6 +97,9 @@ void posOrdem(arv arvore){
   printf("%d ", arvore->dado);
 }
 
+/**
+ * Esvaziar no formato pos-ordem.
+ */
 void esvaziar(arv *arvore){
   if( vazia(*arvore) )
     return;
