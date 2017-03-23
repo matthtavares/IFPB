@@ -40,25 +40,80 @@ int inserir(arv *arvore, int dado){
   return 0;
 }
 
-no busca(arv arvore, int dado){
-  no achou;
+arv busca(arv arvore, int dado){
+  arv achou;
 
   if( vazia(arvore) )
-    return;
+    return NULL;
 
   if( arvore->dado == dado ){
-    return *arvore;
+    return arvore;
   }
 
   if( arvore->esq != NULL )
     achou = busca(arvore->esq, dado);
 
-  if( arvore->dir != NULL )
+  if( achou == NULL && arvore->dir != NULL )
     achou = busca(arvore->dir, dado);
 
   return achou;
 }
 
+void preOrdem(arv arvore){
+  if( vazia(arvore) )
+    return;
+
+  printf("%d ", arvore->dado);
+
+  if( arvore->esq != NULL )
+    preOrdem(arvore->esq);
+
+  if( arvore->dir != NULL )
+    preOrdem(arvore->dir);
+}
+
+void inOrdem(arv arvore){
+  if( vazia(arvore) )
+    return;
+
+  if( arvore->esq != NULL )
+    inOrdem(arvore->esq);
+
+  printf("%d ", arvore->dado);
+
+  if( arvore->dir != NULL )
+    inOrdem(arvore->dir);
+}
+
+void posOrdem(arv arvore){
+  if( vazia(arvore) )
+    return;
+
+  if( arvore->esq != NULL )
+    posOrdem(arvore->esq);
+
+  if( arvore->dir != NULL )
+    posOrdem(arvore->dir);
+
+  printf("%d ", arvore->dado);
+}
+
+void esvaziar(arv *arvore){
+  if( vazia(*arvore) )
+    return;
+
+  esvaziar(&(*arvore)->esq);
+  esvaziar(&(*arvore)->dir);
+
+  free(*arvore);
+
+  *arvore = NULL;
+}
+
+
+/**
+ * Duplica um caracter s por max vezes.
+ */
 void replica(char s, int max){
     while( max > 0 ){
       printf("%c", s);
@@ -66,6 +121,9 @@ void replica(char s, int max){
     }
 }
 
+/**
+ * Exibição da árvore em pré-ordem.
+ */
 void exibir(arv arvore, int desloc){
   if( vazia(arvore) )
     return;

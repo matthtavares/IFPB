@@ -19,8 +19,36 @@ int main(){
 
   printf("\n\n");
 
-  no novo = busca(arvore, 10);
-  printf("Busca valor = %d\n", novo.dado);
+  arv novo = busca(arvore, 10);
+  printf("Busca valor = %d\n", novo->dado);
+
+  printf("\n\n");
+
+  printf("Pre-ordem: ");
+  preOrdem(arvore);
+
+  printf("\n\n");
+
+  printf("In-ordem: ");
+  inOrdem(arvore);
+
+  printf("\n\n");
+
+  printf("Pos-ordem: ");
+  posOrdem(arvore);
+
+  printf("\n\n");
+
+  exibir(arvore, 0);
+
+  printf("\n\n");
+
+  printf("Esvaziando...");
+  esvaziar(&arvore);
+
+  printf("\n\n");
+
+  exibir(arvore, 0);
 
   return 0;
 }
