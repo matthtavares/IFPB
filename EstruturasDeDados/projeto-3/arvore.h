@@ -58,6 +58,65 @@ arv busca(arv arvore, int dado){
     return busca(arvore->dir, dado);
 }
 
+/**
+ * Esvaziar no formato pos-ordem.
+ */
+void esvaziar(arv *arvore){
+  if( vazia(*arvore) )
+    return;
+
+  esvaziar(&(*arvore)->esq);
+  esvaziar(&(*arvore)->dir);
+
+  free(*arvore);
+
+  *arvore = NULL;
+}
+
+
+int remover(arv *arvore, int dado){
+  arv p;
+  //arv novo = busca(arvore, dado);
+
+  if( vazia(*arvore) )
+    return 0;
+
+  // Se não houver filhos
+  if( (*arvore)->esq == NULL && (*arvore)->dir == NULL ){
+    free(*arvore);
+    *arvore = NULL;
+    return 1;
+  }
+
+  if( dado < (*arvore)->dado )
+    return remover(&(*arvore)->esq, dado);
+
+  if( dado > (*arvore)->dado )
+    return remover(&(*arvore)->dir, dado);
+
+/*
+  // Se houver filhos apenas a esquerda
+  if( (*elemento)->dir == NULL ){
+    p = (*elemento)->esq;
+    free(*elemento);
+    *elemento = p;
+    return 1;
+  }
+
+  // Se houver filhos apenas a direita
+  if( (*elemento)->esq == NULL ){
+    p = (*elemento)->dir;
+    free(*elemento);
+    *elemento = p;
+    return 1;
+  }
+*/
+
+  return 0;
+}
+
+
+
 void preOrdem(arv arvore){
   if( vazia(arvore) )
     return;
@@ -97,20 +156,7 @@ void posOrdem(arv arvore){
   printf("%d ", arvore->dado);
 }
 
-/**
- * Esvaziar no formato pos-ordem.
- */
-void esvaziar(arv *arvore){
-  if( vazia(*arvore) )
-    return;
 
-  esvaziar(&(*arvore)->esq);
-  esvaziar(&(*arvore)->dir);
-
-  free(*arvore);
-
-  *arvore = NULL;
-}
 
 
 /**

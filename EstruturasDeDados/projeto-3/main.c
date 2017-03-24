@@ -2,7 +2,7 @@
 #include "arvore.h"
 
 int main(){
-  arv arvore;
+  arv arvore, novo;
   inicializa(&arvore);
 
   inserir(&arvore, 10);
@@ -19,8 +19,8 @@ int main(){
 
   printf("\n\n");
 
-  int valor = 11;
-  arv novo = busca(arvore, valor);
+  /*int valor = 11;
+  novo = busca(arvore, valor);
   if( novo != NULL )
     printf("Busca valor = %d\n", novo->dado);
   else
@@ -45,14 +45,20 @@ int main(){
 
   exibir(arvore, 0);
 
-  printf("\n\n");
+  printf("\n\n");*/
 
-  printf("Esvaziando...");
-  esvaziar(&arvore);
+  // printf("Esvaziando...");
+  // esvaziar(&arvore);
 
-  printf("\n\n");
+  // printf("\n\n");
 
-  exibir(arvore, 0);
+  // exibir(arvore, 0);
+
+  novo = busca(arvore, 9);
+  if( remover(&arvore, 10) ){
+    exibir(arvore, 0);
+    printf("\n\n");
+  }
 
   return 0;
 }
