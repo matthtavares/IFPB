@@ -43,19 +43,19 @@ int inserir(arv *arvore, int dado){
 /**
  * Busca no estilo pre-ordem.
  */
-arv busca(arv arvore, int dado){
-  if( vazia(arvore) )
+arv* busca(arv *arvore, int dado){
+  if( vazia(*arvore) )
     return NULL;
 
-  if( arvore->dado == dado ){
-    return arvore;
+  if( (*arvore)->dado == dado ){
+    return &(*arvore);
   }
 
-  if( dado < arvore->dado )
-    return busca(arvore->esq, dado);
+  if( dado < (*arvore)->dado )
+    return busca(&(*arvore)->esq, dado);
 
-  if( dado > arvore->dado )
-    return busca(arvore->dir, dado);
+  if( dado > (*arvore)->dado )
+    return busca(&(*arvore)->dir, dado);
 }
 
 /**
@@ -76,43 +76,50 @@ void esvaziar(arv *arvore){
 
 int remover(arv *arvore, int dado){
   arv p;
-  //arv novo = busca(arvore, dado);
 
   if( vazia(*arvore) )
     return 0;
 
-  // Se não houver filhos
-  if( (*arvore)->esq == NULL && (*arvore)->dir == NULL ){
-    free(*arvore);
-    *arvore = NULL;
+  arv *novo;
+  novo = busca(arvore, dado);
+
+  // Se não tiver filhos
+  if( (*novo)->esq == NULL && (*novo)->dir == NULL ){
+    free((*novo));
+    *novo = NULL;
     return 1;
   }
 
-  if( dado < (*arvore)->dado )
-    return remover(&(*arvore)->esq, dado);
-
-  if( dado > (*arvore)->dado )
-    return remover(&(*arvore)->dir, dado);
-
-/*
-  // Se houver filhos apenas a esquerda
-  if( (*elemento)->dir == NULL ){
-    p = (*elemento)->esq;
-    free(*elemento);
-    *elemento = p;
+  // Se não houver filhos à esquerda
+  if( (*novo)->esq == NULL ){
+    p = (*novo)->dir;
+    free((*novo));
+    *novo = p;
     return 1;
   }
 
-  // Se houver filhos apenas a direita
-  if( (*elemento)->esq == NULL ){
-    p = (*elemento)->dir;
-    free(*elemento);
-    *elemento = p;
+  // Se não houver filhos à direita
+  if( (*novo)->dir == NULL ){
+    p = (*novo)->esq;
+    free((*novo));
+    *novo = p;
     return 1;
   }
-*/
 
-  return 0;
+  // Se houver filhos em ambos os nós
+  arv *ultimo;
+  ultimo = &(*novo)->esq;
+  while( (*ultimo)->dir != NULL ){
+    ultimo = &(*ultimo)->dir;
+  }
+
+  printf("No = %d\n", (*ultimo)->dado);
+
+  (*novo)->dado = (*ultimo)->dado;
+  free(*ultimo);
+  (*ultimo) = NULL;
+
+  return 1;
 }
 
 

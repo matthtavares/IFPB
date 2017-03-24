@@ -5,16 +5,17 @@ int main(){
   arv arvore, novo;
   inicializa(&arvore);
 
+  inserir(&arvore, 20);
+  inserir(&arvore, 21);
   inserir(&arvore, 10);
-  inserir(&arvore, 8);
   inserir(&arvore, 11);
+  inserir(&arvore, 6);
 
   exibir(arvore, 0);
 
   printf("\n\n");
 
-  inserir(&arvore, 5);
-  inserir(&arvore, 9);
+  inserir(&arvore, 4);
   exibir(arvore, 0);
 
   printf("\n\n");
@@ -54,7 +55,33 @@ int main(){
 
   // exibir(arvore, 0);
 
-  novo = busca(arvore, 9);
+  inserir(&arvore, 7);
+  inserir(&arvore, 8);
+  exibir(arvore, 0);
+  printf("\n\n");
+
+  /*printf("Removendo 4...\n");
+  if( remover(&arvore, 4) ){
+    exibir(arvore, 0);
+    printf("\n\n");
+  }
+  printf("\n\n");
+
+  printf("Removendo 11...\n");
+  if( remover(&arvore, 11) ){
+    exibir(arvore, 0);
+    printf("\n\n");
+  }*/
+  printf("\n\n");
+
+  /*printf("Removendo 7...\n");
+  if( remover(&arvore, 7) ){
+    exibir(arvore, 0);
+    printf("\n\n");
+  }
+  printf("\n\n");*/
+
+  printf("Removendo 10...\n");
   if( remover(&arvore, 10) ){
     exibir(arvore, 0);
     printf("\n\n");
