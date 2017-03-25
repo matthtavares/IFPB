@@ -188,16 +188,12 @@ void exibir(arv arvore, int desloc){
 
   if( arvore->esq != NULL ){
     replica(' ', desloc);
-    printf("|");
-    replica('-', desloc);
-    printf(" esq: ");
+    printf("esq: ");
     exibir(arvore->esq, desloc + 2);
   }
   if( arvore->dir != NULL ){
     replica(' ', desloc);
-    printf("|");
-    replica('-', desloc);
-    printf(" dir: ");
+    printf("dir: ");
     exibir(arvore->dir, desloc + 2);
   }
 }
