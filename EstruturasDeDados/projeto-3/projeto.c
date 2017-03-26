@@ -93,6 +93,32 @@ int desempilha(pilha *p, char *valor){
 }
 
 /**
+ * Remove todos os itens da pilha.
+ *
+ * @param   pilha   *p
+ *
+ * @return  int     0 = ERROR, 1 = SUCCESS
+ */
+int esvaziarPilha(pilha *p){
+	if( pilhaVazia(*p) )
+		return 0;
+
+	nop *aux;
+	aux = p->inicio;
+
+	while( aux != NULL ){
+		p->inicio = aux->prox;
+		free(aux);
+		aux = p->inicio;
+		p->tam--;
+	}
+
+	free(p);
+
+	return 1;
+}
+
+/**
  * Busca um dado na pilha.
  *
  * @return  int     0 = ERROR, 1 = SUCCESS
@@ -164,11 +190,13 @@ tab* converteInfixaParaArvore(char *expressao, int mostrarExecucao){
 		aux++;
 	}
 
+	imprimePilha(*p);
+
 	while( desempilha(p, aux) ){
-		// Insere na arvore
+		// Insere na árvore
 	}
 
-	free(p);
+	esvaziarPilha(p);
 	return arvore;
 }
 
@@ -196,6 +224,6 @@ char* obterOperandos(char *expressao){
 	}
 	ret[i] = '\0';
 
-	free(p);
+	esvaziarPilha(p);
 	return ret;
 }

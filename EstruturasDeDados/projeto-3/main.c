@@ -25,16 +25,16 @@ int main(){
 	tab arvore;
 
 	gets(infixa);
-	printf("%d\n", strlen(infixa));
-	puts(infixa);
+	/*printf("%d\n", strlen(infixa));
+	puts(infixa);*/
 
-	char *texto = obterOperandos(infixa);
+	/*char *texto = obterOperandos(infixa);
 	printf("Texto = %s\n", texto);
 
 	int valido = expressaoInfixaValida(infixa);
-	printf("Valido = %d\n", valido);
+	printf("Valido = %d\n", valido);*/
 
-	//converteInfixaParaArvore(infixa, 0);
+	converteInfixaParaArvore(infixa, 0);
 
 	return 0;
 }
