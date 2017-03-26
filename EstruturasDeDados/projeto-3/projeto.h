@@ -64,7 +64,7 @@ identificados   na   expressão,   sem   duplicidade.   A   cadeia   de   caract
 alocada
 *   dinamicamente.
 */
-char* obterOperandos( char *expressao);
+char* obterOperandos( char *expressao );
 
 /*
 * Identifica a expressão pos-fixa à partir da árvore binaria. A string é
