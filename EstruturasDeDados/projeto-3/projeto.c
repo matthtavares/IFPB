@@ -19,6 +19,8 @@ typedef struct {
 pilha* criaPilha(){
     pilha *p;
     p = (pilha*)malloc(sizeof(pilha*));
+    p->inicio = NULL;
+    p->tam = 0;
     return p;
 }
 
@@ -85,10 +87,12 @@ int desempilha(pilha *p, char *valor){
 	*valor = aux->dado;
 	p->inicio = aux->prox;
 
-	free(aux);
-
 	p->tam--;
 
+	if( p->tam == 0 )
+		p->inicio = NULL;
+
+	free(aux);
 	return 1;
 }
 
@@ -135,6 +139,21 @@ int buscaPilha(pilha p, char dado){
 }
 
 /**
+ * Retorna o elemento no topo da pilha.
+ *
+ * @param   pilha   *p
+ *
+ * @return  char
+ */
+char pilhaTopo(pilha p){
+	if( pilhaVazia(p) )
+		return 0;
+
+	nop *aux = p.inicio;
+	return aux->dado;
+}
+
+/**
  * Imprime pilha.
  *
  * @param   pilha   p
@@ -159,14 +178,107 @@ tab* criaArvore(){
 	return arv;
 }
 
+int insereArvore(tab *arvore, telem dado){
+
+}
 
 
+/**
+ * A prioridade varia, conforme o símbolo se encontre na entrada ou no topo da pilha, de acordo com a seguinte tabela: 
+ *
+ * +-----------+---------+----------+
+ * |  SIMBOLO  |  PILHA  | ENTRADA  |
+ * +-----------+---------+----------+
+ * |     ^     |    3    |     4    |
+ * +-----------+---------+----------+
+ * |    * /    |    2    |     2    |
+ * +-----------+---------+----------+
+ * |    + -    |    1    |     1    |
+ * +-----------+---------+----------+
+ * |     (     |    0    |     4    |
+ * +-----------+---------+----------+
+ *
+ * Fonte: http://www.vision.ime.usp.br/~pmiranda/mac122_2s14/aulas/aula13/aula13.html
+ */
+int prioridade(char e, char t){
+  int pe, pt;
+ 
+  if(e == '^')
+    pe = 4;
+  else if(e == '*' || e == '/')
+    pe = 2;
+  else if(e == '+' || e == '-')
+    pe = 1;
+  else if(e == '(')
+    pe = 4;
+ 
+  if(t == '^')
+    pt = 3;
+  else if(t == '*' || t == '/')
+    pt = 2;
+  else if(t == '+' || t == '-')
+    pt = 1;
+  else if(t == '(')
+    pt = 0;
+ 
+  return (pe > pt);
+}
+
+void printPosfix(char *expressao){
+	pilha *p;
+	int i = 0;
+	char c, t;
+
+	p = criaPilha();
+
+	while( *expressao != '\0' ) {
+		c = *expressao;
+
+		if( c >= 'A' && c <= 'Z' ){
+			printf("%c", c);
+		}
+		else if( c == '(' ){
+			empilhar(p, c);
+		}
+		else if( c == ')' || c == '\0' ){
+			do {
+				desempilha(p, &t);
+				if( t != '(' )
+					printf("%c", t);
+			} while( t != '(' );
+		}
+		else if( c == '+' || c == '-' || c == '*' || c == '/' || c == '^' ){
+			while( 1 ){
+				desempilha(p, &t);
+				if( prioridade(c, t) ){
+					empilhar(p, t);
+					empilhar(p, c);
+					break;
+				} else {
+					printf("%c", t);
+				}
+			}
+		}
+
+		expressao++;
+	}
+
+	// Esvaziando pilha
+	// *bug* apresentando letra a mais se tamanho >= 1 ou > 0
+	while( pilhaTamanho(*p) > 1 ){
+		desempilha(p, &t);
+		printf("%c", t);
+	}
+
+	printf("\n\n");
+	esvaziarPilha(p);
+}
 
 int expressaoInfixaValida( char *expressao ){
 	char *aux;
 	aux = expressao;
 	while( *aux != '\0' ){
-		if( *aux < 65 && *aux > 90 && *aux != '/' && *aux != '*' && *aux != '+' && *aux != '-' && *aux != '(' && *aux != ')' && *aux != '^' ){
+		if( *aux < 'A' && *aux > 'Z' && *aux != '/' && *aux != '*' && *aux != '+' && *aux != '-' && *aux != '(' && *aux != ')' && *aux != '^' ){
 			return 0;
 		}
 		aux++;
@@ -213,7 +325,7 @@ char* obterOperandos(char *expressao){
 	char *aux;
 	aux = expressao;
 	while( *aux != '\0' ){
-		if( *aux >= 65 && *aux <= 90 ){
+		if( *aux >= 'A' && *aux <= 'Z' ){
 			if( !buscaPilha(*p, *aux) ){
 				empilhar(p, *aux);
 				ret[i] = *aux;

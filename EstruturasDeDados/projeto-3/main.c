@@ -22,19 +22,23 @@ int main(){
 	printf("Tamanho: %d\n", pilhaTamanho(*p));*/
 
 	char infixa[50];
-	tab arvore;
-
 	gets(infixa);
+
+	printPosfix(infixa);
+
+	// tab arvore;
+
+	// gets(infixa);
 	/*printf("%d\n", strlen(infixa));
 	puts(infixa);*/
 
-	/*char *texto = obterOperandos(infixa);
-	printf("Texto = %s\n", texto);
+	// char *texto = obterOperandos(infixa);
+	// printf("Texto = %s\n", texto);
 
-	int valido = expressaoInfixaValida(infixa);
-	printf("Valido = %d\n", valido);*/
+	// int valido = expressaoInfixaValida(infixa);
+	// printf("Valido = %d\n", valido);
 
-	converteInfixaParaArvore(infixa, 0);
+	//converteInfixaParaArvore(infixa, 0);
 
 	return 0;
 }

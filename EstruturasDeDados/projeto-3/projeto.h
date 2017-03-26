@@ -105,3 +105,7 @@ m duplicatas
 *   char *valor = {2.0, 3.0, 4.0}; // A=2.0, B=3.0 e C=4.0
 */
 float executaExpressao( tab *T, char *operandos, float *valor);
+
+
+int prioridade(char e, char t);
+void printPosfix(char *expressao);
