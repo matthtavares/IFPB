@@ -1,111 +1,213 @@
-/* Define que a execução da transformação infixa em pós-
-fixa será apresentada na tela */
+#include <stdlib.h>
+#include <malloc.h>
+
+/* Define que a execu��o da transforma��o infixa em p�s-
+fixa ser� apresentada na tela */
 #define MOSTRAR 1
 
-/* Define que a execução da transformação da
-expressão infixa em pós-fixa não será apresentada na tela */
+/* Define que a execu��o da transforma��o da
+express�o infixa em p�s-fixa n�o ser� apresentada na tela */
 #define NAO_MOSTRAR 0
 
-/* tipo base dos elementos da árvore */
+/* tipo base dos elementos da �rvore */
 typedef char telem;
 
-/* nó da árvore */
+/* n� da �rvore */
 typedef struct no {
   struct no *esq;
   telem info;
   struct no *dir;
 } tno;
 
-/* ponteiro para a raiz da árvore */
+/* ponteiro para a raiz da �rvore */
 typedef tno *tab;
 
-/*
-* Converte uma expressã
-o infixa para posfixa.
-* ARGUMENTOS:
-*   char *expressao – A expressã
-o no formato infixo digitada (string).
-*   int mostrarExecucao –
-Um inteiro que define se o passo-a-passo da
-*                       transformação  da expressão infixa em pós-fixa será
-*                       exibida na tela
-* RETORNO:
-*    Ponteiro para o nó raiz da arvore que representa a expressão
-.
-*    A árvore é
-alocada dinamicamente.
-*/
-tab* converteInfixaParaArvore(char *expressao, int mostrarExecucao);
+void criarArvore(tab *arv){
+    *arv = NULL;
+}
 
-/*
-* Verifica se a expressão infixa passada como argumento é válida ou nã
-o.
-* ARGUMENTOS:
-*    char *expressao – A expressã
-o (string) no formato infixo.
-* RETORNO:
-*    1 – quando a expressão é vá
-lida.
-*    0 – quando a expressão não é vá
-lida
-*/
-int expressaoInfixaValida( char *expressao );
-/*
-* Identifica os operandos existentes na expressão infixa ou pós-fixa. A
-string é
-alocada dinamicamente.
-* ARGUMENTOS:
-*   char *expressao – A expressão no formato infixo ou pó
-s-fixo.
-* RETORNO:
-*     Um apontador para char (string) contendo a lista de operandos
-identificados   na   expressão,   sem   duplicidade.   A   cadeia   de   caracteres
-(strings) é
-alocada
-*   dinamicamente.
-*/
-char* obterOperandos( char *expressao );
+int arvoreVazia(tab arv){
+    return (arv == NULL);
+}
 
-/*
-* Identifica a expressão pos-fixa à partir da árvore binaria. A string é
-alocada dinamicamente.
-* ARGUMENTOS:
-*   tab *T – A arvore binaria que corresponde à expressão
-.
-* RETORNO:
-*   Um apontador para char (string) contendo a expressão no formato pos-
-fixo. A cadeia de caracteres (strings) é
-alocada dinamicamente.
-*/
-char* obterExpressaoPosfixa( tab *T );
+int inserir(tab *arv, telem dado){
+  tno *novo;
+  tno *p = *arv;
 
-/*
-* Executa a expressã
-o posfixada, de acordo com seus respectivos valores.
-* ARGUMENTOS:
-*   char *expressao – A expressão (string) no formato pó
-s-fixo.
-*   char *operandos – A sequê
-ncia de operandos, sob a forma de um string,
-*                     existente na expressão. Nã
-o pode haver operandos
-repetidos.
-*   float *valor –
-Um array de valores do tipo float com os respectivos
-valores de
-*                  cada operando existente em
-char *operandos.
-* RETORNO:
-*   Um float com o resultado da expressã
-o avaliada.
-* EXEMPLO DE USO:
-*   char *expressao = "ABCA*+-";
-*   char *operandos = "ABC";  // Não conté
-m duplicatas
-*   char *valor = {2.0, 3.0, 4.0}; // A=2.0, B=3.0 e C=4.0
-*/
-float executaExpressao( tab *T, char *operandos, float *valor);
+  if( arvoreVazia(*arv) ){
+    if( (novo = (tno*)malloc(sizeof(tno))) == NULL )
+      return 0;
+
+    novo->info = dado;
+    novo->esq = novo->dir = NULL;
+
+    *arv = novo;
+
+    return 1;
+  } else if( dado < p->info ) {
+    return inserir(&p->esq, dado);
+  } else if( dado > p->info ) {
+    return inserir(&p->dir, dado);
+  }
+
+  return 0;
+}
+
+tab* busca(tab *arv, telem dado){
+  if( arvoreVazia(*arv) )
+    return NULL;
+
+  if( (*arv)->info == dado ){
+    return &(*arv);
+  }
+
+  if( dado < (*arv)->info )
+    return busca(&(*arv)->esq, dado);
+  else
+    return busca(&(*arv)->dir, dado);
+}
+
+int remover(tab *arv, telem dado){
+  tab p;
+
+  if( arvoreVazia(*arv) )
+    return 0;
+
+  tab *novo;
+  novo = busca(arv, dado);
+
+  // Se n�o tiver filhos
+  if( (*novo)->esq == NULL && (*novo)->dir == NULL ){
+    free((*novo));
+    *novo = NULL;
+    return 1;
+  }
+
+  // Se n�o houver filhos � esquerda
+  if( (*novo)->esq == NULL ){
+    p = (*novo)->dir;
+    free((*novo));
+    *novo = p;
+    return 1;
+  }
+
+  // Se n�o houver filhos � direita
+  if( (*novo)->dir == NULL ){
+    p = (*novo)->esq;
+    free((*novo));
+    *novo = p;
+    return 1;
+  }
+
+  // Se houver filhos em ambos os n�s
+  tab *ultimo;
+  ultimo = &(*novo)->esq;
+  while( (*ultimo)->dir != NULL ){
+    ultimo = &(*ultimo)->dir;
+  }
+
+  printf("No = %d\n", (*ultimo)->info);
+
+  (*novo)->info = (*ultimo)->info;
+  free(*ultimo);
+  (*ultimo) = NULL;
+
+  return 1;
+}
+
+void esvaziar(tab *arv){
+  if( arvoreVazia(*arv) )
+    return;
+
+  esvaziar(&(*arv)->esq);
+  esvaziar(&(*arv)->dir);
+
+  free(*arv);
+
+  *arv = NULL;
+}
 
 
-int prioridade(char e, char t);
-void printPosfix(char *expressao);
+typedef struct stno {
+    tno *leaf;
+    struct stno *prox;
+} nop;
+
+typedef nop* pilha;
+
+void criarPilha(pilha *p){
+    *p = NULL;
+}
+
+/**
+ * Verifica se a pilha est� vazia.
+ *
+ * @return  int  0 = FALSE, 1 = TRUE
+ */
+int pilhaVazia(pilha p){
+	return (p == NULL);
+}
+
+/**
+ * Verifica o tamanho da pilha.
+ *
+ * @return  int
+ */
+int pilhaTamanho(pilha p){
+	if( pilhaVazia(p) )
+		return 0;
+
+	int i = 0;
+	while( p != NULL ){
+		i++;
+		p = p->prox;
+	}
+
+	return i;
+}
+
+int empilhar(pilha *p, tab *leaf){
+	nop *novo;
+	novo = (nop*)malloc(sizeof(nop*));
+
+	if( novo == NULL )
+		return 0;
+
+	novo->leaf = *leaf;
+	novo->prox = *p;
+	*p = novo;
+
+	return 1;
+}
+
+int desempilha(pilha *p, telem *valor){
+	if( pilhaVazia(*p) )
+		return 0;
+
+	nop *aux;
+	aux = *p;
+	*valor = aux->leaf->info;
+	*p = aux->prox;
+
+	free(aux);
+
+	return 1;
+}
+
+int topo(pilha p, telem *valor){
+	if( pilhaVazia(p) )
+		return 0;
+
+	*valor = (*p).leaf->info;
+
+	return 1;
+}
+
+void imprimePilha(pilha p){
+    nop aux;
+	while( p != NULL ){
+        aux = (*p);
+		printf("%c\n", aux.leaf->info);
+		p = p->prox;
+	}
+}

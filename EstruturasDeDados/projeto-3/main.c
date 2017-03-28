@@ -1,44 +1,26 @@
 #include <stdio.h>
-#include <string.h>
+#include <stdlib.h>
 #include "projeto.h"
 
 int main(){
-	/*pilha *p;
-	p = criaPilha();
-	printf("Tamanho: %d\n", pilhaTamanho(*p));
-	if( pilhaVazia(*p) )
-		printf("Pilha vazia!\n");
+    printf("Hello World!\n");
 
-	empilhar(p, 'a');
-	empilhar(p, 'b');
-	empilhar(p, 'c');
-	imprimePilha(*p);
-	printf("Tamanho: %d\n", pilhaTamanho(*p));
+    telem valor;
 
+    pilha p;
+    criarPilha(&p);
 
-	char valor;
-	desempilha(p, &valor);
-	imprimePilha(*p);
-	printf("Tamanho: %d\n", pilhaTamanho(*p));*/
+    tab arv;
+    tab arv2;
+    criarArvore(&arv);
+    criarArvore(&arv2);
 
-	char infixa[50];
-	gets(infixa);
+    inserir(&arv, 'a');
+    inserir(&arv2, 'b');
 
-	printPosfix(infixa);
+    empilhar(&p, &arv);
+    empilhar(&p, &arv2);
+    imprimePilha(p);
 
-	// tab arvore;
-
-	// gets(infixa);
-	/*printf("%d\n", strlen(infixa));
-	puts(infixa);*/
-
-	// char *texto = obterOperandos(infixa);
-	// printf("Texto = %s\n", texto);
-
-	// int valido = expressaoInfixaValida(infixa);
-	// printf("Valido = %d\n", valido);
-
-	//converteInfixaParaArvore(infixa, 0);
-
-	return 0;
+    return 0;
 }
