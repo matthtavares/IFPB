@@ -127,7 +127,9 @@ void esvaziar(tab *arv){
   *arv = NULL;
 }
 
-
+/**
+ * Estrutura de pilha.
+ */
 typedef struct stno {
     tno *leaf;
     struct stno *prox;
@@ -189,7 +191,6 @@ int desempilhar(pilha *p, telem *valor){
 	*valor = aux->leaf->info;
 	*p = aux->prox;
 
-    free(aux->leaf);
 	free(aux);
 
 	return 1;
@@ -212,10 +213,150 @@ void imprimePilha(pilha p){
 }
 
 void esvaziarPilha(pilha *p){
-    telem *dado;
+    telem dado;
     while( *p != NULL ){
-        desempilhar(p, dado);
+        desempilhar(p, &dado);
     }
     free(p);
     *p = NULL;
+}
+
+/**
+ * Busca um dado na pilha.
+ *
+ * @return  int     0 = ERROR, 1 = SUCCESS
+ */
+int buscaPilha(pilha p, telem dado){
+    tab *aux;
+	while( p != NULL ){
+        aux = p->leaf;
+		if( (*aux)->info == dado ){
+			return 1;
+		}
+		p = p->prox;
+	}
+	return 0;
+}
+
+/**
+ * Funções do projeto.
+ */
+/**
+ * JA FUNCIONA PORRA!
+ */
+/*char* obterOperandos(char *expressao){
+	pilha p;
+	criaPilha(&p);
+
+	char *ret = (char*)malloc(sizeof(char*) * strlen(expressao));
+	int i = 0;
+
+	char *aux;
+	aux = expressao;
+	while( *aux != '\0' ){
+		if( *aux >= 'A' && *aux <= 'Z' ){
+			if( !buscaPilha(*p, *aux) ){
+				empilhar(p, *aux);
+				ret[i] = *aux;
+				i++;
+			}
+		}
+		aux++;
+	}
+	ret[i] = '\0';
+
+	esvaziarPilha(p);
+	return ret;
+}*/
+
+/**
+ * A prioridade varia, conforme o símbolo se encontre na entrada ou no topo da pilha, de acordo com a seguinte tabela:
+ *
+ * +-----------+---------+----------+
+ * |  SIMBOLO  |  PILHA  | ENTRADA  |
+ * +-----------+---------+----------+
+ * |     ^     |    3    |     4    |
+ * +-----------+---------+----------+
+ * |    * /    |    2    |     2    |
+ * +-----------+---------+----------+
+ * |    + -    |    1    |     1    |
+ * +-----------+---------+----------+
+ * |     (     |    0    |     4    |
+ * +-----------+---------+----------+
+ *
+ * Fonte: http://www.vision.ime.usp.br/~pmiranda/mac122_2s14/aulas/aula13/aula13.html
+ */
+int prioridade(char e, char t){
+  int pe, pt;
+
+  if(e == '^')
+    pe = 4;
+  else if(e == '*' || e == '/')
+    pe = 2;
+  else if(e == '+' || e == '-')
+    pe = 1;
+  else if(e == '(')
+    pe = 4;
+
+  if(t == '^')
+    pt = 3;
+  else if(t == '*' || t == '/')
+    pt = 2;
+  else if(t == '+' || t == '-')
+    pt = 1;
+  else if(t == '(')
+    pt = 0;
+
+  return (pe > pt);
+}
+
+tab* converteInfixaParaArvore(char *expressao, int mostrarExecucao){
+	pilha operadores, saida;
+	int i = 0;
+	char c, t;
+
+	criaPilha(&operadores);
+	criaPilha(&saida);
+
+	while( *expressao != '\0' ) {
+		c = *expressao;
+
+		if( c >= 'A' && c <= 'Z' ){
+			empilhar(&saida, c);
+		}
+		else if( c == '(' ){
+			empilhar(&operadores, c);
+		}
+		else if( c == ')' || c == '\0' ){
+			do {
+				desempilhar(&operadores, &t);
+				if( t != '(' )
+					printf("%c", t);
+			} while( t != '(' );
+		}
+		else if( c == '+' || c == '-' || c == '*' || c == '/' || c == '^' ){
+			while( 1 ){
+				desempilha(p, &t);
+				if( prioridade(c, t) ){
+					empilhar(p, t);
+					empilhar(p, c);
+					break;
+				} else {
+					printf("%c", t);
+				}
+			}
+		}
+
+		expressao++;
+	}
+
+	// Esvaziando pilha
+	// *bug* apresentando letra a mais se tamanho >= 1 ou > 0
+	while( pilhaTamanho(*p) > 1 ){
+		desempilha(p, &t);
+		printf("%c", t);
+	}
+
+	printf("\n\n");
+	esvaziarPilha(p);
 }

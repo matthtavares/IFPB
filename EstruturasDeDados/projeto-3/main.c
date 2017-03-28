@@ -5,7 +5,7 @@
 int main(){
     printf("Hello World!\n");
 
-    telem valor;
+    /*telem valor;
 
     pilha p;
     criarPilha(&p);
@@ -23,11 +23,9 @@ int main(){
     imprimePilha(p);
 
     printf("Desempilha...\n");
-    printf("%c\n", arv2->info);
-    desempilhar(&p, &valor);
-    printf("%c\n", arv2->info);
+    //desempilhar(&p, &valor);
     //esvaziarPilha(&p);
-    imprimePilha(p);
+    imprimePilha(p);*/
 
     return 0;
 }
