@@ -22,5 +22,12 @@ int main(){
     empilhar(&p, &arv2);
     imprimePilha(p);
 
+    printf("Desempilha...\n");
+    printf("%c\n", arv2->info);
+    desempilhar(&p, &valor);
+    printf("%c\n", arv2->info);
+    //esvaziarPilha(&p);
+    imprimePilha(p);
+
     return 0;
 }

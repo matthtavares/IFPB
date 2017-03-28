@@ -180,7 +180,7 @@ int empilhar(pilha *p, tab *leaf){
 	return 1;
 }
 
-int desempilha(pilha *p, telem *valor){
+int desempilhar(pilha *p, telem *valor){
 	if( pilhaVazia(*p) )
 		return 0;
 
@@ -189,6 +189,7 @@ int desempilha(pilha *p, telem *valor){
 	*valor = aux->leaf->info;
 	*p = aux->prox;
 
+    free(aux->leaf);
 	free(aux);
 
 	return 1;
@@ -204,10 +205,17 @@ int topo(pilha p, telem *valor){
 }
 
 void imprimePilha(pilha p){
-    nop aux;
 	while( p != NULL ){
-        aux = (*p);
-		printf("%c\n", aux.leaf->info);
+		printf("%c\n", (*p).leaf->info);
 		p = p->prox;
 	}
+}
+
+void esvaziarPilha(pilha *p){
+    telem *dado;
+    while( *p != NULL ){
+        desempilhar(p, dado);
+    }
+    free(p);
+    *p = NULL;
 }
