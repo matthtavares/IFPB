@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "projeto.h"
 
 int main(){
@@ -27,5 +28,17 @@ int main(){
     //esvaziarPilha(&p);
     imprimePilha(p);*/
 
+    char infixa;
+
+    while(1){
+        printf("Digite a expressao: ");
+        gets(&infixa);
+
+        converteInfixaParaArvore(&infixa, MOSTRAR);
+    }
+
+
+
     return 0;
 }
+
