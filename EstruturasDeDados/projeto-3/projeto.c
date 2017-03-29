@@ -326,6 +326,11 @@ tab* converteInfixaParaArvore(char *expressao, int mostrarExecucao){
 			inserir(&novo, c);
 			empilhar(&operadores, &novo);
 		}else if( c == ')' ){
+			/**
+			 * ERROR '(A+B-C)'
+			 * Se a expressão estiver entre parenteses
+			 * com mais de dois operandos.
+			 */
 			do{
 				desempilhar(&operadores, &opr);
 				if( opr->info != '(' ){
@@ -371,6 +376,10 @@ tab* converteInfixaParaArvore(char *expressao, int mostrarExecucao){
 		expressao++;
 	}
 
+	while( desempilhar(&operadores, &desempilha) ){
+		empilhar(&saida, &desempilha);
+	}
+
 	printf("Saida:\n");
 	imprimePilha(saida);
 	printf("Operadores:\n");
@@ -378,8 +387,8 @@ tab* converteInfixaParaArvore(char *expressao, int mostrarExecucao){
 	printf("\n\n");
 
 
-	/*if( pilhaTamanho(saida) > 1 ){
-		while( desempilhar(&operadores, &desempilha) ){
+	if( pilhaTamanho(saida) > 1 ){
+		while( desempilhar(&saida, &desempilha) ){
 			inserir(&arv, desempilha->info);
 
 			desempilhar(&saida, &desempilha);
@@ -393,7 +402,7 @@ tab* converteInfixaParaArvore(char *expressao, int mostrarExecucao){
 	}
 	printf("Pos-ordem: ");
 	posOrdem(arv);
-	printf("\n\n");*/
+	printf("\n\n");
 
 	return NULL;
 }
