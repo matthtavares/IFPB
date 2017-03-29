@@ -32,7 +32,7 @@ int main(){
 
     while(1){
         printf("Digite a expressao: ");
-        gets(&infixa);
+        scanf("%s", &infixa);
 
         converteInfixaParaArvore(&infixa, MOSTRAR);
     }
@@ -41,4 +41,3 @@ int main(){
 
     return 0;
 }
-

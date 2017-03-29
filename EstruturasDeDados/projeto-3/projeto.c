@@ -58,14 +58,14 @@ int remover(tab *arv, telem dado){
   tab *novo;
   novo = busca(arv, dado);
 
-  // Se não tiver filhos
+  // Se nï¿½o tiver filhos
   if( (*novo)->esq == NULL && (*novo)->dir == NULL ){
     free((*novo));
     *novo = NULL;
     return 1;
   }
 
-  // Se não houver filhos à esquerda
+  // Se nï¿½o houver filhos ï¿½ esquerda
   if( (*novo)->esq == NULL ){
     p = (*novo)->dir;
     free((*novo));
@@ -73,7 +73,7 @@ int remover(tab *arv, telem dado){
     return 1;
   }
 
-  // Se não houver filhos à direita
+  // Se nï¿½o houver filhos ï¿½ direita
   if( (*novo)->dir == NULL ){
     p = (*novo)->esq;
     free((*novo));
@@ -81,7 +81,7 @@ int remover(tab *arv, telem dado){
     return 1;
   }
 
-  // Se houver filhos em ambos os nós
+  // Se houver filhos em ambos os nï¿½s
   tab *ultimo;
   ultimo = &(*novo)->esq;
   while( (*ultimo)->dir != NULL ){
@@ -137,7 +137,7 @@ void criarPilha(pilha *p){
 }
 
 /**
- * Verifica se a pilha está vazia.
+ * Verifica se a pilha estï¿½ vazia.
  *
  * @return  int  0 = FALSE, 1 = TRUE
  */
@@ -241,7 +241,7 @@ int buscaPilha(pilha p, telem dado){
 }
 
 /**
- * Funções do projeto.
+ * Funï¿½ï¿½es do projeto.
  */
 /**
  * JA FUNCIONA PORRA!
@@ -272,7 +272,7 @@ int buscaPilha(pilha p, telem dado){
 }*/
 
 /**
- * A prioridade varia, conforme o símbolo se encontre na entrada ou no topo da pilha, de acordo com a seguinte tabela:
+ * A prioridade varia, conforme o sï¿½mbolo se encontre na entrada ou no topo da pilha, de acordo com a seguinte tabela:
  *
  * +-----------+---------+----------+
  * |  SIMBOLO  |  PILHA  | ENTRADA  |
@@ -326,28 +326,12 @@ tab* converteInfixaParaArvore(char *expressao, int mostrarExecucao){
 			inserir(&novo, c);
 			empilhar(&operadores, &novo);
 		}else if( c == ')' ){
-			/**
-			 * ERROR '(A+B-C)'
-			 * Se a expressão estiver entre parenteses
-			 * com mais de dois operandos.
-			 */
 			do{
 				desempilhar(&operadores, &opr);
 				if( opr->info != '(' ){
-
-					inserir(&aux, opr->info);
-					desempilhar(&saida, &desempilha);
-					aux->dir = desempilha;
-					desempilhar(&saida, &desempilha);
-					aux->esq = desempilha;
-
-					empilhar(&saida, &aux);
-					// topo(operadores, &opr);
-					// printf("Topo = %c\n", desempilha->info);
-
-					/*desempilhar(&operadores, &desempilha);
-					empilhar(&saida, &desempilha);
-					topo(operadores, &desempilha);*/
+					desempilhar(&saida, &opr->dir);
+					desempilhar(&saida, &opr->esq);
+					empilhar(&saida, &opr);
 				}
 			}while( opr->info != '(' );
 		}else if( c == '+' || c == '-' || c == '*' || c == '/' || c == '^' ){
