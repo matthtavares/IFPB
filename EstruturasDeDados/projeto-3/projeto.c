@@ -207,13 +207,6 @@ void imprimePilha(pilha p){
 	}
 }
 
-void imprimePilhaLinha(pilha p){
-	while( p != NULL ){
-		printf("%c", (*p).leaf->info);
-		p = p->prox;
-	}
-}
-
 void esvaziarPilha(pilha *p){
     tab arv;
     while( *p != NULL ){
@@ -241,11 +234,9 @@ int buscaPilha(pilha p, telem dado){
 }
 
 /**
- * Fun��es do projeto.
+ * Funcoes do projeto.
  */
-/**
- * JA FUNCIONA PORRA!
- */
+
 /*char* obterOperandos(char *expressao){
 	pilha p;
 	criaPilha(&p);
@@ -271,23 +262,6 @@ int buscaPilha(pilha p, telem dado){
 	return ret;
 }*/
 
-/**
- * A prioridade varia, conforme o s�mbolo se encontre na entrada ou no topo da pilha, de acordo com a seguinte tabela:
- *
- * +-----------+---------+----------+
- * |  SIMBOLO  |  PILHA  | ENTRADA  |
- * +-----------+---------+----------+
- * |     ^     |    3    |     4    |
- * +-----------+---------+----------+
- * |    * /    |    2    |     2    |
- * +-----------+---------+----------+
- * |    + -    |    1    |     1    |
- * +-----------+---------+----------+
- * |     (     |    0    |     4    |
- * +-----------+---------+----------+
- *
- * Fonte: http://www.vision.ime.usp.br/~pmiranda/mac122_2s14/aulas/aula13/aula13.html
- */
 int prioridade(char e){
 	switch( e ){
 		case '(':
@@ -305,12 +279,9 @@ int prioridade(char e){
 
 tab* converteInfixaParaArvore(char *expressao, int mostrarExecucao){
 	pilha operadores, saida;
-	tab desempilha, opr, novo, aux, arv;
-	char c, t;
+	tab desempilha, opr, novo, *arv;
+	char c;
 	int priori;
-
-	criarArvore(&aux);
-	criarArvore(&arv);
 
 	criarPilha(&operadores);
 	criarPilha(&saida);
@@ -357,20 +328,18 @@ tab* converteInfixaParaArvore(char *expressao, int mostrarExecucao){
 		expressao++;
 	}
 
+	// Esvazia pilha de operadores para saida
 	while( desempilhar(&operadores, &desempilha) ){
 		desempilhar(&saida, &desempilha->dir);
 		desempilhar(&saida, &desempilha->esq);
 		empilhar(&saida, &desempilha);
 	}
 
-	printf("Saida:\n");
-	imprimePilha(saida);
+	// Aloca a arvore
+	arv = (tab*)malloc(sizeof(tab*));
 
-	desempilhar(&saida, &arv);
+	// Desempilha a saida para a arvore
+	desempilhar(&saida, arv);
 
-	printf("Pos-ordem: ");
-	posOrdem(arv);
-	printf("\n\n");
-
-	return NULL;
+	return arv;
 }

@@ -27,3 +27,5 @@ typedef tno *tab;
  */
 /*char* obterOperandos(char *expressao);*/
 tab* converteInfixaParaArvore(char *expressao, int mostrarExecucao);
+
+void posOrdem(tab arv);
