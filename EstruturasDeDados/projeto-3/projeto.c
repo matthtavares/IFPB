@@ -341,13 +341,10 @@ tab* converteInfixaParaArvore(char *expressao, int mostrarExecucao){
 				if( !pilhaVazia(operadores) && prioridade(desempilha->info) >= priori ){
 					desempilhar(&operadores, &desempilha);
 
-					inserir(&aux, desempilha->info);
-					desempilhar(&saida, &desempilha);
-					aux->dir = desempilha;
-					desempilhar(&saida, &desempilha);
-					aux->esq = desempilha;
+					desempilhar(&saida, &desempilha->dir);
+					desempilhar(&saida, &desempilha->esq);
+					empilhar(&saida, &desempilha);
 
-					empilhar(&saida, &aux);
 					topo(operadores, &desempilha);
 				} else {
 					criarArvore(&novo);
@@ -361,29 +358,16 @@ tab* converteInfixaParaArvore(char *expressao, int mostrarExecucao){
 	}
 
 	while( desempilhar(&operadores, &desempilha) ){
+		desempilhar(&saida, &desempilha->dir);
+		desempilhar(&saida, &desempilha->esq);
 		empilhar(&saida, &desempilha);
 	}
 
 	printf("Saida:\n");
 	imprimePilha(saida);
-	printf("Operadores:\n");
-	imprimePilha(operadores);
-	printf("\n\n");
 
+	desempilhar(&saida, &arv);
 
-	if( pilhaTamanho(saida) > 1 ){
-		while( desempilhar(&saida, &desempilha) ){
-			inserir(&arv, desempilha->info);
-
-			desempilhar(&saida, &desempilha);
-			arv->dir = desempilha;
-			desempilhar(&saida, &desempilha);
-			arv->esq = desempilha;
-		}
-	} else {
-		desempilhar(&saida, &desempilha);
-		arv = desempilha;
-	}
 	printf("Pos-ordem: ");
 	posOrdem(arv);
 	printf("\n\n");
