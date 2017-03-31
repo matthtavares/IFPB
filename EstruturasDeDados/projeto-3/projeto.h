@@ -1,31 +1,32 @@
 #include <stdlib.h>
 #include <malloc.h>
 
-/* Define que a execução da transformação infixa em pós-
-fixa será apresentada na tela */
+/* Define que a execuï¿½ï¿½o da transformaï¿½ï¿½o infixa em pï¿½s-
+fixa serï¿½ apresentada na tela */
 #define MOSTRAR 1
 
-/* Define que a execução da transformação da
-expressão infixa em pós-fixa não será apresentada na tela */
+/* Define que a execuï¿½ï¿½o da transformaï¿½ï¿½o da
+expressï¿½o infixa em pï¿½s-fixa nï¿½o serï¿½ apresentada na tela */
 #define NAO_MOSTRAR 0
 
-/* tipo base dos elementos da árvore */
+/* tipo base dos elementos da ï¿½rvore */
 typedef char telem;
 
-/* nó da árvore */
+/* nï¿½ da ï¿½rvore */
 typedef struct no {
   struct no *esq;
   telem info;
   struct no *dir;
 } tno;
 
-/* ponteiro para a raiz da árvore */
+/* ponteiro para a raiz da ï¿½rvore */
 typedef tno *tab;
 
 /**
- * Funções do projeto.
+ * Funï¿½ï¿½es do projeto.
  */
-/*char* obterOperandos(char *expressao);*/
+char* obterOperandos(char *expressao);
+char* obterExpressaoPosfixa(tab *T);
 tab* converteInfixaParaArvore(char *expressao, int mostrarExecucao);
 
 void posOrdem(tab arv);

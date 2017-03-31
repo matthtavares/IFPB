@@ -207,12 +207,22 @@ void imprimePilha(pilha p){
 	}
 }
 
+/**
+ * *bug* Não funciona!
+ */
 void esvaziarPilha(pilha *p){
     tab arv;
-    while( *p != NULL ){
-        desempilhar(p, &arv);
-    }
-    free(p);
+    pilha *aux;
+
+    do{
+        aux = &(*p)->prox;
+        if( aux != NULL ){
+          desempilhar(p, &arv);
+          //free(arv);
+        }
+    }while( aux != NULL );
+
+    //free(p);
     *p = NULL;
 }
 
@@ -221,25 +231,26 @@ void esvaziarPilha(pilha *p){
  *
  * @return  int     0 = ERROR, 1 = SUCCESS
  */
-int buscaPilha(pilha p, telem dado){
-    tab aux;
-	while( p != NULL ){
-        aux = p->leaf;
-		if( (*aux).info == dado ){
-			return 1;
-		}
-		p = p->prox;
-	}
-	return 0;
-}
+ int buscaPilha(pilha p, telem dado){
+     tab aux;
+ 	while( p != NULL ){
+         aux = p->leaf;
+ 		if( (*aux).info == dado ){
+ 			return 1;
+ 		}
+ 		p = p->prox;
+ 	}
+ 	return 0;
+ }
 
 /**
  * Funcoes do projeto.
  */
 
-/*char* obterOperandos(char *expressao){
+char* obterOperandos(char *expressao){
 	pilha p;
-	criaPilha(&p);
+  tab arv;
+	criarPilha(&p);
 
 	char *ret = (char*)malloc(sizeof(char*) * strlen(expressao));
 	int i = 0;
@@ -248,19 +259,44 @@ int buscaPilha(pilha p, telem dado){
 	aux = expressao;
 	while( *aux != '\0' ){
 		if( *aux >= 'A' && *aux <= 'Z' ){
-			if( !buscaPilha(*p, *aux) ){
-				empilhar(p, *aux);
-				ret[i] = *aux;
-				i++;
+			if( !buscaPilha(p, *aux) ){
+        criarArvore(&arv);
+        inserir(&arv, *aux);
+
+				empilhar(&p, &arv);
+				ret[i++] = *aux;
 			}
 		}
 		aux++;
 	}
 	ret[i] = '\0';
 
-	esvaziarPilha(p);
+	//esvaziarPilha(&p);
 	return ret;
-}*/
+}
+
+/**
+ * Em desenvolvimento
+ */
+char* obterExpressaoPosfixa(tab *T){
+  if( arvoreVazia(*T) )
+    return NULL;
+
+  char *ret = (char*)malloc(sizeof(char*));
+  strcpy(ret, "");
+
+  if( (*T)->esq != NULL )
+    strcat(ret, obterExpressaoPosfixa(&(*T)->esq));
+
+  if( (*T)->dir != NULL )
+    strcat(ret, obterExpressaoPosfixa(&(*T)->dir));
+
+  strcat(ret, &(*T)->info);
+  //ret++;
+  ret = '\0';
+
+  return ret;
+}
 
 int prioridade(char e){
 	switch( e ){
