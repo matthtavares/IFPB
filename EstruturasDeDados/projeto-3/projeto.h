@@ -25,6 +25,8 @@ typedef tno *tab;
 /**
  * Funções do projeto.
  */
+int expressaoInfixaValida(char *expressao);
 char* obterOperandos(char *expressao);
 char* obterExpressaoPosfixa(tab *T);
 tab* converteInfixaParaArvore(char *expressao, int mostrarExecucao);
+float executaExpressao(tab *T, char *operandos, float *valor);

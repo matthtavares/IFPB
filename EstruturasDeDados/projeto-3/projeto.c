@@ -225,7 +225,7 @@ void esvaziarPilha(pilha *p){
 
 char* obterOperandos(char *expressao){
 	pilha p;
-  tab arv;
+	tab arv;
 	criarPilha(&p);
 
 	char *ret = (char*)malloc(sizeof(char*) * strlen(expressao));
@@ -236,8 +236,8 @@ char* obterOperandos(char *expressao){
 	while( *aux != '\0' ){
 		if( *aux >= 'A' && *aux <= 'Z' ){
 			if( !buscaPilha(p, *aux) ){
-        criarArvore(&arv);
-        inserir(&arv, *aux);
+        		criarArvore(&arv);
+        		inserir(&arv, *aux);
 
 				empilhar(&p, &arv);
 				ret[i++] = *aux;
@@ -252,21 +252,27 @@ char* obterOperandos(char *expressao){
 }
 
 char* obterExpressaoPosfixa(tab *T){
-  if( arvoreVazia(*T) )
-    return NULL;
+	if( arvoreVazia(*T) )
+		return NULL;
 
-  char *ret = (char*)malloc(sizeof(char*));
-  strcpy(ret, "");
+	char *ret = (char*)malloc(sizeof(char*));
+	char *cat = (char*)malloc(sizeof(char*));
+	strcpy(ret, "");
 
-  if( (*T)->esq != NULL )
-    strcat(ret, obterExpressaoPosfixa(&(*T)->esq));
+	if( (*T)->esq != NULL ){
+		sprintf(cat, "%s", obterExpressaoPosfixa(&(*T)->esq));
+		strcat(ret, cat);
+	}
 
-  if( (*T)->dir != NULL )
-    strcat(ret, obterExpressaoPosfixa(&(*T)->dir));
+	if( (*T)->dir != NULL ){
+		sprintf(cat, "%s", obterExpressaoPosfixa(&(*T)->dir));
+		strcat(ret, cat);
+	}
 
-  strcat(ret, &(*T)->info);
+	sprintf(cat, "%c", (*T)->info);
+	strcat(ret, cat);
 
-  return ret;
+	return ret;
 }
 
 int prioridade(char e){
@@ -349,4 +355,8 @@ tab* converteInfixaParaArvore(char *expressao, int mostrarExecucao){
 	desempilhar(&saida, arv);
 
 	return arv;
+}
+
+float executaExpressao(tab *T, char *operandos, float *valor){
+	return 87985953.148975689;
 }

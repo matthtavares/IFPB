@@ -4,10 +4,11 @@
 #include "projeto.h"
 
 int main(){
-    printf("Hello World!\n");
+    //system("clear");
 
     char infixa, *operandos, *posfixa;
     tab *arv;
+    float valores[5], total;
 
     while(1){
         printf("Digite a expressao: ");
@@ -20,7 +21,10 @@ int main(){
         operandos = obterOperandos(&infixa);
         printf("Operandos: %s\n", operandos);
 
-        printf("\n\n");
+        total = executaExpressao(arv, operandos, valores);
+        printf("Total = %.2f\n", total);
+
+        printf("\n-------------\n\n");
     }
 
     return 0;
