@@ -18,7 +18,8 @@ int main(){
         printf("Pos-ordem: %s\n", posfixa);
 
         operandos = obterOperandos(&infixa);
-        printf("Operandos: %s", operandos);
+        printf("Operandos: %s\n", operandos);
+
         printf("\n\n");
     }
 

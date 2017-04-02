@@ -58,14 +58,14 @@ int remover(tab *arv, telem dado){
   tab *novo;
   novo = busca(arv, dado);
 
-  // Se n�o tiver filhos
+  // Se não tiver filhos
   if( (*novo)->esq == NULL && (*novo)->dir == NULL ){
     free((*novo));
     *novo = NULL;
     return 1;
   }
 
-  // Se n�o houver filhos � esquerda
+  // Se não houver filhos à esquerda
   if( (*novo)->esq == NULL ){
     p = (*novo)->dir;
     free((*novo));
@@ -73,7 +73,7 @@ int remover(tab *arv, telem dado){
     return 1;
   }
 
-  // Se n�o houver filhos � direita
+  // Se não houver filhos à direita
   if( (*novo)->dir == NULL ){
     p = (*novo)->esq;
     free((*novo));
@@ -81,7 +81,7 @@ int remover(tab *arv, telem dado){
     return 1;
   }
 
-  // Se houver filhos em ambos os n�s
+  // Se houver filhos em ambos os nós
   tab *ultimo;
   ultimo = &(*novo)->esq;
   while( (*ultimo)->dir != NULL ){
@@ -109,19 +109,6 @@ void esvaziar(tab *arv){
   *arv = NULL;
 }
 
-void posOrdem(tab arv){
-  if( arvoreVazia(arv) )
-    return;
-
-  if( arv->esq != NULL )
-    posOrdem(arv->esq);
-
-  if( arv->dir != NULL )
-    posOrdem(arv->dir);
-
-  printf("%c", arv->info);
-}
-
 /**
  * Estrutura de pilha.
  */
@@ -137,7 +124,7 @@ void criarPilha(pilha *p){
 }
 
 /**
- * Verifica se a pilha est� vazia.
+ * Verifica se a pilha está vazia.
  *
  * @return  int  0 = FALSE, 1 = TRUE
  */
@@ -207,22 +194,11 @@ void imprimePilha(pilha p){
 	}
 }
 
-/**
- * *bug* Não funciona!
- */
 void esvaziarPilha(pilha *p){
     tab arv;
-    pilha *aux;
-
-    do{
-        aux = &(*p)->prox;
-        if( aux != NULL ){
-          desempilhar(p, &arv);
-          //free(arv);
-        }
-    }while( aux != NULL );
-
-    //free(p);
+    while( *p != NULL ){
+        desempilhar(p, &arv);
+    }
     *p = NULL;
 }
 
@@ -244,7 +220,7 @@ void esvaziarPilha(pilha *p){
  }
 
 /**
- * Funcoes do projeto.
+ * FUNÇÕES DO PROJETO!
  */
 
 char* obterOperandos(char *expressao){
@@ -271,13 +247,10 @@ char* obterOperandos(char *expressao){
 	}
 	ret[i] = '\0';
 
-	//esvaziarPilha(&p);
+	esvaziarPilha(&p);
 	return ret;
 }
 
-/**
- * Em desenvolvimento
- */
 char* obterExpressaoPosfixa(tab *T){
   if( arvoreVazia(*T) )
     return NULL;
@@ -292,8 +265,6 @@ char* obterExpressaoPosfixa(tab *T){
     strcat(ret, obterExpressaoPosfixa(&(*T)->dir));
 
   strcat(ret, &(*T)->info);
-  //ret++;
-  ret = '\0';
 
   return ret;
 }
