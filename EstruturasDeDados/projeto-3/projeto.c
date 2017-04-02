@@ -36,17 +36,21 @@ int inserir(tab *arv, telem dado){
 }
 
 tab* busca(tab *arv, telem dado){
-  if( arvoreVazia(*arv) )
-    return NULL;
+	tab *value;
 
-  if( (*arv)->info == dado ){
-    return &(*arv);
-  }
+	if( arvoreVazia(*arv) )
+		return NULL;
 
-  if( dado < (*arv)->info )
-    return busca(&(*arv)->esq, dado);
-  else
-    return busca(&(*arv)->dir, dado);
+	if( (*arv)->info == dado ){
+		value = &(*arv);
+	}
+
+	if( value == NULL && (*arv)->esq != NULL  )
+		value = busca(&(*arv)->esq, dado);
+	else if( value == NULL && (*arv)->dir != NULL )
+		value = busca(&(*arv)->dir, dado);
+
+	return value;
 }
 
 int remover(tab *arv, telem dado){
