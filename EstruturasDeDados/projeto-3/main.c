@@ -6,6 +6,7 @@
 int main(){
     //system("clear");
 
+    int valida;
     char infixa, *operandos, *posfixa;
     tab *arv;
     float valores[5] = {10}, total;
@@ -16,6 +17,9 @@ int main(){
         printf("Digite a expressao: ");
         scanf("%s", &infixa);
 
+        valida = expressaoInfixaValida(&infixa);
+        printf("Eh valida = %d\n", valida);
+
         arv = converteInfixaParaArvore(&infixa, MOSTRAR);
         posfixa = obterExpressaoPosfixa(arv);
         printf("Pos-ordem: %s\n", posfixa);
@@ -25,6 +29,9 @@ int main(){
 
         total = executaExpressao(arv, operandos, valores);
         printf("Total = %.2f\n", total);
+
+        posfixa = obterExpressaoPosfixa(arv);
+        printf("Pos-ordem: %s\n", posfixa);
 
         printf("\n\n");
     // }

@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <malloc.h>
 #include <string.h>
+#include <ctype.h>
 #include "projeto.h"
 
 void criarArvore(tab *arv){
@@ -36,21 +37,21 @@ int inserir(tab *arv, telem dado){
 }
 
 tab* busca(tab *arv, telem dado){
-	tab *value;
+	tab *value = NULL;
 
 	if( arvoreVazia(*arv) )
 		return NULL;
 
-	if( (*arv)->info == dado ){
-		value = &(*arv);
+	if( dado == (*arv)->info ){
+		return arv;
 	}
 
-	if( value == NULL && (*arv)->esq != NULL  )
+	if( (*arv)->esq != NULL )
 		value = busca(&(*arv)->esq, dado);
 	else if( value == NULL && (*arv)->dir != NULL )
 		value = busca(&(*arv)->dir, dado);
 
-	return value;
+  return value;
 }
 
 int remover(tab *arv, telem dado){
@@ -227,6 +228,36 @@ void esvaziarPilha(pilha *p){
  * FUNÇÕES DO PROJETO!
  */
 
+/**
+ * Converte string para letras maisculas.
+ * http://stackoverflow.com/a/26328095
+ */
+char* strupr(char *s){
+   char* tmp = s;
+
+   for (;*tmp;++tmp) {
+       *tmp = toupper((unsigned char) *tmp);
+   }
+
+   return s;
+}
+
+int expressaoInfixaValida(char *expressao){
+  char *aux = expressao;
+
+  // Converte para maisculas
+  strupr(expressao);
+
+  while( *aux != '\0' ){
+    if( !isdigit(*aux) || !isupper(*aux) || *aux != '+' || *aux != '-' || *aux != '*' || *aux != '/' || *aux != '^' )
+      return 0;
+
+    aux++;
+  }
+
+  return 1;
+}
+
 char* obterOperandos(char *expressao){
 	pilha p;
 	tab arv;
@@ -362,5 +393,14 @@ tab* converteInfixaParaArvore(char *expressao, int mostrarExecucao){
 }
 
 float executaExpressao(tab *T, char *operandos, float *valor){
+  tab *arv;
+
+  while( (arv = busca(T, 'A')) != NULL ){
+    (*arv)->info = 'C';
+  }
+
+  // int total = atoi('10') - atoi('9');
+  // printf("%d\n", total);
+
 	return 87985953.148975689;
 }
