@@ -1,6 +1,3 @@
-#include <stdlib.h>
-#include <malloc.h>
-
 /* Define que a execução da transformação infixa em pós-
 fixa será apresentada na tela */
 #define MOSTRAR 1

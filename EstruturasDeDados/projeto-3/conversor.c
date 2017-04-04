@@ -3,7 +3,8 @@
 #include <malloc.h>
 #include <string.h>
 #include <ctype.h>
-#include "projeto.h"
+#include <math.h>
+#include "conversor.h"
 
 void criarArvore(tab *arv){
     *arv = NULL;
@@ -92,8 +93,6 @@ int remover(tab *arv, telem dado){
   while( (*ultimo)->dir != NULL ){
     ultimo = &(*ultimo)->dir;
   }
-
-  printf("No = %d\n", (*ultimo)->info);
 
   (*novo)->info = (*ultimo)->info;
   free(*ultimo);
@@ -212,17 +211,110 @@ void esvaziarPilha(pilha *p){
  *
  * @return  int     0 = ERROR, 1 = SUCCESS
  */
- int buscaPilha(pilha p, telem dado){
-     tab aux;
+int buscaPilha(pilha p, telem dado){
+    tab aux;
  	while( p != NULL ){
-         aux = p->leaf;
+        aux = p->leaf;
  		if( (*aux).info == dado ){
  			return 1;
  		}
  		p = p->prox;
  	}
  	return 0;
- }
+}
+
+/**
+ * Estrutura de pilha de valores.
+ */
+typedef struct stnopv {
+    float dado;
+    struct stnopv *prox;
+} nopv;
+
+typedef nopv* vpilha;
+
+void criarIPilha(vpilha *p){
+    *p = NULL;
+}
+
+/**
+ * Verifica se a pilha está vazia.
+ *
+ * @return  int  0 = FALSE, 1 = TRUE
+ */
+int vpilhaVazia(vpilha p){
+	return (p == NULL);
+}
+
+/**
+ * Verifica o tamanho da pilha.
+ *
+ * @return  int
+ */
+int vpilhaTamanho(vpilha p){
+	if( vpilhaVazia(p) )
+		return 0;
+
+	int i = 0;
+	while( p != NULL ){
+		i++;
+		p = p->prox;
+	}
+
+	return i;
+}
+
+int empilharV(vpilha *p, float dado){
+	nopv *novo;
+	novo = (nopv*)malloc(sizeof(nopv*));
+
+	if( novo == NULL )
+		return 0;
+
+	novo->dado = dado;
+	novo->prox = *p;
+	*p = novo;
+
+	return 1;
+}
+
+int desempilharV(vpilha *p, float *dado){
+	if( vpilhaVazia(*p) )
+		return 0;
+
+	nopv *aux;
+	aux = *p;
+	*dado = aux->dado;
+	*p = aux->prox;
+
+	free(aux);
+
+	return 1;
+}
+
+int topoPilhaV(vpilha p, float *dado){
+	if( vpilhaVazia(p) )
+		return 0;
+
+	*dado = (*p).dado;
+
+	return 1;
+}
+
+void imprimeVPilha(vpilha p){
+	while( p != NULL ){
+		printf("- %f\n", (*p).dado);
+		p = p->prox;
+	}
+}
+
+void esvaziarVPilha(vpilha *p){
+    float dado;
+    while( *p != NULL ){
+        desempilharV(p, &dado);
+    }
+    *p = NULL;
+}
 
 /**
  * FUNÇÕES DO PROJETO!
@@ -240,6 +332,38 @@ char* strupr(char *s){
    }
 
    return s;
+}
+
+int prioridade(char e){
+	switch( e ){
+		case '(':
+			return 1;
+		case '+':
+		case '-':
+			return 2;
+		case '*':
+		case '/':
+			return 3;
+		case '^':
+			return 4;
+	}
+}
+
+/**
+ * Retorna o valor de um operando.
+ *
+ * @param  char   operando    Operando desejado.
+ * @param  char   *operandos  Endereço do vetor com os operandos válidos.
+ * @param  float  *valores    Endereço do vetor de valores.
+ *
+ * @return float
+ */
+float getOprValue(char operando, char *operandos, float *valores){
+	int i = 0;
+	for(i = 0; operandos[i] != '\0'; i++){
+		if( operandos[i] == operando )
+			return valores[i];
+	}
 }
 
 int expressaoInfixaValida(char *expressao){
@@ -307,22 +431,9 @@ char* obterExpressaoPosfixa(tab *T){
 	sprintf(cat, "%c", (*T)->info);
 	strcat(ret, cat);
 
-	return ret;
-}
+	free(cat);
 
-int prioridade(char e){
-	switch( e ){
-		case '(':
-			return 1;
-		case '+':
-		case '-':
-			return 2;
-		case '*':
-		case '/':
-			return 3;
-		case '^':
-			return 4;
-	}
+	return ret;
 }
 
 tab* converteInfixaParaArvore(char *expressao, int mostrarExecucao){
@@ -392,15 +503,51 @@ tab* converteInfixaParaArvore(char *expressao, int mostrarExecucao){
 	return arv;
 }
 
-float executaExpressao(tab *T, char *operandos, float *valor){
-  tab *arv;
+float executaExpressao(tab *T, char *operandos, float *valores){
+	tab arv;
+	vpilha resultados;
+	char *posfixa;
+	float x, y, valor;
 
-  while( (arv = busca(T, 'A')) != NULL ){
-    (*arv)->info = 'C';
-  }
+	criarIPilha(&resultados);
 
-  // int total = atoi('10') - atoi('9');
-  // printf("%d\n", total);
+	posfixa = obterExpressaoPosfixa(T);
 
-	return 87985953.148975689;
+	while( *posfixa != '\0' ){
+		if( *posfixa >= 'A' && *posfixa <= 'Z' ){
+			valor = getOprValue(*posfixa, operandos, valores);
+			empilharV(&resultados, valor);
+		}
+		else if( *posfixa == '+' || *posfixa == '-' || *posfixa == '*' || *posfixa == '/' || *posfixa == '^' ){
+			desempilharV(&resultados, &y);
+			desempilharV(&resultados, &x);
+			switch(*posfixa){
+				case '+': {
+					empilharV(&resultados, (x+y));
+					break;
+				}
+				case '-': {
+					empilharV(&resultados, (x-y));
+					break;
+				}
+				case '*': {
+					empilharV(&resultados, (x*y));
+					break;
+				}
+				case '/': {
+					empilharV(&resultados, (x/y));
+					break;
+				}
+				case '^': {
+					empilharV(&resultados, pow(x,y));
+					break;
+				}
+			}
+		}
+		posfixa++;
+	}
+
+	desempilharV(&resultados, &valor);
+
+	return valor;
 }

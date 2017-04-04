@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "projeto.h"
+#include "conversor.h"
 
 int main(){
     //system("clear");
@@ -9,7 +9,7 @@ int main(){
     int valida;
     char infixa, *operandos, *posfixa;
     tab *arv;
-    float valores[5] = {10}, total;
+    float valores[3] = {5,10,6}, total;
 
     // while(1){
         printf("\n\n");
@@ -29,9 +29,6 @@ int main(){
 
         total = executaExpressao(arv, operandos, valores);
         printf("Total = %.2f\n", total);
-
-        posfixa = obterExpressaoPosfixa(arv);
-        printf("Pos-ordem: %s\n", posfixa);
 
         printf("\n\n");
     // }
