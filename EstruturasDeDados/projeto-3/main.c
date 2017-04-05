@@ -9,7 +9,7 @@ int main(){
     int valida;
     char infixa, *operandos, *posfixa;
     tab *arv;
-    float valores[3] = {5,10,6}, total;
+    float valores[3] = {5,/*10,*/6}, total;
 
     // while(1){
         printf("\n\n");

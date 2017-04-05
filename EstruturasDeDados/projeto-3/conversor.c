@@ -334,6 +334,13 @@ char* strupr(char *s){
    return s;
 }
 
+/**
+ * Verifica a prioridade de um operando.
+ *
+ * @param  char  e  Operando informado
+ *
+ * @return  float  Valor total do calculo
+ */
 int prioridade(char e){
 	switch( e ){
 		case '(':
@@ -366,6 +373,13 @@ float getOprValue(char operando, char *operandos, float *valores){
 	}
 }
 
+/**
+ * Verifica se a expressao informada eh valida.
+ *
+ * @param  char   *expressao  String contendo a expressao informada
+ *
+ * @return  int  1 = Valida, 0 = Invalida
+ */
 int expressaoInfixaValida(char *expressao){
   char *aux = expressao;
 
@@ -382,6 +396,13 @@ int expressaoInfixaValida(char *expressao){
   return 1;
 }
 
+/**
+ * Agrupa os operandos em uma string sem duplicidade.
+ *
+ * @param  char   *expressao  String contendo a expressao digitada pelo usuario
+ *
+ * @return char*  String com operandos alocados em memória
+ */
 char* obterOperandos(char *expressao){
 	pilha p;
 	tab arv;
@@ -410,6 +431,13 @@ char* obterOperandos(char *expressao){
 	return ret;
 }
 
+/**
+ * Obtem uma string contendo a expressao na forma posfixa.
+ *
+ * @param  tab  *T  Arvore contendo a expressao
+ *
+ * @return  char*  Endereco da string alocada em memória
+ */
 char* obterExpressaoPosfixa(tab *T){
 	if( arvoreVazia(*T) )
 		return NULL;
@@ -436,15 +464,25 @@ char* obterExpressaoPosfixa(tab *T){
 	return ret;
 }
 
+/**
+ * Converte a expressao infixa para posfixa.
+ *
+ * @param  char   *expressao         String com a expressao digitada pelo usuario
+ * @param  int    mostrarExecucao    Caso 1, mostra o processamento da expressao
+ *
+ * @return  tab*  Endereco da arvore alocada em memória
+ */
 tab* converteInfixaParaArvore(char *expressao, int mostrarExecucao){
 	pilha operadores, saida;
 	tab desempilha, opr, novo, *arv;
 	char c;
 	int priori;
 
+	// Cria as pilhas para operadores e a saida
 	criarPilha(&operadores);
 	criarPilha(&saida);
 
+	// Processa a string
 	while( *expressao != '\0' ){
 		c = *expressao;
 		if( c >= 'A' && c <= 'Z' ){
@@ -503,24 +541,41 @@ tab* converteInfixaParaArvore(char *expressao, int mostrarExecucao){
 	return arv;
 }
 
+/**
+ * Calcula a expressao posfixa.
+ *
+ * @param  tab    *T          Arvore com as operacoes
+ * @param  char   *operandos  String contendo os operandos (sem duplicidade)
+ * @param  float  *valores    Array com os valores de cada operando
+ *
+ * @return  float  Valor total do calculo
+ */
 float executaExpressao(tab *T, char *operandos, float *valores){
-	tab arv;
 	vpilha resultados;
 	char *posfixa;
 	float x, y, valor;
 
+	// Cria a pilha que armazena valores.
 	criarIPilha(&resultados);
 
+	// Obtem a string posfixa da arvore
 	posfixa = obterExpressaoPosfixa(T);
 
+	// Percorre a string
 	while( *posfixa != '\0' ){
+		// Se for uma letra
 		if( *posfixa >= 'A' && *posfixa <= 'Z' ){
+			// Obtem o valor do operando
 			valor = getOprValue(*posfixa, operandos, valores);
+			// Empilha o valor
 			empilharV(&resultados, valor);
 		}
+		// Se for um operador
 		else if( *posfixa == '+' || *posfixa == '-' || *posfixa == '*' || *posfixa == '/' || *posfixa == '^' ){
+			// Desempilha os valores
 			desempilharV(&resultados, &y);
 			desempilharV(&resultados, &x);
+			// Calcula e empilha o resultado
 			switch(*posfixa){
 				case '+': {
 					empilharV(&resultados, (x+y));
@@ -547,7 +602,9 @@ float executaExpressao(tab *T, char *operandos, float *valores){
 		posfixa++;
 	}
 
+	// Desempilha o total
 	desempilharV(&resultados, &valor);
 
+	// Retorna o valor total
 	return valor;
 }
