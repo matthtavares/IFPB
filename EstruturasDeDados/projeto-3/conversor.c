@@ -5,38 +5,67 @@
 #include <ctype.h>
 #include <math.h>
 #include "conversor.h"
+#include "pilha.h"
 
+/**
+ * Inicializa a árvore.
+ *
+ * @param  tab  *arv  Endereço para árvore
+ */
 void criarArvore(tab *arv){
     *arv = NULL;
 }
 
+/**
+ * Verifica se a árvore está vazia.
+ *
+ * @param  tab  arv  Árvore a ser verificada
+ *
+ * @return  int  0 = FALSE, 1 = TRUE
+ */
 int arvoreVazia(tab arv){
     return (arv == NULL);
 }
 
+/**
+ * Inserir um dado na árvore.
+ *
+ * @param  tab    *arv  Endereço da árvore a ser modificada
+ * @param  telem  dado  Dado a ser inserido
+ *
+ * @return int  0 = ERROR, 1 = SUCCESS
+ */
 int inserir(tab *arv, telem dado){
-  tno *novo;
-  tno *p = *arv;
+	tno *novo;
+	tno *p = *arv;
 
-  if( arvoreVazia(*arv) ){
-    if( (novo = (tno*)malloc(sizeof(tno))) == NULL )
-      return 0;
+	if( arvoreVazia(*arv) ){
+		if( (novo = (tno*)malloc(sizeof(tno))) == NULL )
+			return 0;
 
-    novo->info = dado;
-    novo->esq = novo->dir = NULL;
+		novo->info = dado;
+		novo->esq = novo->dir = NULL;
 
-    *arv = novo;
+		*arv = novo;
 
-    return 1;
-  } else if( dado < p->info ) {
-    return inserir(&p->esq, dado);
-  } else if( dado > p->info ) {
-    return inserir(&p->dir, dado);
-  }
+		return 1;
+	} else if( dado < p->info ) {
+		return inserir(&p->esq, dado);
+	} else if( dado > p->info ) {
+		return inserir(&p->dir, dado);
+	}
 
-  return 0;
+	return 0;
 }
 
+/**
+ * Procura um dado na árvore.
+ *
+ * @param  tab    *arv  Endereço da árvore a ser verificada
+ * @param  telem  dado  Dado a ser pesquisado
+ *
+ * @return tab*  Endereço do nó encontrado / NULL se não encontrar
+ */
 tab* busca(tab *arv, telem dado){
 	tab *value = NULL;
 
@@ -52,268 +81,78 @@ tab* busca(tab *arv, telem dado){
 	else if( value == NULL && (*arv)->dir != NULL )
 		value = busca(&(*arv)->dir, dado);
 
-  return value;
+	return value;
 }
 
+/**
+ * Remover dado da árvore.
+ *
+ * @param  tab    *arv  Endereço da árvore a ser modificada
+ * @param  telem  dado  Dado a ser removido
+ *
+ * @return int  0 = ERROR, 1 = SUCCESS
+ */
 int remover(tab *arv, telem dado){
-  tab p;
+	tab p;
 
-  if( arvoreVazia(*arv) )
-    return 0;
+	if( arvoreVazia(*arv) )
+		return 0;
 
-  tab *novo;
-  novo = busca(arv, dado);
+	tab *novo;
+	novo = busca(arv, dado);
 
-  // Se não tiver filhos
-  if( (*novo)->esq == NULL && (*novo)->dir == NULL ){
-    free((*novo));
-    *novo = NULL;
-    return 1;
-  }
+	// Se não tiver filhos
+	if( (*novo)->esq == NULL && (*novo)->dir == NULL ){
+		free((*novo));
+		*novo = NULL;
+		return 1;
+	}
 
-  // Se não houver filhos à esquerda
-  if( (*novo)->esq == NULL ){
-    p = (*novo)->dir;
-    free((*novo));
-    *novo = p;
-    return 1;
-  }
+	// Se não houver filhos à esquerda
+	if( (*novo)->esq == NULL ){
+		p = (*novo)->dir;
+		free((*novo));
+		*novo = p;
+		return 1;
+	}
 
-  // Se não houver filhos à direita
-  if( (*novo)->dir == NULL ){
-    p = (*novo)->esq;
-    free((*novo));
-    *novo = p;
-    return 1;
-  }
+	// Se não houver filhos à direita
+	if( (*novo)->dir == NULL ){
+		p = (*novo)->esq;
+		free((*novo));
+		*novo = p;
+		return 1;
+	}
 
-  // Se houver filhos em ambos os nós
-  tab *ultimo;
-  ultimo = &(*novo)->esq;
-  while( (*ultimo)->dir != NULL ){
-    ultimo = &(*ultimo)->dir;
-  }
+	// Se houver filhos em ambos os nós
+	tab *ultimo;
+	ultimo = &(*novo)->esq;
+	while( (*ultimo)->dir != NULL ){
+		ultimo = &(*ultimo)->dir;
+	}
 
-  (*novo)->info = (*ultimo)->info;
-  free(*ultimo);
-  (*ultimo) = NULL;
+	(*novo)->info = (*ultimo)->info;
+	free(*ultimo);
+	(*ultimo) = NULL;
 
-  return 1;
+	return 1;
 }
 
+/**
+ * Esvazia toda a árvore.
+ *
+ * @param  tab  *arv  Endereço da árvore a ser modificada
+ */
 void esvaziar(tab *arv){
-  if( arvoreVazia(*arv) )
-    return;
+	if( arvoreVazia(*arv) )
+		return;
 
-  esvaziar(&(*arv)->esq);
-  esvaziar(&(*arv)->dir);
+	esvaziar(&(*arv)->esq);
+	esvaziar(&(*arv)->dir);
 
-  free(*arv);
+	free(*arv);
 
-  *arv = NULL;
-}
-
-/**
- * Estrutura de pilha.
- */
-typedef struct stno {
-    tno *leaf;
-    struct stno *prox;
-} nop;
-
-typedef nop* pilha;
-
-void criarPilha(pilha *p){
-    *p = NULL;
-}
-
-/**
- * Verifica se a pilha está vazia.
- *
- * @return  int  0 = FALSE, 1 = TRUE
- */
-int pilhaVazia(pilha p){
-	return (p == NULL);
-}
-
-/**
- * Verifica o tamanho da pilha.
- *
- * @return  int
- */
-int pilhaTamanho(pilha p){
-	if( pilhaVazia(p) )
-		return 0;
-
-	int i = 0;
-	while( p != NULL ){
-		i++;
-		p = p->prox;
-	}
-
-	return i;
-}
-
-int empilhar(pilha *p, tab *leaf){
-	nop *novo;
-	novo = (nop*)malloc(sizeof(nop*));
-
-	if( novo == NULL )
-		return 0;
-
-	novo->leaf = *leaf;
-	novo->prox = *p;
-	*p = novo;
-
-	return 1;
-}
-
-int desempilhar(pilha *p, tab *arv){
-	if( pilhaVazia(*p) )
-		return 0;
-
-	nop *aux;
-	aux = *p;
-	*arv = aux->leaf;
-	*p = aux->prox;
-
-	free(aux);
-
-	return 1;
-}
-
-int topo(pilha p, tab *arv){
-	if( pilhaVazia(p) )
-		return 0;
-
-	*arv = (*p).leaf;
-
-	return 1;
-}
-
-void imprimePilha(pilha p){
-	while( p != NULL ){
-		printf("- %c\n", (*p).leaf->info);
-		p = p->prox;
-	}
-}
-
-void esvaziarPilha(pilha *p){
-    tab arv;
-    while( *p != NULL ){
-        desempilhar(p, &arv);
-    }
-    *p = NULL;
-}
-
-/**
- * Busca um dado na pilha.
- *
- * @return  int     0 = ERROR, 1 = SUCCESS
- */
-int buscaPilha(pilha p, telem dado){
-    tab aux;
- 	while( p != NULL ){
-        aux = p->leaf;
- 		if( (*aux).info == dado ){
- 			return 1;
- 		}
- 		p = p->prox;
- 	}
- 	return 0;
-}
-
-/**
- * Estrutura de pilha de valores.
- */
-typedef struct stnopv {
-    float dado;
-    struct stnopv *prox;
-} nopv;
-
-typedef nopv* vpilha;
-
-void criarIPilha(vpilha *p){
-    *p = NULL;
-}
-
-/**
- * Verifica se a pilha está vazia.
- *
- * @return  int  0 = FALSE, 1 = TRUE
- */
-int vpilhaVazia(vpilha p){
-	return (p == NULL);
-}
-
-/**
- * Verifica o tamanho da pilha.
- *
- * @return  int
- */
-int vpilhaTamanho(vpilha p){
-	if( vpilhaVazia(p) )
-		return 0;
-
-	int i = 0;
-	while( p != NULL ){
-		i++;
-		p = p->prox;
-	}
-
-	return i;
-}
-
-int empilharV(vpilha *p, float dado){
-	nopv *novo;
-	novo = (nopv*)malloc(sizeof(nopv*));
-
-	if( novo == NULL )
-		return 0;
-
-	novo->dado = dado;
-	novo->prox = *p;
-	*p = novo;
-
-	return 1;
-}
-
-int desempilharV(vpilha *p, float *dado){
-	if( vpilhaVazia(*p) )
-		return 0;
-
-	nopv *aux;
-	aux = *p;
-	*dado = aux->dado;
-	*p = aux->prox;
-
-	free(aux);
-
-	return 1;
-}
-
-int topoPilhaV(vpilha p, float *dado){
-	if( vpilhaVazia(p) )
-		return 0;
-
-	*dado = (*p).dado;
-
-	return 1;
-}
-
-void imprimeVPilha(vpilha p){
-	while( p != NULL ){
-		printf("- %f\n", (*p).dado);
-		p = p->prox;
-	}
-}
-
-void esvaziarVPilha(vpilha *p){
-    float dado;
-    while( *p != NULL ){
-        desempilharV(p, &dado);
-    }
-    *p = NULL;
+	*arv = NULL;
 }
 
 /**
@@ -325,13 +164,13 @@ void esvaziarVPilha(vpilha *p){
  * http://stackoverflow.com/a/26328095
  */
 char* strupr(char *s){
-   char* tmp = s;
+	char* tmp = s;
 
-   for (;*tmp;++tmp) {
-       *tmp = toupper((unsigned char) *tmp);
-   }
+	for (;*tmp;++tmp) {
+		*tmp = toupper((unsigned char) *tmp);
+	}
 
-   return s;
+	return s;
 }
 
 /**
@@ -381,19 +220,19 @@ float getOprValue(char operando, char *operandos, float *valores){
  * @return  int  1 = Valida, 0 = Invalida
  */
 int expressaoInfixaValida(char *expressao){
-  char *aux = expressao;
+	char *aux = expressao;
 
-  // Converte para maisculas
-  strupr(expressao);
+	// Converte para maisculas
+	strupr(expressao);
 
-  while( *aux != '\0' ){
-    if( !isdigit(*aux) || !isupper(*aux) || *aux != '+' || *aux != '-' || *aux != '*' || *aux != '/' || *aux != '^' )
-      return 0;
+	while( *aux != '\0' ){
+		if( !isdigit(*aux) || !isupper(*aux) || *aux != '+' || *aux != '-' || *aux != '*' || *aux != '/' || *aux != '^' )
+			return 0;
 
-    aux++;
-  }
+		aux++;
+	}
 
-  return 1;
+	return 1;
 }
 
 /**
