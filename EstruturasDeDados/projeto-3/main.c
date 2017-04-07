@@ -1,51 +1,81 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
+#include <malloc.h>
 #include "conversor.h"
 
 int main(){
 
-    int valida, mostrar = 0;
-    char infixa, pp, *operandos, *posfixa;
+    int i, valida, mostrar = NAO_MOSTRAR;
+    char infixa[100], pp, *operandos;
     tab *arv;
-    float valores[3] = {5}, total;
+    float *valores, total;
 
     while(1){
-        system("clear");
+        system("cls");
         printf("# Conversor Infixa -> Posfixa\n\n");
 
         printf("Digite a expressao na forma infixa (quit: sair)\n> ");
-        scanf("%s", &infixa);
+        scanf("%s%*c", infixa);
 
-        // If quit, break the loop
-        // if( strcmp(infixa, "quit") == 0 )
-            // break;
+        /// If quit, break the loop
+        if( strcmp(infixa, "quit") == 0 )
+            break;
 
-        printf("Deseja ver a transformacao passo-a-passo? (S/N)\n> ");
-        scanf("%c", &pp);
+        /// Valida a expressão
+        /*while( expressaoInfixaValida(infixa) == 0 ){
+            printf("\a\nA expressao eh invalida!\n");
+            printf("Digite a expressao na forma infixa (quit: sair)\n> ");
+            scanf("%s%c", infixa);
+
+            /// If quit, break the loop
+            if( strcmp(infixa, "quit") == 0 )
+                break;
+        }*/
+
+        printf("\nDeseja ver a transformacao passo-a-passo? (S/N)\n> ");
+        scanf("%c%*c", &pp);
+        //pp = toupper(pp);
+
+        while( pp != 'S' && pp != 'N' ){
+            printf("\a\nPor favor, apenas S ou N!\n");
+            printf("Deseja ver a transformacao passo-a-passo? (S/N)\n> ");
+            scanf("%c%*c", &pp);
+            //pp = toupper(pp);
+        }
 
         if( pp == 'S' )
-            mostrar = 1;
+            mostrar = MOSTRAR;
 
-        valida = expressaoInfixaValida(&infixa);
-        printf("Eh valida = %d\n", valida);
+        /// Transforma a expressão em árvore
+        arv = converteInfixaParaArvore(infixa, mostrar);
 
-        arv = converteInfixaParaArvore(&infixa, mostrar);
-        posfixa = obterExpressaoPosfixa(arv);
-        printf("Pos-ordem: %s\n", posfixa);
+        /// Obtém os operandos da expressão
+        operandos = obterOperandos(infixa);
 
-        operandos = obterOperandos(&infixa);
-        printf("Operandos: %s\n", operandos);
+        /// Obtém valores de cada operando
+        printf("\nDigite os valores dos operandos identificados:\n");
+        valores = (float*)malloc(sizeof(float) * strlen(operandos));
+        for(i = 0; i < strlen(operandos); i++){
+            printf("%c = ", operandos[i]);
+            scanf("%f%*c", &valores[i]);
+        }
 
+        /// Executa o cálculo
         total = executaExpressao(arv, operandos, valores);
-        printf("Total = %.2f\n", total);
+
+        /// Imprime o resultado
+        printf("\nO resultado da expressao eh\n> %.2f\n", total);
 
         printf("\n\n");
+        system("pause");
     }
 
-    system("clear");
+    system("cls");
     printf("# Conversor Infixa -> Posfixa\n\n");
-    printf("Voce saiu do programa!\n");
+    printf("Voce saiu do programa!\n\n\n");
 
     return 0;
 }
+

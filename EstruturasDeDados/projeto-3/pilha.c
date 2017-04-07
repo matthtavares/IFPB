@@ -10,14 +10,14 @@
 /**
  * Inicializa a pilha de arvores.
  *
- * @param  pilha  *p  Endere√ßo para pilha
+ * @param  pilha  *p  EndereÁo para pilha
  */
 void criarPilha(pilha *p){
     *p = NULL;
 }
 
 /**
- * Verifica se a pilha est√° vazia.
+ * Verifica se a pilha est· vazia.
  *
  * @param  pilha  p  Pilha a ser verificada
  *
@@ -51,7 +51,7 @@ int pilhaTamanho(pilha p){
  * Insere dado na pilha.
  *
  * @param  pilha  *p     Pilha a ser modificada
- * @param  tab    *leaf  Endere√ßo do n√≥ de arvore para empilhar
+ * @param  tab    *leaf  EndereÁo do nÛ de arvore para empilhar
  *
  * @return  int  1 = SUCCESS, 0 = ERROR
  */
@@ -72,7 +72,7 @@ int empilhar(pilha *p, tab *leaf){
  * Remove dado da pilha.
  *
  * @param  pilha  *p     Pilha a ser modificada
- * @param  tab    *arv   Endere√ßo do n√≥ de arvore que armazena o dado desempilhado
+ * @param  tab    *arv   EndereÁo do nÛ de arvore que armazena o dado desempilhado
  *
  * @return  int  1 = SUCCESS, 0 = ERROR
  */
@@ -94,7 +94,7 @@ int desempilhar(pilha *p, tab *arv){
  * Pega o dado no topo da pilha.
  *
  * @param  pilha  p     Pilha a ser verificada
- * @param  tab    *arv  Endere√ßo do n√≥ de arvore que armazena o dado
+ * @param  tab    *arv  EndereÁo do nÛ de arvore que armazena o dado
  *
  * @return  int  1 = SUCCESS, 0 = ERROR
  */
@@ -160,14 +160,14 @@ int buscaPilha(pilha p, telem dado){
 /**
  * Inicializa a pilha de float.
  *
- * @param  vpilha  *p  Endere√ßo para pilha
+ * @param  vpilha  *p  EndereÁo para pilha
  */
 void criarIPilha(vpilha *p){
     *p = NULL;
 }
 
 /**
- * Verifica se a pilha est√° vazia.
+ * Verifica se a pilha est· vazia.
  *
  * @param  vpilha  p  Pilha a ser verificada
  *
@@ -222,7 +222,7 @@ int empilharV(vpilha *p, float dado){
  * Remove dado da pilha.
  *
  * @param  vpilha  *p     Pilha a ser modificada
- * @param  float   *dado  Endere√ßo da vari√°vel que armazena o dado desempilhado
+ * @param  float   *dado  EndereÁo da vari·vel que armazena o dado desempilhado
  *
  * @return  int  1 = SUCCESS, 0 = ERROR
  */
@@ -244,7 +244,7 @@ int desempilharV(vpilha *p, float *dado){
  * Pega o dado no topo da pilha.
  *
  * @param  vpilha  p      Pilha a ser verificada
- * @param  float   *dado  Endere√ßo da vari√°vel que armazena o dado
+ * @param  float   *dado  EndereÁo da vari·vel que armazena o dado
  *
  * @return  int  1 = SUCCESS, 0 = ERROR
  */

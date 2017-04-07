@@ -8,18 +8,18 @@
 #include "pilha.h"
 
 /**
- * Inicializa a Ã¡rvore.
+ * Inicializa a árvore.
  *
- * @param  tab  *arv  EndereÃ§o para Ã¡rvore
+ * @param  tab  *arv  Endereço para árvore
  */
 void criarArvore(tab *arv){
     *arv = NULL;
 }
 
 /**
- * Verifica se a Ã¡rvore estÃ¡ vazia.
+ * Verifica se a árvore está vazia.
  *
- * @param  tab  arv  Ãrvore a ser verificada
+ * @param  tab  arv  Árvore a ser verificada
  *
  * @return  int  0 = FALSE, 1 = TRUE
  */
@@ -28,9 +28,9 @@ int arvoreVazia(tab arv){
 }
 
 /**
- * Inserir um dado na Ã¡rvore.
+ * Inserir um dado na árvore.
  *
- * @param  tab    *arv  EndereÃ§o da Ã¡rvore a ser modificada
+ * @param  tab    *arv  Endereço da árvore a ser modificada
  * @param  telem  dado  Dado a ser inserido
  *
  * @return int  0 = ERROR, 1 = SUCCESS
@@ -59,12 +59,12 @@ int inserir(tab *arv, telem dado){
 }
 
 /**
- * Procura um dado na Ã¡rvore.
+ * Procura um dado na árvore.
  *
- * @param  tab    *arv  EndereÃ§o da Ã¡rvore a ser verificada
+ * @param  tab    *arv  Endereço da árvore a ser verificada
  * @param  telem  dado  Dado a ser pesquisado
  *
- * @return tab*  EndereÃ§o do nÃ³ encontrado / NULL se nÃ£o encontrar
+ * @return tab*  Endereço do nó encontrado / NULL se não encontrar
  */
 tab* busca(tab *arv, telem dado){
 	tab *value = NULL;
@@ -85,9 +85,9 @@ tab* busca(tab *arv, telem dado){
 }
 
 /**
- * Remover dado da Ã¡rvore.
+ * Remover dado da árvore.
  *
- * @param  tab    *arv  EndereÃ§o da Ã¡rvore a ser modificada
+ * @param  tab    *arv  Endereço da árvore a ser modificada
  * @param  telem  dado  Dado a ser removido
  *
  * @return int  0 = ERROR, 1 = SUCCESS
@@ -101,14 +101,14 @@ int remover(tab *arv, telem dado){
 	tab *novo;
 	novo = busca(arv, dado);
 
-	// Se nÃ£o tiver filhos
+	// Se não tiver filhos
 	if( (*novo)->esq == NULL && (*novo)->dir == NULL ){
 		free((*novo));
 		*novo = NULL;
 		return 1;
 	}
 
-	// Se nÃ£o houver filhos Ã  esquerda
+	// Se não houver filhos à esquerda
 	if( (*novo)->esq == NULL ){
 		p = (*novo)->dir;
 		free((*novo));
@@ -116,7 +116,7 @@ int remover(tab *arv, telem dado){
 		return 1;
 	}
 
-	// Se nÃ£o houver filhos Ã  direita
+	// Se não houver filhos à direita
 	if( (*novo)->dir == NULL ){
 		p = (*novo)->esq;
 		free((*novo));
@@ -124,7 +124,7 @@ int remover(tab *arv, telem dado){
 		return 1;
 	}
 
-	// Se houver filhos em ambos os nÃ³s
+	// Se houver filhos em ambos os nós
 	tab *ultimo;
 	ultimo = &(*novo)->esq;
 	while( (*ultimo)->dir != NULL ){
@@ -139,9 +139,9 @@ int remover(tab *arv, telem dado){
 }
 
 /**
- * Esvazia toda a Ã¡rvore.
+ * Esvazia toda a árvore.
  *
- * @param  tab  *arv  EndereÃ§o da Ã¡rvore a ser modificada
+ * @param  tab  *arv  Endereço da árvore a ser modificada
  */
 void esvaziar(tab *arv){
 	if( arvoreVazia(*arv) )
@@ -156,7 +156,7 @@ void esvaziar(tab *arv){
 }
 
 /**
- * FUNÃ‡Ã•ES DO PROJETO!
+ * FUNÇÕES DO PROJETO!
  */
 
 /**
@@ -199,8 +199,8 @@ int prioridade(char e){
  * Retorna o valor de um operando.
  *
  * @param  char   operando    Operando desejado.
- * @param  char   *operandos  EndereÃ§o do vetor com os operandos vÃ¡lidos.
- * @param  float  *valores    EndereÃ§o do vetor de valores.
+ * @param  char   *operandos  Endereço do vetor com os operandos válidos.
+ * @param  float  *valores    Endereço do vetor de valores.
  *
  * @return float
  */
@@ -240,7 +240,7 @@ int expressaoInfixaValida(char *expressao){
  *
  * @param  char   *expressao  String contendo a expressao digitada pelo usuario
  *
- * @return char*  String com operandos alocados em memÃ³ria
+ * @return char*  String com operandos alocados em memória
  */
 char* obterOperandos(char *expressao){
 	pilha p;
@@ -275,7 +275,7 @@ char* obterOperandos(char *expressao){
  *
  * @param  tab  *T  Arvore contendo a expressao
  *
- * @return  char*  Endereco da string alocada em memÃ³ria
+ * @return  char*  Endereco da string alocada em memória
  */
 char* obterExpressaoPosfixa(tab *T){
 	if( arvoreVazia(*T) )
@@ -309,7 +309,7 @@ char* obterExpressaoPosfixa(tab *T){
  * @param  char   *expressao         String com a expressao digitada pelo usuario
  * @param  int    mostrarExecucao    Caso 1, mostra o processamento da expressao
  *
- * @return  tab*  Endereco da arvore alocada em memÃ³ria
+ * @return  tab*  Endereco da arvore alocada em memória
  */
 tab* converteInfixaParaArvore(char *expressao, int mostrarExecucao){
 	pilha operadores, saida;
