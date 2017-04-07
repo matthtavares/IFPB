@@ -21,40 +21,40 @@ int main(){
 
         /// If quit, break the loop
         if( strcmp(infixa, "quit") == 0 )
-            break;
+            return 1;
 
-        /// Valida a expressão
-        /*while( expressaoInfixaValida(infixa) == 0 ){
+        /// Valida a express?o
+        while( expressaoInfixaValida(infixa) == 0 ){
             printf("\a\nA expressao eh invalida!\n");
             printf("Digite a expressao na forma infixa (quit: sair)\n> ");
-            scanf("%s%c", infixa);
+            scanf("%s%*c", infixa);
 
             /// If quit, break the loop
             if( strcmp(infixa, "quit") == 0 )
-                break;
-        }*/
+                return 1;
+        }
 
         printf("\nDeseja ver a transformacao passo-a-passo? (S/N)\n> ");
         scanf("%c%*c", &pp);
-        //pp = toupper(pp);
+        pp = toupper(pp);
 
         while( pp != 'S' && pp != 'N' ){
             printf("\a\nPor favor, apenas S ou N!\n");
             printf("Deseja ver a transformacao passo-a-passo? (S/N)\n> ");
             scanf("%c%*c", &pp);
-            //pp = toupper(pp);
+            pp = toupper(pp);
         }
 
         if( pp == 'S' )
             mostrar = MOSTRAR;
 
-        /// Transforma a expressão em árvore
+        /// Transforma a express?o em ?rvore
         arv = converteInfixaParaArvore(infixa, mostrar);
 
-        /// Obtém os operandos da expressão
+        /// Obt?m os operandos da express?o
         operandos = obterOperandos(infixa);
 
-        /// Obtém valores de cada operando
+        /// Obt?m valores de cada operando
         printf("\nDigite os valores dos operandos identificados:\n");
         valores = (float*)malloc(sizeof(float) * strlen(operandos));
         for(i = 0; i < strlen(operandos); i++){
@@ -62,7 +62,7 @@ int main(){
             scanf("%f%*c", &valores[i]);
         }
 
-        /// Executa o cálculo
+        /// Executa o c?lculo
         total = executaExpressao(arv, operandos, valores);
 
         /// Imprime o resultado
@@ -72,10 +72,11 @@ int main(){
         system("pause");
     }
 
+    /*
     system("cls");
     printf("# Conversor Infixa -> Posfixa\n\n");
     printf("Voce saiu do programa!\n\n\n");
+    */
 
     return 0;
 }
-

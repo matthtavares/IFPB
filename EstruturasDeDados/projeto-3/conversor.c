@@ -220,14 +220,40 @@ float getOprValue(char operando, char *operandos, float *valores){
  * @return  int  1 = Valida, 0 = Invalida
  */
 int expressaoInfixaValida(char *expressao){
-	char *aux = expressao;
+	char *aux, ant, prox;
+
+  // Verifica tamanho
+  if( strlen(expressao) < 3 )
+    return 0;
+
+  // Se não começa com +-*/
+  if(*expressao == '+' || *expressao == '-' || *expressao == '*' || *expressao == '/' || *expressao == '^')
+    return 0;
 
 	// Converte para maisculas
 	strupr(expressao);
+  aux = expressao;
 
 	while( *aux != '\0' ){
-		if( !isdigit(*aux) || !isupper(*aux) || *aux != '+' || *aux != '-' || *aux != '*' || *aux != '/' || *aux != '^' )
+    // Se for caracter invalido
+		if( (*aux < 'A' || *aux > 'Z') && *aux != '+' && *aux != '-' && *aux != '*' && *aux != '/' && *aux != '^' && *aux != '(' && *aux != ')' )
 			return 0;
+
+    // +-/*^ devem estar entre operandos
+    if( *aux == '+' || *aux == '-' || *aux == '*' || *aux == '/' || *aux == '^' ){
+      ant = *(aux - 1);
+      prox = *(aux + 1);
+
+      if( (ant < 'A' || ant > 'Z') || (prox < 'A' || prox > 'Z') )
+        return 0;
+    }
+
+    // Digito não pode ser seguido de digito
+    if( *aux >= 'A' && *aux <= 'Z' ){
+      prox = *(aux + 1);
+      if( prox >= 'A' && prox <= 'Z' )
+        return 0;
+    }
 
 		aux++;
 	}
