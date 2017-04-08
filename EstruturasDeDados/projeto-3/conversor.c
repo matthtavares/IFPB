@@ -284,6 +284,8 @@ int expressaoInfixaValida(char *expressao){
 	if( !pilhaVazia(paren) )
 		return 0;
 
+	esvaziarPilha(&paren);
+
 	return 1;
 }
 
