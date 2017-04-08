@@ -7,12 +7,12 @@
 
 int main(){
 
-    int i, valida, mostrar = NAO_MOSTRAR;
+    int i, exitP = 0, valida, mostrar = NAO_MOSTRAR;
     char infixa[100], pp, *operandos;
     tab *arv;
     float *valores, total;
 
-    while(1){
+    while( exitP != 1 ){
         system("cls");
         printf("# Conversor Infixa -> Posfixa\n\n");
 
@@ -21,7 +21,7 @@ int main(){
 
         /// If quit, break the loop
         if( strcmp(infixa, "quit") == 0 )
-            return 1;
+            break;
 
         /// Valida a express?o
         while( expressaoInfixaValida(infixa) == 0 ){
@@ -30,9 +30,15 @@ int main(){
             scanf("%s%*c", infixa);
 
             /// If quit, break the loop
-            if( strcmp(infixa, "quit") == 0 )
-                return 1;
+            if( strcmp(infixa, "quit") == 0 ){
+                exitP = 1;
+                break;
+            }
         }
+
+        // Checa se mata o programa
+        if( exitP == 1 )
+            break;
 
         printf("\nDeseja ver a transformacao passo-a-passo? (S/N)\n> ");
         scanf("%c%*c", &pp);
@@ -72,11 +78,9 @@ int main(){
         system("pause");
     }
 
-    /*
     system("cls");
     printf("# Conversor Infixa -> Posfixa\n\n");
     printf("Voce saiu do programa!\n\n\n");
-    */
 
     return 0;
 }
