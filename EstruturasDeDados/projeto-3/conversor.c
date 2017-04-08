@@ -221,42 +221,68 @@ float getOprValue(char operando, char *operandos, float *valores){
  */
 int expressaoInfixaValida(char *expressao){
 	char *aux, ant, prox;
+	pilha paren;
+	tab arv;
 
-  // Verifica tamanho
-  if( strlen(expressao) < 3 )
-    return 0;
+	// Verifica tamanho
+	if( strlen(expressao) < 3 )
+		return 0;
 
-  // Se não começa com +-*/
-  if(*expressao == '+' || *expressao == '-' || *expressao == '*' || *expressao == '/' || *expressao == '^')
-    return 0;
+	// Se não começa com +-*/
+	if(*expressao == '+' || *expressao == '-' || *expressao == '*' || *expressao == '/' || *expressao == '^')
+		return 0;
 
 	// Converte para maisculas
 	strupr(expressao);
-  aux = expressao;
+	aux = expressao;
+
+	criarPilha(&paren);
 
 	while( *aux != '\0' ){
-    // Se for caracter invalido
+		// Se for caracter invalido
 		if( (*aux < 'A' || *aux > 'Z') && *aux != '+' && *aux != '-' && *aux != '*' && *aux != '/' && *aux != '^' && *aux != '(' && *aux != ')' )
 			return 0;
 
-    // +-/*^ devem estar entre operandos
-    if( *aux == '+' || *aux == '-' || *aux == '*' || *aux == '/' || *aux == '^' ){
-      ant = *(aux - 1);
-      prox = *(aux + 1);
+		// +-/*^
+		if( *aux == '+' || *aux == '-' || *aux == '*' || *aux == '/' || *aux == '^' ){
+			ant = *(aux - 1);
+			prox = *(aux + 1);
 
-      if( (ant < 'A' || ant > 'Z') || (prox < 'A' || prox > 'Z') )
-        return 0;
-    }
+			// Devem estar entre operandos
+			if( (ant < 'A' || ant > 'Z') || (prox < 'A' || prox > 'Z') )
+				return 0;
+		}
 
-    // Digito não pode ser seguido de digito
-    if( *aux >= 'A' && *aux <= 'Z' ){
-      prox = *(aux + 1);
-      if( prox >= 'A' && prox <= 'Z' )
-        return 0;
-    }
+		// Digito não pode ser seguido de digito
+		if( *aux >= 'A' && *aux <= 'Z' ){
+			prox = *(aux + 1);
+
+			if( prox >= 'A' && prox <= 'Z' )
+				return 0;
+		}
+
+		// Verificar parenteses
+		if( *aux == '(' ){
+			criarArvore(&arv);
+			inserir(&arv, *aux);
+			empilhar(&paren, &arv);
+		}
+		if( *aux == ')' ){
+			// Se a pilha estiver vazia, tem algo errado
+			if( pilhaVazia(paren) )
+				return 0;
+
+			do {
+				desempilhar(&paren, &arv);
+			} while( arv->info != '(' );
+		}
 
 		aux++;
 	}
+
+	// Se a pilha não estiver vazia, erro
+	if( !pilhaVazia(paren) )
+		return 0;
 
 	return 1;
 }
