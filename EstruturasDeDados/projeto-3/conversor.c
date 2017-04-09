@@ -264,7 +264,11 @@ int expressaoInfixaValida(char *expressao){
 			prox = *(aux + 1);
 
 			// Devem estar entre operandos
-			if( ((ant < 'A' || ant > 'Z') || (prox < 'A' || prox > 'Z')) && (ant == '(' || prox == ')') )
+			// Não estar a esquerda de )
+			// Nem a direita de (
+			if( ant == '(' || prox == ')' )
+				return 0;
+			if( ((ant < 'A' || ant > 'Z') && ant != ')') || ((prox < 'A' || prox > 'Z') && prox != '(') )
 				return 0;
 		}
 
@@ -278,6 +282,11 @@ int expressaoInfixaValida(char *expressao){
 
 		// Verificar parenteses
 		if( *aux == '(' ){
+			// Verifica se eh '()''
+			prox = *(aux + 1);
+			if( prox == ')' )
+				return 0;
+
 			criarArvore(&arv);
 			inserir(&arv, *aux);
 			empilhar(&paren, &arv);
