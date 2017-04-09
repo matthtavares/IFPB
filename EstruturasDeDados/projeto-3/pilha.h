@@ -4,7 +4,7 @@
 #include "conversor.h"
 
 typedef struct stno {
-    tno *leaf;
+    tab leaf;
     struct stno *prox;
 } nop;
 

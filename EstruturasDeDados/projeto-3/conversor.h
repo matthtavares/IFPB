@@ -27,7 +27,7 @@
 	/**
 	 * Funções do projeto.
 	 */
-	int expressaoInfixaValida(char *expressao); // Fazendo
+	int expressaoInfixaValida(char *expressao);
 	char* obterOperandos(char *expressao);
 	char* obterExpressaoPosfixa(tab *T);
 	tab* converteInfixaParaArvore(char *expressao, int mostrarExecucao); // Falta imprimir

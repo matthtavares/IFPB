@@ -114,7 +114,7 @@ int topo(pilha p, tab *arv){
  */
 void imprimePilha(pilha p){
 	while( p != NULL ){
-		printf("- %c\n", (*p).leaf->info);
+		printf("%c ", (*p).leaf->info);
 		p = p->prox;
 	}
 }

@@ -12,7 +12,7 @@ int main(){
     tab *arv;
     float *valores, total;
 
-    while( exitP != 1 ){
+    while( 1 ){
         system("cls");
         printf("# Conversor Infixa -> Posfixa\n\n");
 
@@ -81,6 +81,7 @@ int main(){
     system("cls");
     printf("# Conversor Infixa -> Posfixa\n\n");
     printf("Voce saiu do programa!\n\n\n");
+    system("pause");
 
     return 0;
 }

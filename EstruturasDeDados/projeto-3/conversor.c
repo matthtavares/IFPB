@@ -195,6 +195,21 @@ int prioridade(char e){
 	}
 }
 
+char* pilhaPosfixa(pilha p){
+	if( pilhaVazia(p) )
+		return NULL;
+
+	char *ret = (char*)malloc(sizeof(char*));
+	strcpy(ret, "");
+
+	while( p != NULL ){
+		strcat(ret, strrev(obterExpressaoPosfixa(&p->leaf)));
+		p = p->prox;
+	}
+
+	return strrev(ret);
+}
+
 /**
  * Retorna o valor de um operando.
  *
@@ -228,7 +243,7 @@ int expressaoInfixaValida(char *expressao){
 	if( strlen(expressao) < 3 )
 		return 0;
 
-	// Se não começa com +-*/
+	// Se começa com +-*/
 	if(*expressao == '+' || *expressao == '-' || *expressao == '*' || *expressao == '/' || *expressao == '^')
 		return 0;
 
@@ -249,7 +264,7 @@ int expressaoInfixaValida(char *expressao){
 			prox = *(aux + 1);
 
 			// Devem estar entre operandos
-			if( (ant < 'A' || ant > 'Z') || (prox < 'A' || prox > 'Z') )
+			if( ((ant < 'A' || ant > 'Z') || (prox < 'A' || prox > 'Z')) && (ant == '(' || prox == ')') )
 				return 0;
 		}
 
@@ -369,11 +384,14 @@ tab* converteInfixaParaArvore(char *expressao, int mostrarExecucao){
 	pilha operadores, saida;
 	tab desempilha, opr, novo, *arv;
 	char c;
-	int priori;
+	int priori, exec = 1;
 
 	// Cria as pilhas para operadores e a saida
 	criarPilha(&operadores);
 	criarPilha(&saida);
+
+	// Aloca a arvore
+	arv = (tab*)malloc(sizeof(tab*));
 
 	// Processa a string
 	while( *expressao != '\0' ){
@@ -415,6 +433,14 @@ tab* converteInfixaParaArvore(char *expressao, int mostrarExecucao){
 				}
 			}
 		}
+
+		if( mostrarExecucao == MOSTRAR ){
+			printf("[%2d] %c   Pilha (topo): [", exec, c);
+			imprimePilha(operadores);
+			printf("]   Saida: %s", pilhaPosfixa(saida));
+			printf("\n");
+		}
+		exec++;
 		expressao++;
 	}
 
@@ -424,12 +450,16 @@ tab* converteInfixaParaArvore(char *expressao, int mostrarExecucao){
 		desempilhar(&saida, &desempilha->esq);
 		empilhar(&saida, &desempilha);
 	}
-
-	// Aloca a arvore
-	arv = (tab*)malloc(sizeof(tab*));
+	if( mostrarExecucao == MOSTRAR ){
+		printf("[%2d] Esvaziando pilha...\n", exec);
+	}
 
 	// Desempilha a saida para a arvore
 	desempilhar(&saida, arv);
+
+	if( mostrarExecucao == MOSTRAR ){
+		printf("[%2d] Expressao final: %s\n", (exec+1), obterExpressaoPosfixa(arv));
+	}
 
 	return arv;
 }
