@@ -197,7 +197,7 @@ int prioridade(char e){
 
 char* pilhaPosfixa(pilha p){
 	if( pilhaVazia(p) )
-		return NULL;
+		return "";
 
 	char *ret = (char*)malloc(sizeof(char*));
 	strcpy(ret, "");
